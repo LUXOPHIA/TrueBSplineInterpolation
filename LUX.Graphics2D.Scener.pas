@@ -5,7 +5,7 @@ interface //####################################################################
 uses System.Types, System.UITypes,
      FMX.Graphics,
      LUX, LUX.D1, LUX.D2,
-     LUX.Chart.Viewer, LUX.Chart.Shaper;
+     LUX.Graphics2D.Viewer, LUX.Graphics2D.Shaper;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
