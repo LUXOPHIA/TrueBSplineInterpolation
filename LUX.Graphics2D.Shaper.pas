@@ -1,4 +1,4 @@
-﻿unit LUX.Chart.Shaper;
+﻿unit LUX.Graphics2D.Shaper;
 
 interface //#################################################################### ■
 

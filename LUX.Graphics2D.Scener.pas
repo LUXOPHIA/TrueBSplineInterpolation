@@ -1,4 +1,4 @@
-﻿unit LUX.Chart.Scener;
+﻿unit LUX.Graphics2D.Scener;
 
 interface //#################################################################### ■
 

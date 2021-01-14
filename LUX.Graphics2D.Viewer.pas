@@ -1,4 +1,4 @@
-﻿unit LUX.Chart.Viewer;
+﻿unit LUX.Graphics2D.Viewer;
 
 interface //#################################################################### ■
 
