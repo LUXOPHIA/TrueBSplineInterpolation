@@ -10,15 +10,15 @@ uses System.Types, System.UITypes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TChartPoin = class;
-     TChartCurv = class;
-     TChartScal = class;
-       TChartScaX = class;
-       TChartScaY = class;
+     TDrawPoin = class;
+     TDrawCurv = class;
+     TDrawScal = class;
+       TDrawScaX = class;
+       TDrawScaY = class;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartPoin
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPoin
 
-     TChartPoin = class( TChartNode )
+     TDrawPoin = class( TDrawNode )
      private
      protected
        _Pos    :TSingle2D;
@@ -42,9 +42,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Border :Single    read GetBorder write SetBorder;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartCurv
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
 
-     TChartCurv = class( TChartNode )
+     TDrawCurv = class( TDrawNode )
      private
        _Path :TPathData;
      protected
@@ -65,9 +65,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property PoinsN                    :Integer   read GetPoinsN write SetPoinsN;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartScal
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScal
 
-     TChartScal = class( TChartNode )
+     TDrawScal = class( TDrawNode )
      protected
        _Interv :Single;
        ///// アクセス
@@ -80,9 +80,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Interv :Single read GetInterv write SetInterv;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartScaX
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScaX
 
-     TChartScaX = class( TChartScal )
+     TDrawScaX = class( TDrawScal )
      protected
        ///// メソッド
        procedure DrawMain; override;
@@ -91,9 +91,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartScaY
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScaY
 
-     TChartScaY = class( TChartScal )
+     TDrawScaY = class( TDrawScal )
      protected
        ///// メソッド
        procedure DrawMain; override;
@@ -102,9 +102,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartAxis
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxis
 
-     TChartAxis = class( TChartNode )
+     TDrawAxis = class( TDrawNode )
      protected
        ///// メソッド
        procedure DrawMain; override;
@@ -117,7 +117,7 @@ implementation //###############################################################
 
 uses System.Math;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartPoin
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPoin
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -125,41 +125,41 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TChartPoin.GetPos :TSingle2D;
+function TDrawPoin.GetPos :TSingle2D;
 begin
      Result := _Pos;
 end;
 
-procedure TChartPoin.SetPos( const Pos_:TSingle2D );
+procedure TDrawPoin.SetPos( const Pos_:TSingle2D );
 begin
      _Pos := Pos_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TChartPoin.GetRadius :Single;
+function TDrawPoin.GetRadius :Single;
 begin
      Result := _Radius;
 end;
 
-procedure TChartPoin.SetRadius( const Radius_:Single );
+procedure TDrawPoin.SetRadius( const Radius_:Single );
 begin
      _Radius := Radius_;
 end;
 
-function TChartPoin.GetBorder :Single;
+function TDrawPoin.GetBorder :Single;
 begin
      Result := _Border;
 end;
 
-procedure TChartPoin.SetBorder( const Border_:Single );
+procedure TDrawPoin.SetBorder( const Border_:Single );
 begin
      _Border := Border_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TChartPoin.DrawMain;
+procedure TDrawPoin.DrawMain;
 begin
      inherited;
 
@@ -171,7 +171,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TChartPoin.Create;
+constructor TDrawPoin.Create;
 begin
      inherited;
 
@@ -180,13 +180,13 @@ begin
      _Border := 0;
 end;
 
-destructor TChartPoin.Destroy;
+destructor TDrawPoin.Destroy;
 begin
 
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartCurv
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -194,22 +194,22 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TChartCurv.GetPoins( const I_:Integer ) :TSingle2D;
+function TDrawCurv.GetPoins( const I_:Integer ) :TSingle2D;
 begin
      Result := _Poins[ I_ ];
 end;
 
-procedure TChartCurv.SetPoins( const I_:Integer; const Value_:TSingle2D );
+procedure TDrawCurv.SetPoins( const I_:Integer; const Value_:TSingle2D );
 begin
      _Poins[ I_ ] := Value_;
 end;
 
-function TChartCurv.GetPoinsN :Integer;
+function TDrawCurv.GetPoinsN :Integer;
 begin
      Result := _PoinsN;
 end;
 
-procedure TChartCurv.SetPoinsN( const ValuesN_:Integer );
+procedure TDrawCurv.SetPoinsN( const ValuesN_:Integer );
 begin
      _PoinsN := ValuesN_;
 
@@ -218,7 +218,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TChartCurv.Create;
+constructor TDrawCurv.Create;
 begin
      inherited;
 
@@ -227,7 +227,7 @@ begin
      PoinsN := 100;
 end;
 
-destructor TChartCurv.Destroy;
+destructor TDrawCurv.Destroy;
 begin
      _Path.DisposeOf;
 
@@ -236,7 +236,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TChartCurv.DrawMain;
+procedure TDrawCurv.DrawMain;
 var
    I :Integer;
 begin
@@ -257,7 +257,7 @@ begin
      end;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartGrid
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -265,32 +265,32 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TChartScal.GetInterv :Single;
+function TDrawScal.GetInterv :Single;
 begin
      Result := _Interv;
 end;
 
-procedure TChartScal.SetInterv( const Interv_:Single );
+procedure TDrawScal.SetInterv( const Interv_:Single );
 begin
      _Interv := Interv_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TChartScal.Create;
+constructor TDrawScal.Create;
 begin
      inherited;
 
      _Interv := 0.1;
 end;
 
-destructor TChartScal.Destroy;
+destructor TDrawScal.Destroy;
 begin
 
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartScaX
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScaX
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -300,13 +300,13 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TChartScaX.Create;
+constructor TDrawScaX.Create;
 begin
      inherited;
 
 end;
 
-destructor TChartScaX.Destroy;
+destructor TDrawScaX.Destroy;
 begin
 
      inherited;
@@ -314,7 +314,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TChartScaX.DrawMain;
+procedure TDrawScaX.DrawMain;
 var
    I0, I1, I :Integer;
    X :Single;
@@ -341,7 +341,7 @@ begin
      end;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartScaY
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScaY
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -351,13 +351,13 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TChartScaY.Create;
+constructor TDrawScaY.Create;
 begin
      inherited;
 
 end;
 
-destructor TChartScaY.Destroy;
+destructor TDrawScaY.Destroy;
 begin
 
      inherited;
@@ -365,7 +365,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TChartScaY.DrawMain;
+procedure TDrawScaY.DrawMain;
 var
    I0, I1, I :Integer;
    Y :Single;
@@ -392,7 +392,7 @@ begin
      end;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartAxis
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxis
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -402,7 +402,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TChartAxis.DrawMain;
+procedure TDrawAxis.DrawMain;
 var
    P0, P1 :TSingle2D;
 begin
@@ -427,14 +427,14 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TChartAxis.Create;
+constructor TDrawAxis.Create;
 begin
      inherited;
 
      _Stroke.Color := TAlphaColorF.Create( 1/2, 1/2, 1/2 ).ToAlphaColor;
 end;
 
-destructor TChartAxis.Destroy;
+destructor TDrawAxis.Destroy;
 begin
 
      inherited;

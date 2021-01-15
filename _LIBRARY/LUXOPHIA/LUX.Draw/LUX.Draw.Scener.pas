@@ -9,40 +9,40 @@ uses System.Types, System.UITypes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TChartPlots = class;
+     TDrawPlots = class;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartPlots
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPlots
 
-     TChartPlots = class( TChartScener )
+     TDrawPlots = class( TDrawScener )
      private
      protected
-       _Axis   :TChartAxis;
-       _ScalX0 :TChartScaX;
-       _ScalY0 :TChartScaY;
-       _ScalX1 :TChartScaX;
-       _ScalY1 :TChartScaY;
-       _ScalX2 :TChartScaX;
-       _ScalY2 :TChartScaY;
+       _Axis   :TDrawAxis;
+       _ScalX0 :TDrawScaX;
+       _ScalY0 :TDrawScaY;
+       _ScalX1 :TDrawScaX;
+       _ScalY1 :TDrawScaY;
+       _ScalX2 :TDrawScaX;
+       _ScalY2 :TDrawScaY;
        ///// アクセス
        ///// メソッド
      public
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Axis   :TChartAxis read _Axis  ;
-       property ScalX0 :TChartScaX read _ScalX0;
-       property ScalY0 :TChartScaY read _ScalY0;
-       property ScalX1 :TChartScaX read _ScalX1;
-       property ScalY1 :TChartScaY read _ScalY1;
-       property ScalX2 :TChartScaX read _ScalX2;
-       property ScalY2 :TChartScaY read _ScalY2;
+       property Axis   :TDrawAxis read _Axis  ;
+       property ScalX0 :TDrawScaX read _ScalX0;
+       property ScalY0 :TDrawScaY read _ScalY0;
+       property ScalX1 :TDrawScaX read _ScalX1;
+       property ScalY1 :TDrawScaY read _ScalY1;
+       property ScalX2 :TDrawScaX read _ScalX2;
+       property ScalY2 :TDrawScaY read _ScalY2;
      end;
 
 implementation //############################################################### ■
 
 uses System.Math;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChartPlots
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPlots
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -54,17 +54,17 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TChartPlots.Create;
+constructor TDrawPlots.Create;
 begin
      inherited;
 
-     _ScalX2 := TChartScaX.Create( Self );
-     _ScalY2 := TChartScaY.Create( Self );
-     _ScalX1 := TChartScaX.Create( Self );
-     _ScalY1 := TChartScaY.Create( Self );
-     _ScalX0 := TChartScaX.Create( Self );
-     _ScalY0 := TChartScaY.Create( Self );
-     _Axis   := TChartAxis.Create( Self );
+     _ScalX2 := TDrawScaX.Create( Self );
+     _ScalY2 := TDrawScaY.Create( Self );
+     _ScalX1 := TDrawScaX.Create( Self );
+     _ScalY1 := TDrawScaY.Create( Self );
+     _ScalX0 := TDrawScaX.Create( Self );
+     _ScalY0 := TDrawScaY.Create( Self );
+     _Axis   := TDrawAxis.Create( Self );
 
      with _ScalX2 do
      begin
@@ -103,7 +103,7 @@ begin
      end;
 end;
 
-destructor TChartPlots.Destroy;
+destructor TDrawPlots.Destroy;
 begin
 
      inherited;
