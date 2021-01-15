@@ -1,2 +1,2 @@
-﻿# LUX.Graphics2D
+﻿# LUX.Draw
 ２Ｄ描画処理をサポートするライブラリ。
