@@ -1,4 +1,4 @@
-﻿unit LUX.Graphics2D.Viewer;
+﻿unit LUX.Draw.Viewer;
 
 interface //#################################################################### ■
 
