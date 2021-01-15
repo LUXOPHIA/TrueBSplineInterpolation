@@ -6,7 +6,7 @@ uses System.Types, System.UITypes,
      FMX.Controls, FMX.Graphics,
      LUX, LUX.D1, LUX.D2,
      LUX.FMX.Graphics,
-     LUX.Graphics2D.Viewer;
+     LUX.Draw.Viewer;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
