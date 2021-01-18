@@ -2,30 +2,27 @@
 
 interface //#################################################################### ■
 
-uses System.Types, System.UITypes,
+uses
      FMX.Controls, FMX.Graphics,
      LUX, LUX.D1, LUX.D2,
-     LUX.FMX.Graphics,
      LUX.Draw.Scene,
      LUX.Draw.Viewer;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TDrawCircle = class;
-     TDrawCurve = class;
+     TDrawCirc = class;
+     TDrawCurv = class;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCircle
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     TDrawCircle = class( TDrawShape )
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCirc
+
+     TDrawCirc = class( TDrawShape )
      private
      protected
-       _Radius :Single;
-       _Border :Single;
        ///// アクセス
        function GetRadius :Single;
        procedure SetRadius( const Radius_:Single );
-       function GetBorder :Single;
-       procedure SetBorder( const Border_:Single );
        ///// メソッド
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
@@ -33,22 +30,20 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Radius :Single read GetRadius write SetRadius;
-       property Border :Single read GetBorder write SetBorder;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurve
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
 
-     TDrawCurve = class( TDrawShape )
+     TDrawCurv = class( TDrawShape )
      private
        _Path :TPathData;
      protected
-       _Poins   :TArray<TSingle2D>;
-       _PoinsN  :Integer;
+       _Poins   :TArray<TSingle2D>;  upPoins :Boolean;
        ///// アクセス
        function GetPoins( const I_:Integer ) :TSingle2D;
        procedure SetPoins( const I_:Integer; const Value_:TSingle2D );
        function GetPoinsN :Integer;
-       procedure SetPoinsN( const ValuesN_:Integer );
+       procedure SetPoinsN( const PoinsN_:Integer );
        ///// メソッド
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
@@ -63,7 +58,9 @@ implementation //###############################################################
 
 uses System.Math;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCircle
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCirc
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -71,57 +68,44 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDrawCircle.GetRadius :Single;
+function TDrawCirc.GetRadius :Single;
 begin
-     Result := _Radius;
+     Result := Max( SizeX, SizeY ) / 2;
 end;
 
-procedure TDrawCircle.SetRadius( const Radius_:Single );
+procedure TDrawCirc.SetRadius( const Radius_:Single );
 begin
-     _Radius := Radius_;
-end;
-
-function TDrawCircle.GetBorder :Single;
-begin
-     Result := _Border;
-end;
-
-procedure TDrawCircle.SetBorder( const Border_:Single );
-begin
-     _Border := Border_;
+     SizeX := 2 * Radius_;
+     SizeY := 2 * Radius_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawCircle.DrawMain( const Canvas_:TCanvas );
-var
-   R :TRectF;
+procedure TDrawCirc.DrawMain( const Canvas_:TCanvas );
 begin
      inherited;
 
-     R := TRectF.Empty;
-     R.Inflate( _Radius, _Radius );
+     Canvas_.FillEllipse( Area, _Opacity );
 
-     Canvas_.FillEllipse( R, _Opacity );
+     if _Stroke.Thickness > 0 then Canvas_.DrawEllipse( Area, _Opacity );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TDrawCircle.Create;
+constructor TDrawCirc.Create;
 begin
      inherited;
 
-     _Radius := 5;
-     _Border := 0;
+      Radius := 1;
 end;
 
-destructor TDrawCircle.Destroy;
+destructor TDrawCirc.Destroy;
 begin
 
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurve
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -129,31 +113,29 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDrawCurve.GetPoins( const I_:Integer ) :TSingle2D;
+function TDrawCurv.GetPoins( const I_:Integer ) :TSingle2D;
 begin
      Result := _Poins[ I_ ];
 end;
 
-procedure TDrawCurve.SetPoins( const I_:Integer; const Value_:TSingle2D );
+procedure TDrawCurv.SetPoins( const I_:Integer; const Value_:TSingle2D );
 begin
-     _Poins[ I_ ] := Value_;
+     _Poins[ I_ ] := Value_;  upPoins := True;
 end;
 
-function TDrawCurve.GetPoinsN :Integer;
+function TDrawCurv.GetPoinsN :Integer;
 begin
-     Result := _PoinsN;
+     Result := Length( _Poins );
 end;
 
-procedure TDrawCurve.SetPoinsN( const ValuesN_:Integer );
+procedure TDrawCurv.SetPoinsN( const PoinsN_:Integer );
 begin
-     _PoinsN := ValuesN_;
-
-     SetLength( _Poins, _PoinsN );
+     SetLength( _Poins, PoinsN_ );  upPoins := True;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TDrawCurve.Create;
+constructor TDrawCurv.Create;
 begin
      inherited;
 
@@ -162,7 +144,7 @@ begin
      PoinsN := 100;
 end;
 
-destructor TDrawCurve.Destroy;
+destructor TDrawCurv.Destroy;
 begin
      _Path.DisposeOf;
 
@@ -171,11 +153,20 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawCurve.DrawMain( const Canvas_:TCanvas );
+procedure TDrawCurv.DrawMain( const Canvas_:TCanvas );
 var
    I :Integer;
 begin
      inherited;
+
+     if upPoins then
+     begin
+          _Area := TSingleArea2D.NeInf;
+
+          _Area.Add( _Poins );
+
+          upPoins := False;
+     end;
 
      with _Path do
      begin
@@ -183,7 +174,7 @@ begin
 
           MoveTo( _Poins[ 0 ] );
 
-          for I := 1 to _PoinsN-1 do LineTo( _Poins[ I ] );
+          for I := 1 to PoinsN-1 do LineTo( _Poins[ I ] );
      end;
 
      Canvas_.DrawPath( _Path, _Opacity );
