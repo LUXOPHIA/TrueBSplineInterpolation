@@ -329,10 +329,11 @@ begin
 
      _State := TCanvasSaveState.Create;
 
-     _Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Null );
-     _Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.Null );
+     _Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Black );
+     _Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.White );
 
-     _Opacity     := 1;
+     _Opacity := 1;
+
      _Stroke.Join := TStrokeJoin.Round;
      _Stroke.Thickness := 0.02;
 end;
