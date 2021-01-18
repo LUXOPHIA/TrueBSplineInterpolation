@@ -15,7 +15,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        TDrawScaX = class;
        TDrawScaY = class;
      TDrawAxis   = class;
-     TDrawPlots  = class;
+     TDrawGrid   = class;
+
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScal
 
@@ -65,9 +67,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPlots
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
 
-     TDrawPlots = class( TDrawShape )
+     TDrawGrid = class( TDrawShape )
      private
      protected
        _Axis   :TDrawAxis;
@@ -79,6 +81,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _ScalY2 :TDrawScaY;
        ///// アクセス
        ///// メソッド
+       procedure UpdateArea; override;
      public
        constructor Create; override;
        destructor Destroy; override;
@@ -95,6 +98,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 implementation //############################################################### ■
 
 uses System.Math;
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScal
 
@@ -119,6 +124,9 @@ end;
 constructor TDrawScal.Create;
 begin
      inherited;
+
+     MinX := -10;  MaxX := +10;
+     MinY := -10;  MaxY := +10;
 
      _Interv := 0.1;
 end;
@@ -161,11 +169,11 @@ var
 begin
      inherited;
 
-     I0 := Ceil ( -10 / _Interv );
-     I1 := Floor( +10 / _Interv );
+     I0 := Ceil ( MinX / _Interv );
+     I1 := Floor( MaxX / _Interv );
 
-     P0.Y := -10;
-     P1.Y := +10;
+     P0.Y := MinY;
+     P1.Y := MaxY;
      for I := I0 to I1 do
      begin
           X := I * _Interv;
@@ -209,11 +217,11 @@ var
 begin
      inherited;
 
-     I0 := Ceil ( -10 / _Interv );
-     I1 := Floor( +10 / _Interv );
+     I0 := Ceil ( MinY / _Interv );
+     I1 := Floor( MaxY / _Interv );
 
-     P0.X := -10;
-     P1.X := +10;
+     P0.X := MinX;
+     P1.X := MaxX;
      for I := I0 to I1 do
      begin
           Y := I * _Interv;
@@ -243,13 +251,13 @@ begin
 
      with Canvas_ do
      begin
-          P0.X := -10;  P0.Y := 0;
-          P1.X := +10;  P1.Y := 0;
+          P0.X := MinX;  P0.Y := 0;
+          P1.X := MaxX;  P1.Y := 0;
 
           DrawLine( P0, P1, _Opacity );
 
-          P0.X := 0;  P0.Y := -10;
-          P1.X := 0;  P1.Y := +10;
+          P0.X := 0;  P0.Y := MinY;
+          P1.X := 0;  P1.Y := MaxY;
 
           DrawLine( P0, P1, _Opacity );
      end;
@@ -270,7 +278,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPlots
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -280,9 +288,22 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
+procedure TDrawGrid.UpdateArea;
+begin
+     inherited;
+
+     _ScalX2.Area := Area;
+     _ScalY2.Area := Area;
+     _ScalX1.Area := Area;
+     _ScalY1.Area := Area;
+     _ScalX0.Area := Area;
+     _ScalY0.Area := Area;
+     _Axis  .Area := Area;
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TDrawPlots.Create;
+constructor TDrawGrid.Create;
 begin
      inherited;
 
@@ -331,7 +352,7 @@ begin
      end;
 end;
 
-destructor TDrawPlots.Destroy;
+destructor TDrawGrid.Destroy;
 begin
 
      inherited;
