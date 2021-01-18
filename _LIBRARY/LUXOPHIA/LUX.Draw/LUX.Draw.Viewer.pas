@@ -11,6 +11,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TDrawViewer = class;
 
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawViewer
 
      TDrawViewer = class( TFrame )
@@ -36,6 +38,8 @@ implementation //###############################################################
 {$R *.fmx}
 
 uses System.Math.Vectors;
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawViewer
 
@@ -71,7 +75,7 @@ begin
      begin
           V := LocalToAbsoluteVector( Vector( Width, Height ) );
 
-          if V.X * _Camera.SizeH <= V.Y * _Camera.SizeW then
+          if V.X * _Camera.SizeY <= V.Y * _Camera.SizeX then
           begin
                // ┏━━━┓
                // ┠───┨
@@ -79,7 +83,7 @@ begin
                // ┠───┨
                // ┗━━━┛
 
-               S := V.X / _Camera.SizeW;
+               S := V.X / _Camera.SizeX;
           end
           else
           begin
@@ -89,14 +93,17 @@ begin
                // ┃│  │┃
                // ┗┷━┷┛
 
-               S := V.Y / _Camera.SizeH;
+               S := V.Y / _Camera.SizeY;
           end;
 
           with M do
           begin
-               m11 :=  +S  ;  m12 :=   0  ;  m13 := 0;
-               m21 :=   0  ;  m22 :=  -S  ;  m23 := 0;
-               m31 := V.X/2;  m32 := V.Y/2;  m33 := 1;
+               m11 := +S;  m12 :=  0;  m13 := 0;
+               m21 :=  0;  m22 := -S;  m23 := 0;
+
+               m31 := V.X / 2 - S * _Camera.CentX;
+               m32 := V.Y / 2 + S * _Camera.CentY;
+               m33 := 1;
           end;
 
           Canvas.MultiplyMatrix( M );
