@@ -20,7 +20,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        _State :TCanvasSaveState;
      protected
-       _Area    :TSingleArea2D;
+       _Area    :TSingleArea2D;  upArea :Boolean;
        _Opacity :Single;
        _Stroke  :TStrokeBrush;
        _Filler  :TBrush;
@@ -73,8 +73,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Position   :TPointF       read GetPosition   write SetPosition  ;
        property AbsoMatrix :TMatrix       read GetAbsoMatrix write SetAbsoMatrix;
        property Opacity    :Single        read GetOpacity    write SetOpacity   ;
-       property Stroke     :TStrokeBrush  read   _Stroke                        ;
-       property Filler     :TBrush        read   _Filler                        ;
+       property Stroke     :TStrokeBrush  read   _Stroke     write   _Stroke    ;
+       property Filler     :TBrush        read   _Filler     write   _Filler    ;
        ///// メソッド
        procedure Draw( const Canvas_:TCanvas );
      end;
@@ -158,7 +158,7 @@ end;
 
 procedure TDrawNode.SetArea( const Area_:TSingleArea2D );
 begin
-     _Area := Area_;  UpdateArea;
+     _Area := Area_;  upArea := True;
 end;
 
 function TDrawNode.GetMinX :Single;
@@ -168,7 +168,7 @@ end;
 
 procedure TDrawNode.SetMinX( const MinX_:Single );
 begin
-     _Area.Min.X := MinX_;  UpdateArea;
+     _Area.Min.X := MinX_;  upArea := True;
 end;
 
 function TDrawNode.GetMaxX :Single;
@@ -178,7 +178,7 @@ end;
 
 procedure TDrawNode.SetMaxX( const MaxX_:Single );
 begin
-     _Area.Max.X := MaxX_;  UpdateArea;
+     _Area.Max.X := MaxX_;  upArea := True;
 end;
 
 function TDrawNode.GetMinY :Single;
@@ -188,7 +188,7 @@ end;
 
 procedure TDrawNode.SetMinY( const MinY_:Single );
 begin
-     _Area.Min.Y := MinY_;  UpdateArea;
+     _Area.Min.Y := MinY_;  upArea := True;
 end;
 
 function TDrawNode.GetMaxY :Single;
@@ -198,7 +198,7 @@ end;
 
 procedure TDrawNode.SetMaxY( const MaxY_:Single );
 begin
-     _Area.Max.Y := MaxY_;  UpdateArea;
+     _Area.Max.Y := MaxY_;  upArea := True;
 end;
 
 function TDrawNode.GetCentX :Single;
@@ -208,7 +208,7 @@ end;
 
 procedure TDrawNode.SetCentX( const CentX_:Single );
 begin
-     _Area.CentX := CentX_;  UpdateArea;
+     _Area.CentX := CentX_;  upArea := True;
 end;
 
 function TDrawNode.GetCentY :Single;
@@ -218,7 +218,7 @@ end;
 
 procedure TDrawNode.SetCentY( const CentY_:Single );
 begin
-     _Area.CentY := CentY_;  UpdateArea;
+     _Area.CentY := CentY_;  upArea := True;
 end;
 
 function TDrawNode.GetSizeX :Single;
@@ -228,7 +228,7 @@ end;
 
 procedure TDrawNode.SetSizeX( const SizeX_:Single );
 begin
-     _Area.SizeX := SizeX_;  UpdateArea;
+     _Area.SizeX := SizeX_;  upArea := True;
 end;
 
 function TDrawNode.GetSizeY :Single;
@@ -238,7 +238,7 @@ end;
 
 procedure TDrawNode.SetSizeY( const SizeY_:Single );
 begin
-     _Area.SizeY := SizeY_;  UpdateArea;
+     _Area.SizeY := SizeY_;  upArea := True;
 end;
 
 //------------------------------------------------------------------------------
@@ -329,19 +329,18 @@ begin
 
      _State := TCanvasSaveState.Create;
 
-     _Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Black );
-     _Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.White );
+     _Area := TSingleArea2D.Create( -1, -1, +1, +1 );  upArea := True;
 
      _Opacity := 1;
 
-     _Stroke.Join := TStrokeJoin.Round;
-     _Stroke.Thickness := 0.02;
+     _Stroke := nil;
+     _Filler := nil;
 end;
 
 destructor TDrawNode.Destroy;
 begin
-     _Stroke.Free;
-     _Filler.Free;
+     if Assigned( _Stroke ) then _Stroke.Free;
+     if Assigned( _Filler ) then _Filler.Free;
 
      _State.Free;
 
@@ -352,6 +351,13 @@ end;
 
 procedure TDrawNode.Draw( const Canvas_:TCanvas );
 begin
+     if upArea then
+     begin
+          UpdateArea;
+
+          upArea := False;
+     end;
+
      DrawBegin( Canvas_ );
      DrawMain ( Canvas_ );
      DrawEnd  ( Canvas_ );
@@ -418,6 +424,12 @@ end;
 constructor TDrawScene.Create;
 begin
      inherited;
+
+     _Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Black );
+     _Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.White );
+
+     _Stroke.Join := TStrokeJoin.Round;
+     _Stroke.Thickness := 0.02;
 
      _BackColor := TAlphaColors.White;
 end;

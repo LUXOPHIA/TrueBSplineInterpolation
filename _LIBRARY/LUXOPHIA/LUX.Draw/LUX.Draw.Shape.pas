@@ -87,7 +87,7 @@ begin
 
      Canvas_.FillEllipse( Area, _Opacity );
 
-     if _Stroke.Thickness > 0 then Canvas_.DrawEllipse( Area, _Opacity );
+     if Assigned( _Stroke ) and ( _Stroke.Thickness > 0 ) then Canvas_.DrawEllipse( Area, _Opacity );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -96,7 +96,7 @@ constructor TDrawCirc.Create;
 begin
      inherited;
 
-      Radius := 1;
+     Radius := 1;
 end;
 
 destructor TDrawCirc.Destroy;
