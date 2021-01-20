@@ -11,12 +11,14 @@ uses System.Types, System.UITypes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TDrawScal     = class;
-       TDrawScalX  = class;
-       TDrawScalY  = class;
-       TDrawScalXY = class;
-     TDrawAxis     = class;
-     TDrawGrid     = class;
+     TDrawScal    = class;
+       TDrawScalX = class;
+       TDrawScalY = class;
+       TDrawGrid  = class;
+     TDrawAxisX   = class;
+     TDrawAxisY   = class;
+     TDrawAxis    = class;
+     TDrawGrids   = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
@@ -60,9 +62,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScalXY
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
 
-     TDrawScalXY = class( TDrawScal )
+     TDrawGrid = class( TDrawScal )
      private
      protected
        _ScalX :TDrawScalX;
@@ -75,11 +77,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create; override;
        destructor Destroy; override;
+       ///// プロパティ
+       property ScalX :TDrawScalX read _ScalX;
+       property ScalY :TDrawScalY read _ScalY;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxis
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisX
 
-     TDrawAxis = class( TDrawShape )
+     TDrawAxisX = class( TDrawShape )
      private
      protected
        ///// メソッド
@@ -89,14 +94,44 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisY
 
-     TDrawGrid = class( TDrawShape )
+     TDrawAxisY = class( TDrawShape )
      private
      protected
-       _Scal0 :TDrawScalXY;
-       _Scal1 :TDrawScalXY;
-       _Scal2 :TDrawScalXY;
+       ///// メソッド
+       procedure DrawMain( const Canvas_:TCanvas ); override;
+     public
+       constructor Create; override;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxis
+
+     TDrawAxis = class( TDrawShape )
+     private
+     protected
+       _AxisX :TDrawAxisX;
+       _AxisY :TDrawAxisY;
+       ///// メソッド
+       procedure UpdateArea; override;
+     public
+       constructor Create; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property AxisX :TDrawAxisX read _AxisX;
+       property AxisY :TDrawAxisY read _AxisY;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrids
+
+     TDrawGrids = class( TDrawShape )
+     private
+     protected
+       _Axis  :TDrawAxis;
+       _Grid1 :TDrawGrid;
+       _Grid2 :TDrawGrid;
+       _Grid3 :TDrawGrid;
        ///// アクセス
        ///// メソッド
        procedure UpdateArea; override;
@@ -104,9 +139,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Scal0 :TDrawScalXY read _Scal0;
-       property Scal1 :TDrawScalXY read _Scal1;
-       property Scal2 :TDrawScalXY read _Scal2;
+       property Axis  :TDrawAxis read _Axis ;
+       property Grid1 :TDrawGrid read _Grid1;
+       property Grid2 :TDrawGrid read _Grid2;
+       property Grid3 :TDrawGrid read _Grid3;
      end;
 
 implementation //############################################################### ■
@@ -247,7 +283,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScalXY
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -255,12 +291,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDrawScalXY.GetInterv :Single;
+function TDrawGrid.GetInterv :Single;
 begin
      Result := Min( _ScalX.Interv, _ScalY.Interv );
 end;
 
-procedure TDrawScalXY.SetInterv( const Interv_:Single );
+procedure TDrawGrid.SetInterv( const Interv_:Single );
 begin
      _ScalX.Interv := Interv_;
      _ScalY.Interv := Interv_;
@@ -268,7 +304,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawScalXY.UpdateArea;
+procedure TDrawGrid.UpdateArea;
 begin
      inherited;
 
@@ -278,7 +314,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TDrawScalXY.Create;
+constructor TDrawGrid.Create;
 begin
      inherited;
 
@@ -286,7 +322,79 @@ begin
      _ScalY := TDrawScalY.Create( Self );
 end;
 
-destructor TDrawScalXY.Destroy;
+destructor TDrawGrid.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisX
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawAxisX.DrawMain( const Canvas_:TCanvas );
+var
+   P0, P1 :TSingle2D;
+begin
+     inherited;
+
+     P0.X := 0;  P0.Y := MinY;
+     P1.X := 0;  P1.Y := MaxY;
+
+     Canvas_.DrawLine( P0, P1, _Opacity );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawAxisX.Create;
+begin
+     inherited;
+
+end;
+
+destructor TDrawAxisX.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisY
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawAxisY.DrawMain( const Canvas_:TCanvas );
+var
+   P0, P1 :TSingle2D;
+begin
+     inherited;
+
+     P0.X := MinX;  P0.Y := 0;
+     P1.X := MaxX;  P1.Y := 0;
+
+     Canvas_.DrawLine( P0, P1, _Opacity );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawAxisY.Create;
+begin
+     inherited;
+
+end;
+
+destructor TDrawAxisY.Destroy;
 begin
 
      inherited;
@@ -302,24 +410,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawAxis.DrawMain( const Canvas_:TCanvas );
-var
-   P0, P1 :TSingle2D;
+procedure TDrawAxis.UpdateArea;
 begin
      inherited;
 
-     with Canvas_ do
-     begin
-          P0.X := MinX;  P0.Y := 0;
-          P1.X := MaxX;  P1.Y := 0;
-
-          DrawLine( P0, P1, _Opacity );
-
-          P0.X := 0;  P0.Y := MinY;
-          P1.X := 0;  P1.Y := MaxY;
-
-          DrawLine( P0, P1, _Opacity );
-     end;
+     _AxisX.Area := Area;
+     _AxisY.Area := Area;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -328,7 +424,8 @@ constructor TDrawAxis.Create;
 begin
      inherited;
 
-     _Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 1/2, 1/2, 1/2 ).ToAlphaColor );
+     _AxisX := TDrawAxisX.Create( Self );
+     _AxisY := TDrawAxisY.Create( Self );
 end;
 
 destructor TDrawAxis.Destroy;
@@ -337,7 +434,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrids
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -347,48 +444,56 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawGrid.UpdateArea;
+procedure TDrawGrids.UpdateArea;
 begin
      inherited;
 
-     _Scal2.Area := Area;
-     _Scal1.Area := Area;
-     _Scal0.Area := Area;
+     _Grid3.Area := Area;
+     _Grid2.Area := Area;
+     _Grid1.Area := Area;
+     _Axis .Area := Area;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TDrawGrid.Create;
+constructor TDrawGrids.Create;
 begin
      inherited;
 
-     _Scal2 := TDrawScalXY.Create( Self );
-     _Scal1 := TDrawScalXY.Create( Self );
-     _Scal0 := TDrawScalXY.Create( Self );
+     _Grid3 := TDrawGrid.Create( Self );
+     _Grid2 := TDrawGrid.Create( Self );
+     _Grid1 := TDrawGrid.Create( Self );
+     _Axis  := TDrawAxis.Create( Self );
 
-     with _Scal2 do
+     with _Grid3 do
      begin
           Interv := 1/10;
           Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 15/16, 15/16, 15/16 ).ToAlphaColor );
           Stroke.Thickness := 0.02;
      end;
 
-     with _Scal1 do
+     with _Grid2 do
      begin
           Interv := 1/2;
           Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 7/8, 7/8, 7/8 ).ToAlphaColor );
           Stroke.Thickness := 0.02;
      end;
 
-     with _Scal0 do
+     with _Grid1 do
      begin
           Interv := 1;
           Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 3/4, 3/4, 3/4 ).ToAlphaColor );
           Stroke.Thickness := 0.02;
      end;
+
+     with _Axis do
+     begin
+          Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 1/2, 1/2, 1/2 ).ToAlphaColor );
+          Stroke.Thickness := 0.02;
+     end;
 end;
 
-destructor TDrawGrid.Destroy;
+destructor TDrawGrids.Destroy;
 begin
 
      inherited;
