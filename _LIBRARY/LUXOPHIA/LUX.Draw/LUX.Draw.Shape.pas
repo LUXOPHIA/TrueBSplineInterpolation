@@ -32,6 +32,29 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Radius :Single read GetRadius write SetRadius;
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCircs
+
+     TDrawCircs = class( TDrawShape )
+     private
+     protected
+       _Root :TDrawShape;
+       ///// アクセス
+       function GetCircs( const I_:Integer ) :TDrawCirc;
+       function GetCircsN :Integer;
+       procedure SetCircsN( const CircsN_:Integer );
+       function GetRadius :Single;
+       procedure SetRadius( const Radius_:Single );
+       ///// メソッド
+       procedure DrawMain( const Canvas_:TCanvas ); override;
+     public
+       constructor Create; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Circs[ const I_:Integer ] :TDrawCirc read GetCircs                 ;
+       property CircsN                    :Integer   read GetCircsN write SetCircsN;
+       property Radius                    :Single    read GetRadius write SetRadius;
+     end;
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
 
      TDrawCurv = class( TDrawShape )
@@ -87,7 +110,7 @@ begin
 
      Canvas_.FillEllipse( Area, _Opacity );
 
-     if Assigned( _Stroke ) and ( _Stroke.Thickness > 0 ) then Canvas_.DrawEllipse( Area, _Opacity );
+     if Stroke.Thickness > 0 then Canvas_.DrawEllipse( Area, _Opacity );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -101,6 +124,76 @@ end;
 
 destructor TDrawCirc.Destroy;
 begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCircs
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawCircs.GetCircs( const I_:Integer ) :TDrawCirc;
+begin
+     Result := _Root.Childs[ I_ ] as TDrawCirc;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawCircs.GetCircsN :Integer;
+begin
+     Result := _Root.ChildsN;
+end;
+
+procedure TDrawCircs.SetCircsN( const CircsN_:Integer );
+var
+   I :Integer;
+begin
+     _Root.DeleteChilds;
+
+     for I := 0 to CircsN_-1 do TDrawCirc.Create( _Root );
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawCircs.GetRadius :Single;
+begin
+     Result := Circs[ 0 ].Radius;
+end;
+
+procedure TDrawCircs.SetRadius( const Radius_:Single );
+var
+   I :Integer;
+begin
+     for I := 0 to CircsN-1 do Circs[ I ].Radius := Radius_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawCircs.DrawMain( const Canvas_:TCanvas );
+begin
+     inherited;
+
+     _Root.Draw( Canvas_ );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawCircs.Create;
+begin
+     inherited;
+
+     _Root := TDrawShape.Create;
+
+     Radius := 1;
+end;
+
+destructor TDrawCircs.Destroy;
+begin
+     _Root.Free;
 
      inherited;
 end;
