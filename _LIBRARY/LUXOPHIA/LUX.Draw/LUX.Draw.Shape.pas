@@ -38,15 +38,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDrawCircs = class( TDrawShape )
      private
      protected
-       _Root :TDrawShape;
+       _Root :TDrawRoot;
        ///// アクセス
        function GetCircs( const I_:Integer ) :TDrawCirc;
        function GetCircsN :Integer;
        procedure SetCircsN( const CircsN_:Integer );
        function GetRadius :Single;
        procedure SetRadius( const Radius_:Single );
-       ///// メソッド
-       procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
        procedure AfterConstruction; override;
@@ -186,22 +184,13 @@ begin
      for I := 0 to CircsN-1 do Circs[ I ].Radius := Radius_;
 end;
 
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TDrawCircs.DrawMain( const Canvas_:TCanvas );
-begin
-     inherited;
-
-     _Root.Draw( Canvas_ );
-end;
-
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TDrawCircs.Create;
 begin
      inherited;
 
-     _Root := TDrawShape.Create;
+     _Root := TDrawRoot.Create( Self );
 end;
 
 procedure TDrawCircs.AfterConstruction;
@@ -213,7 +202,6 @@ end;
 
 destructor TDrawCircs.Destroy;
 begin
-     _Root.Free;
 
      inherited;
 end;
