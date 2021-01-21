@@ -30,7 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetMatrix :TMatrix; virtual; abstract;
        procedure SetMatrix( const Matrix_:TMatrix ); virtual; abstract;
        function GetAbsoMatrix :TMatrix; virtual;
-       procedure SetAbsoMatrix( const GlobalMatrix_:TMatrix );
+       procedure SetAbsoMatrix( const GlobalMatrix_:TMatrix ); virtual;
        function GetPosition :TPointF;
        procedure SetPosition( const Position_:TPointF );
        function GetOpacity :Single;
@@ -59,20 +59,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Draw( const Canvas_:TCanvas );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScene
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawRoot
 
-     TDrawScene = class( TDrawNode )
+     TDrawRoot = class( TDrawNode )
      private
      protected
-       _BackColor :TAlphaColor;
        ///// アクセス
        function GetMatrix :TMatrix; override;
        procedure SetMatrix( const Matrix_:TMatrix ); override;
        function GetAbsoMatrix :TMatrix; override;
-       function GetStroke :TStrokeBrush; override;
-       function GetFiller :TBrush; override;
-       function GetBackColor :TAlphaColor;
-       procedure SetBackColor( const BackColor_:TAlphaColor );
+       procedure SetAbsoMatrix( const GlobalMatrix_:TMatrix ); override;
        ///// メソッド
        procedure DrawBegin( const Canvas_:TCanvas ); override;
        procedure DrawMain( const Canvas_:TCanvas ); override;
@@ -82,10 +78,31 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Matrix     :TMatrix     read GetMatrix                       ;
-       property Position   :TPointF     read GetPosition                     ;
-       property AbsoMatrix :TMatrix     read GetAbsoMatrix                   ;
-       property BackColor  :TAlphaColor read GetBackColor  write SetBackColor;
+       property Matrix     :TMatrix read GetMatrix    ;
+       property Position   :TPointF read GetPosition  ;
+       property AbsoMatrix :TMatrix read GetAbsoMatrix;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScene
+
+     TDrawScene = class( TDrawRoot )
+     private
+     protected
+       _BackColor :TAlphaColor;
+       ///// アクセス
+       function GetStroke :TStrokeBrush; override;
+       function GetFiller :TBrush; override;
+       function GetBackColor :TAlphaColor;
+       procedure SetBackColor( const BackColor_:TAlphaColor );
+       ///// メソッド
+       procedure DrawBegin( const Canvas_:TCanvas ); override;
+       procedure DrawMain( const Canvas_:TCanvas ); override;
+     public
+       constructor Create; override;
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property BackColor :TAlphaColor read GetBackColor write SetBackColor;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawShape
@@ -93,7 +110,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDrawShape = class( TDrawNode )
      private
      protected
-       _Matrix  :TMatrix;
+       _Matrix :TMatrix;
        ///// アクセス
        function GetMatrix :TMatrix; override;
        procedure SetMatrix( const Matrix_:TMatrix ); override;
@@ -285,7 +302,7 @@ begin
      DrawEnd  ( Canvas_ );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScene
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawRoot
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -293,24 +310,74 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDrawScene.GetMatrix :TMatrix;
+function TDrawRoot.GetMatrix :TMatrix;
 begin
      Result := TMatrix.Identity;
 end;
 
-procedure TDrawScene.SetMatrix( const Matrix_:TMatrix );
+procedure TDrawRoot.SetMatrix( const Matrix_:TMatrix );
 begin
 
 end;
 
 //------------------------------------------------------------------------------
 
-function TDrawScene.GetAbsoMatrix :TMatrix;
+function TDrawRoot.GetAbsoMatrix :TMatrix;
 begin
      Result := Matrix;
 end;
 
-//------------------------------------------------------------------------------
+procedure TDrawRoot.SetAbsoMatrix( const GlobalMatrix_:TMatrix );
+begin
+
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawRoot.DrawBegin( const Canvas_:TCanvas );
+begin
+
+end;
+
+procedure TDrawRoot.DrawMain( const Canvas_:TCanvas );
+begin
+
+end;
+
+procedure TDrawRoot.DrawEnd( const Canvas_:TCanvas );
+var
+   I :Integer;
+begin
+     for I := 0 to ChildsN-1 do Childs[ I ].Draw( Canvas_ );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawRoot.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawRoot.AfterConstruction;
+begin
+     inherited;
+
+end;
+
+destructor TDrawRoot.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScene
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
 
 function TDrawScene.GetStroke :TStrokeBrush;
 begin
@@ -340,19 +407,20 @@ end;
 
 procedure TDrawScene.DrawBegin( const Canvas_:TCanvas );
 begin
+     inherited;
 
+     with Canvas_ do
+     begin
+          Stroke.Assign( _Stroke );
+          Fill  .Assign( _Filler );
+     end;
 end;
 
 procedure TDrawScene.DrawMain( const Canvas_:TCanvas );
 begin
-     Canvas_.Clear( _BackColor );
-end;
+     inherited;
 
-procedure TDrawScene.DrawEnd( const Canvas_:TCanvas );
-var
-   I :Integer;
-begin
-     for I := 0 to ChildsN-1 do Childs[ I ].Draw( Canvas_ );
+     Canvas_.Clear( _BackColor );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
