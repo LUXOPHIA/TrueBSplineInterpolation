@@ -38,7 +38,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDrawCircs = class( TDrawShape )
      private
      protected
-       _Root :TDrawRoot;
+       _Root   :TDrawRoot;
+       _Radius :Single;
        ///// アクセス
        function GetCircs( const I_:Integer ) :TDrawCirc;
        function GetCircsN :Integer;
@@ -117,7 +118,7 @@ begin
 
      Canvas_.FillEllipse( Area, _Opacity );
 
-     if Stroke.Thickness > 0 then Canvas_.DrawEllipse( Area, _Opacity );
+     if Stroke.Kind <> TBrushKind.None then Canvas_.DrawEllipse( Area, _Opacity );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -167,21 +168,23 @@ var
 begin
      _Root.DeleteChilds;
 
-     for I := 0 to CircsN_-1 do TDrawCirc.Create( _Root );
+     for I := 0 to CircsN_-1 do TDrawCirc.Create( _Root ).Radius := Radius;
 end;
 
 //------------------------------------------------------------------------------
 
 function TDrawCircs.GetRadius :Single;
 begin
-     Result := Circs[ 0 ].Radius;
+     Result := _Radius;
 end;
 
 procedure TDrawCircs.SetRadius( const Radius_:Single );
 var
    I :Integer;
 begin
-     for I := 0 to CircsN-1 do Circs[ I ].Radius := Radius_;
+     _Radius := Radius_;
+
+     for I := 0 to CircsN-1 do Circs[ I ].Radius := _Radius;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
