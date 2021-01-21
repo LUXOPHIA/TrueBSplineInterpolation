@@ -31,7 +31,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( Owner_:TComponent ); override;
        destructor Destroy; override;
        ///// プロパティ
-       property CellsN :Integer read GetCellsN write SetCellsN;
+       property CellsN :Integer    read GetCellsN write SetCellsN;
+       property Poins  :TDrawCircs read   _Poins                 ;
+       property Conts  :TDrawCircs read   _Conts                 ;
+       property Curv   :TDrawCurv  read   _Curv                  ;
      end;
 
 implementation //############################################################### ■
@@ -80,6 +83,27 @@ begin
      _Conts := TDrawCircs.Create( _Scene );
      _Curv  := TDrawCurv .Create( _Scene );
      _Poins := TDrawCircs.Create( _Scene );
+
+     _Conts.Filler := TBrush      .Create( TBrushKind.Solid, 1 );
+     _Curv .Stroke := TStrokeBrush.Create( TBrushKind.Solid, 1 );
+     _Poins.Stroke := TStrokeBrush.Create( TBrushKind.Solid, 1 );
+
+     with _Conts do
+     begin
+          Radius           := 0.2;
+          Filler.Color     := TAlphaColorF.Create( 0.5, 1.0, 0.5 ).ToAlphaColor;
+     end;
+     with _Curv do
+     begin
+          Stroke.Color     := TAlphaColorF.Create( 1.0, 0.5, 0.5 ).ToAlphaColor;
+          Stroke.Thickness := 0.01;
+     end;
+     with _Poins do
+     begin
+          Radius           := 0.2;
+          Stroke.Color     := TAlphaColorF.Create( 0.5, 0.5, 1.0 ).ToAlphaColor;
+          Stroke.Thickness := 0.01;
+     end;
 
      CellsN := 8
 end;
