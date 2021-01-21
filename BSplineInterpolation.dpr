@@ -26,14 +26,15 @@ uses
   LUX.D3x4x4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D3x4x4.pas',
   LUX.D4x4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D4x4.pas',
   LUX.D4x4x4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D4x4x4.pas',
-  LUX.FMX.Graphics in '_LIBRARY\LUXOPHIA\LUX\FMX\LUX.FMX.Graphics.pas',
   LUX.Data.Tree.core in '_LIBRARY\LUXOPHIA\LUX\Data\Tree\LUX.Data.Tree.core.pas',
   LUX.Data.Tree.Node in '_LIBRARY\LUXOPHIA\LUX\Data\Tree\LUX.Data.Tree.Node.pas',
   LUX.Data.Tree in '_LIBRARY\LUXOPHIA\LUX\Data\Tree\LUX.Data.Tree.pas',
   LUX.Draw.Shape.Chart in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Shape.Chart.pas',
   LUX.Draw.Shape in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Shape.pas',
   LUX.Draw.Viewer in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Viewer.pas' {DrawViewer: TFrame},
-  LUX.Draw.Scene in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Scene.pas';
+  LUX.Draw.Scene in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Scene.pas',
+  CurveChartFrame in 'CurveChartFrame.pas' {CurveChart: TFrame},
+  Core in 'Core.pas';
 
 {$R *.res}
 
