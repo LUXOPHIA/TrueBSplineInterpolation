@@ -33,6 +33,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetInterv( const Interv_:Single ); virtual;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Interv :Single read GetInterv write SetInterv;
@@ -47,6 +48,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
      end;
 
@@ -59,6 +61,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
      end;
 
@@ -70,12 +73,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _ScalX :TDrawScalX;
        _ScalY :TDrawScalY;
        ///// アクセス
+       procedure SetArea( const Area_:TSingleArea2D ); override;
        function GetInterv :Single; override;
        procedure SetInterv( const Interv_:Single ); override;
-       ///// メソッド
-       procedure UpdateArea; override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property ScalX :TDrawScalX read _ScalX;
@@ -91,6 +94,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
      end;
 
@@ -103,6 +107,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
      end;
 
@@ -113,10 +118,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _AxisX :TDrawAxisX;
        _AxisY :TDrawAxisY;
-       ///// メソッド
-       procedure UpdateArea; override;
+       ///// アクセス
+       procedure SetArea( const Area_:TSingleArea2D ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property AxisX :TDrawAxisX read _AxisX;
@@ -133,10 +139,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Grid2 :TDrawGrid;
        _Grid3 :TDrawGrid;
        ///// アクセス
-       ///// メソッド
-       procedure UpdateArea; override;
+       procedure SetArea( const Area_:TSingleArea2D ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Axis  :TDrawAxis read _Axis ;
@@ -175,10 +181,15 @@ constructor TDrawScal.Create;
 begin
      inherited;
 
-     MinX := -10;  MaxX := +10;
-     MinY := -10;  MaxY := +10;
+end;
 
-     _Interv := 0.1;
+procedure TDrawScal.AfterConstruction;
+begin
+     inherited;
+
+     Area := TSingleArea2D.Create( -10, -10, +10, +10 );
+
+     Interv := 0.1;
 end;
 
 destructor TDrawScal.Destroy;
@@ -205,11 +216,11 @@ var
 begin
      inherited;
 
-     I0 := Ceil ( MinX / _Interv );
-     I1 := Floor( MaxX / _Interv );
+     I0 := Ceil ( Area.Min.X / _Interv );
+     I1 := Floor( Area.Max.X / _Interv );
 
-     P0.Y := MinY;
-     P1.Y := MaxY;
+     P0.Y := Area.Min.Y;
+     P1.Y := Area.Max.Y;
      for I := I0 to I1 do
      begin
           X := I * _Interv;
@@ -224,6 +235,12 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TDrawScalX.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawScalX.AfterConstruction;
 begin
      inherited;
 
@@ -253,11 +270,11 @@ var
 begin
      inherited;
 
-     I0 := Ceil ( MinY / _Interv );
-     I1 := Floor( MaxY / _Interv );
+     I0 := Ceil ( Area.Min.Y / _Interv );
+     I1 := Floor( Area.Max.Y / _Interv );
 
-     P0.X := MinX;
-     P1.X := MaxX;
+     P0.X := Area.Min.X;
+     P1.X := Area.Max.X;
      for I := I0 to I1 do
      begin
           Y := I * _Interv;
@@ -272,6 +289,12 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TDrawScalY.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawScalY.AfterConstruction;
 begin
      inherited;
 
@@ -304,7 +327,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawGrid.UpdateArea;
+procedure TDrawGrid.SetArea( const Area_:TSingleArea2D );
 begin
      inherited;
 
@@ -320,6 +343,12 @@ begin
 
      _ScalX := TDrawScalX.Create( Self );
      _ScalY := TDrawScalY.Create( Self );
+end;
+
+procedure TDrawGrid.AfterConstruction;
+begin
+     inherited;
+
 end;
 
 destructor TDrawGrid.Destroy;
@@ -344,8 +373,8 @@ var
 begin
      inherited;
 
-     P0.X := 0;  P0.Y := MinY;
-     P1.X := 0;  P1.Y := MaxY;
+     P0.X := 0;  P0.Y := Area.Min.Y;
+     P1.X := 0;  P1.Y := Area.Max.Y;
 
      Canvas_.DrawLine( P0, P1, _Opacity );
 end;
@@ -353,6 +382,12 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TDrawAxisX.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawAxisX.AfterConstruction;
 begin
      inherited;
 
@@ -380,8 +415,8 @@ var
 begin
      inherited;
 
-     P0.X := MinX;  P0.Y := 0;
-     P1.X := MaxX;  P1.Y := 0;
+     P0.X := Area.Min.X;  P0.Y := 0;
+     P1.X := Area.Max.X;  P1.Y := 0;
 
      Canvas_.DrawLine( P0, P1, _Opacity );
 end;
@@ -389,6 +424,12 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TDrawAxisY.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawAxisY.AfterConstruction;
 begin
      inherited;
 
@@ -410,7 +451,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawAxis.UpdateArea;
+procedure TDrawAxis.SetArea( const Area_:TSingleArea2D );
 begin
      inherited;
 
@@ -426,6 +467,12 @@ begin
 
      _AxisX := TDrawAxisX.Create( Self );
      _AxisY := TDrawAxisY.Create( Self );
+end;
+
+procedure TDrawAxis.AfterConstruction;
+begin
+     inherited;
+
 end;
 
 destructor TDrawAxis.Destroy;
@@ -444,7 +491,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawGrids.UpdateArea;
+procedure TDrawGrids.SetArea( const Area_:TSingleArea2D );
 begin
      inherited;
 
@@ -491,6 +538,12 @@ begin
           Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 1/2, 1/2, 1/2 ).ToAlphaColor );
           Stroke.Thickness := 0.02;
      end;
+end;
+
+procedure TDrawGrids.AfterConstruction;
+begin
+     inherited;
+
 end;
 
 destructor TDrawGrids.Destroy;

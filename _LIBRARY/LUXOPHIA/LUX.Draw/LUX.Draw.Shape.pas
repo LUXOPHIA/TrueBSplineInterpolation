@@ -27,6 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Radius :Single read GetRadius write SetRadius;
@@ -48,6 +49,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Circs[ const I_:Integer ] :TDrawCirc read GetCircs                 ;
@@ -71,6 +73,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawMain( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Poins[ const I_:Integer ] :TSingle2D read GetPoins  write SetPoins ; default;
@@ -93,13 +96,19 @@ uses System.Math;
 
 function TDrawCirc.GetRadius :Single;
 begin
-     Result := Max( SizeX, SizeY ) / 2;
+     Result := Max( Area.SizeX, Area.SizeY ) / 2;
 end;
 
 procedure TDrawCirc.SetRadius( const Radius_:Single );
+var
+   A :TSingleArea2D;
 begin
-     SizeX := 2 * Radius_;
-     SizeY := 2 * Radius_;
+     A := Area;
+
+     A.SizeX := 2 * Radius_;
+     A.SizeY := 2 * Radius_;
+
+     Area := A;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -116,6 +125,12 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TDrawCirc.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawCirc.AfterConstruction;
 begin
      inherited;
 
@@ -187,6 +202,11 @@ begin
      inherited;
 
      _Root := TDrawShape.Create;
+end;
+
+procedure TDrawCircs.AfterConstruction;
+begin
+     inherited;
 
      Radius := 1;
 end;
@@ -233,6 +253,11 @@ begin
      inherited;
 
      _Path := TPathData.Create;
+end;
+
+procedure TDrawCurv.AfterConstruction;
+begin
+     inherited;
 
      PoinsN := 100;
 end;

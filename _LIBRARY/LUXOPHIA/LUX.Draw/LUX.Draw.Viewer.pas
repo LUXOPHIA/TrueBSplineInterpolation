@@ -75,7 +75,7 @@ begin
      begin
           V := LocalToAbsoluteVector( Vector( Width, Height ) );
 
-          if V.X * _Camera.SizeY <= V.Y * _Camera.SizeX then
+          if V.X * _Camera.Area.SizeY <= V.Y * _Camera.Area.SizeX then
           begin
                // ┏━━━┓
                // ┠───┨
@@ -83,7 +83,7 @@ begin
                // ┠───┨
                // ┗━━━┛
 
-               S := V.X / _Camera.SizeX;
+               S := V.X / _Camera.Area.SizeX;
           end
           else
           begin
@@ -93,7 +93,7 @@ begin
                // ┃│  │┃
                // ┗┷━┷┛
 
-               S := V.Y / _Camera.SizeY;
+               S := V.Y / _Camera.Area.SizeY;
           end;
 
           with M do
@@ -101,8 +101,8 @@ begin
                m11 := +S;  m12 :=  0;  m13 := 0;
                m21 :=  0;  m22 := -S;  m23 := 0;
 
-               m31 := V.X / 2 - S * _Camera.CentX;
-               m32 := V.Y / 2 + S * _Camera.CentY;
+               m31 := V.X / 2 - S * _Camera.Area.CentX;
+               m32 := V.Y / 2 + S * _Camera.Area.CentY;
                m33 := 1;
           end;
 
