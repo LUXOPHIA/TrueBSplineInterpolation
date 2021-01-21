@@ -19,10 +19,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        { private 宣言 }
        _CellsN :Integer;
        _Scene  :TDrawScene;
-       _AxisY  :TDrawAxisY;
-       _Grid1  :TDrawGrid;
-       _Grid2  :TDrawGrid;
-       _Grid3  :TDrawGrid;
+       _Grids  :TDrawGrids;
        _Poins  :TDrawCircs;
        _Conts  :TDrawCircs;
        _Curv   :TDrawCurv;
@@ -58,10 +55,13 @@ procedure TCurveChart.SetCellsN( const CellsN_:Integer );
 begin
      _CellsN := CellsN_;
 
-     _Grid3.Area := TSingleArea2D.Create(  0, -2, _CellsN  , +2 );
-     _Grid2.Area := TSingleArea2D.Create(  0, -2, _CellsN  , +2 );
-     _Grid1.Area := TSingleArea2D.Create( -1, -2, _CellsN+1, +2 );
-     _AxisY.Area := TSingleArea2D.Create( -2, -2, _CellsN+2, +2 );
+     with _Grids do
+     begin
+          Axis .Area := TSingleArea2D.Create( -2, -3, _CellsN+2, +3 );
+          Grid1.Area := TSingleArea2D.Create( -1, -2, _CellsN+1, +2 );
+          Grid2.Area := TSingleArea2D.Create(  0, -2, _CellsN  , +2 );
+          Grid3.Area := TSingleArea2D.Create(  0, -2, _CellsN  , +2 );
+     end;
 
      Camera.Area := TSingleArea2D.Create( -2, -3, _CellsN+2, +3 );
 end;
@@ -76,38 +76,7 @@ begin
 
      Camera := TDrawCamera.Create( _Scene );
 
-     _Grid3 := TDrawGrid .Create( _Scene );
-     _Grid2 := TDrawGrid .Create( _Scene );
-     _Grid1 := TDrawGrid .Create( _Scene );
-     _AxisY := TDrawAxisY.Create( _Scene );
-
-     with _Grid3 do
-     begin
-          Interv := 1/10;
-          Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 15/16, 15/16, 15/16 ).ToAlphaColor );
-          Stroke.Thickness := 0.02;
-     end;
-
-     with _Grid2 do
-     begin
-          Interv := 1/2;
-          Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 7/8, 7/8, 7/8 ).ToAlphaColor );
-          Stroke.Thickness := 0.02;
-     end;
-
-     with _Grid1 do
-     begin
-          Interv := 1;
-          Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 3/4, 3/4, 3/4 ).ToAlphaColor );
-          Stroke.Thickness := 0.02;
-     end;
-
-     with _AxisY do
-     begin
-          Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 1/2, 1/2, 1/2 ).ToAlphaColor );
-          Stroke.Thickness := 0.02;
-     end;
-
+     _Grids := TDrawGrids.Create( _Scene );
      _Conts := TDrawCircs.Create( _Scene );
      _Curv  := TDrawCurv .Create( _Scene );
      _Poins := TDrawCircs.Create( _Scene );
