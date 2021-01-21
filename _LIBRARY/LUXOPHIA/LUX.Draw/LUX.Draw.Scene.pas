@@ -20,29 +20,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        _State :TCanvasSaveState;
      protected
-       _Area    :TSingleArea2D;  upArea :Boolean;
+       _Area    :TSingleArea2D;
        _Opacity :Single;
        _Stroke  :TStrokeBrush;
        _Filler  :TBrush;
        ///// アクセス
        function GetArea :TSingleArea2D;
-       procedure SetArea( const Area_:TSingleArea2D );
-       function GetMinX :Single;
-       procedure SetMinX( const MinX_:Single );
-       function GetMaxX :Single;
-       procedure SetMaxX( const MaxX_:Single );
-       function GetMinY :Single;
-       procedure SetMinY( const MinY_:Single );
-       function GetMaxY :Single;
-       procedure SetMaxY( const MaxY_:Single );
-       function GetCentX :Single;
-       procedure SetCentX( const CentX_:Single );
-       function GetCentY :Single;
-       procedure SetCentY( const CentY_:Single );
-       function GetSizeX :Single;
-       procedure SetSizeX( const SizeX_:Single );
-       function GetSizeY :Single;
-       procedure SetSizeY( const SizeY_:Single );
+       procedure SetArea( const Area_:TSingleArea2D ); virtual;
        function GetMatrix :TMatrix; virtual; abstract;
        procedure SetMatrix( const Matrix_:TMatrix ); virtual; abstract;
        function GetAbsoMatrix :TMatrix; virtual;
@@ -56,23 +40,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetFiller :TBrush; virtual;
        procedure SetFiller( const Filler_:TBrush );
        ///// メソッド
-       procedure UpdateArea; virtual;
        procedure DrawBegin( const Canvas_:TCanvas ); virtual;
        procedure DrawMain( const Canvas_:TCanvas ); virtual;
        procedure DrawEnd( const Canvas_:TCanvas ); virtual;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Area       :TSingleArea2D read GetArea       write SetArea      ;
-       property MinX       :Single        read GetMinX       write SetMinX      ;
-       property MaxX       :Single        read GetMaxX       write SetMaxX      ;
-       property MinY       :Single        read GetMinY       write SetMinY      ;
-       property MaxY       :Single        read GetMaxY       write SetMaxY      ;
-       property CentX      :Single        read GetCentX      write SetCentX     ;
-       property CentY      :Single        read GetCentY      write SetCentY     ;
-       property SizeX      :Single        read GetSizeX      write SetSizeX     ;
-       property SizeY      :Single        read GetSizeY      write SetSizeY     ;
        property Matrix     :TMatrix       read GetMatrix     write SetMatrix    ;
        property Position   :TPointF       read GetPosition   write SetPosition  ;
        property AbsoMatrix :TMatrix       read GetAbsoMatrix write SetAbsoMatrix;
@@ -103,6 +79,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure DrawEnd( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        property Matrix     :TMatrix     read GetMatrix                       ;
@@ -123,6 +100,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        ///// メソッド
@@ -137,6 +115,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
      public
        constructor Create; override;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
        ///// メソッド
@@ -164,87 +143,7 @@ end;
 
 procedure TDrawNode.SetArea( const Area_:TSingleArea2D );
 begin
-     _Area := Area_;  upArea := True;
-end;
-
-function TDrawNode.GetMinX :Single;
-begin
-     Result := _Area.Min.X;
-end;
-
-procedure TDrawNode.SetMinX( const MinX_:Single );
-begin
-     _Area.Min.X := MinX_;  upArea := True;
-end;
-
-function TDrawNode.GetMaxX :Single;
-begin
-     Result := _Area.Max.X;
-end;
-
-procedure TDrawNode.SetMaxX( const MaxX_:Single );
-begin
-     _Area.Max.X := MaxX_;  upArea := True;
-end;
-
-function TDrawNode.GetMinY :Single;
-begin
-     Result := _Area.Min.Y;
-end;
-
-procedure TDrawNode.SetMinY( const MinY_:Single );
-begin
-     _Area.Min.Y := MinY_;  upArea := True;
-end;
-
-function TDrawNode.GetMaxY :Single;
-begin
-     Result := _Area.Max.Y;
-end;
-
-procedure TDrawNode.SetMaxY( const MaxY_:Single );
-begin
-     _Area.Max.Y := MaxY_;  upArea := True;
-end;
-
-function TDrawNode.GetCentX :Single;
-begin
-     Result := _Area.CentX;
-end;
-
-procedure TDrawNode.SetCentX( const CentX_:Single );
-begin
-     _Area.CentX := CentX_;  upArea := True;
-end;
-
-function TDrawNode.GetCentY :Single;
-begin
-     Result := _Area.CentY;
-end;
-
-procedure TDrawNode.SetCentY( const CentY_:Single );
-begin
-     _Area.CentY := CentY_;  upArea := True;
-end;
-
-function TDrawNode.GetSizeX :Single;
-begin
-     Result := _Area.SizeX;
-end;
-
-procedure TDrawNode.SetSizeX( const SizeX_:Single );
-begin
-     _Area.SizeX := SizeX_;  upArea := True;
-end;
-
-function TDrawNode.GetSizeY :Single;
-begin
-     Result := _Area.SizeY;
-end;
-
-procedure TDrawNode.SetSizeY( const SizeY_:Single );
-begin
-     _Area.SizeY := SizeY_;  upArea := True;
+     _Area := Area_;
 end;
 
 //------------------------------------------------------------------------------
@@ -319,13 +218,6 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawNode.UpdateArea;
-begin
-
-end;
-
-//------------------------------------------------------------------------------
-
 procedure TDrawNode.DrawBegin( const Canvas_:TCanvas );
 begin
      _State.Assign( Canvas_ );
@@ -360,13 +252,18 @@ begin
      inherited;
 
      _State := TCanvasSaveState.Create;
+end;
 
-     _Area := TSingleArea2D.Create( -1, -1, +1, +1 );  upArea := True;
+procedure TDrawNode.AfterConstruction;
+begin
+     inherited;
 
-     _Opacity := 1;
+     Area := TSingleArea2D.Create( -1, -1, +1, +1 );
 
-     _Stroke := nil;
-     _Filler := nil;
+     Opacity := 1;
+
+     Stroke := nil;
+     Filler := nil;
 end;
 
 destructor TDrawNode.Destroy;
@@ -383,13 +280,6 @@ end;
 
 procedure TDrawNode.Draw( const Canvas_:TCanvas );
 begin
-     if upArea then
-     begin
-          UpdateArea;
-
-          upArea := False;
-     end;
-
      DrawBegin( Canvas_ );
      DrawMain ( Canvas_ );
      DrawEnd  ( Canvas_ );
@@ -471,13 +361,19 @@ constructor TDrawScene.Create;
 begin
      inherited;
 
-     _Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Black );
-     _Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.White );
+end;
 
-     _Stroke.Join := TStrokeJoin.Round;
-     _Stroke.Thickness := 0.02;
+procedure TDrawScene.AfterConstruction;
+begin
+     inherited;
 
-     _BackColor := TAlphaColors.White;
+     Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Black );
+     Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.White );
+
+     Stroke.Join := TStrokeJoin.Round;
+     Stroke.Thickness := 0.02;
+
+     BackColor := TAlphaColors.White;
 end;
 
 destructor TDrawScene.Destroy;
@@ -512,7 +408,13 @@ constructor TDrawShape.Create;
 begin
      inherited;
 
-     _Matrix := TMatrix.Identity;
+end;
+
+procedure TDrawShape.AfterConstruction;
+begin
+     inherited;
+
+     Matrix := TMatrix.Identity;
 end;
 
 destructor TDrawShape.Destroy;
@@ -539,8 +441,13 @@ constructor TDrawCamera.Create;
 begin
      inherited;
 
-     MinX := -10;  MaxX := +10;
-     MinY := -10;  MaxY := +10;
+end;
+
+procedure TDrawCamera.AfterConstruction;
+begin
+     inherited;
+
+     Area := TSIngleArea2D.Create( -10, -10, +10, +10 );
 end;
 
 destructor TDrawCamera.Destroy;
