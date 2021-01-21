@@ -51,6 +51,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetPosition( const Position_:TPointF );
        function GetOpacity :Single;
        procedure SetOpacity( const Opacity_:Single );
+       function GetStroke :TStrokeBrush; virtual;
+       procedure SetStroke( const Stroke_:TStrokeBrush );
+       function GetFiller :TBrush; virtual;
+       procedure SetFiller( const Filler_:TBrush );
        ///// メソッド
        procedure UpdateArea; virtual;
        procedure DrawBegin( const Canvas_:TCanvas ); virtual;
@@ -73,8 +77,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Position   :TPointF       read GetPosition   write SetPosition  ;
        property AbsoMatrix :TMatrix       read GetAbsoMatrix write SetAbsoMatrix;
        property Opacity    :Single        read GetOpacity    write SetOpacity   ;
-       property Stroke     :TStrokeBrush  read   _Stroke     write   _Stroke    ;
-       property Filler     :TBrush        read   _Filler     write   _Filler    ;
+       property Stroke     :TStrokeBrush  read GetStroke     write SetStroke    ;
+       property Filler     :TBrush        read GetFiller     write SetFiller    ;
        ///// メソッド
        procedure Draw( const Canvas_:TCanvas );
      end;
@@ -89,6 +93,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetMatrix :TMatrix; override;
        procedure SetMatrix( const Matrix_:TMatrix ); override;
        function GetAbsoMatrix :TMatrix; override;
+       function GetStroke :TStrokeBrush; override;
+       function GetFiller :TBrush; override;
        function GetBackColor :TAlphaColor;
        procedure SetBackColor( const BackColor_:TAlphaColor );
        ///// メソッド
@@ -285,6 +291,32 @@ begin
      _Opacity := Opacity_;
 end;
 
+//------------------------------------------------------------------------------
+
+function TDrawNode.GetStroke :TStrokeBrush;
+begin
+     if Assigned( _Stroke ) then Result :=       _Stroke
+                            else Result := Parent.Stroke;
+end;
+
+procedure TDrawNode.SetStroke( const Stroke_:TStrokeBrush );
+begin
+     _Stroke := Stroke_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawNode.GetFiller :TBrush;
+begin
+     if Assigned( _Filler ) then Result :=       _Filler
+                            else Result := Parent.Filler;
+end;
+
+procedure TDrawNode.SetFiller( const Filler_:TBrush );
+begin
+     _Filler := Filler_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TDrawNode.UpdateArea;
@@ -386,6 +418,20 @@ end;
 function TDrawScene.GetAbsoMatrix :TMatrix;
 begin
      Result := Matrix;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawScene.GetStroke :TStrokeBrush;
+begin
+     Result := _Stroke;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawScene.GetFiller :TBrush;
+begin
+     Result := _Filler;
 end;
 
 //------------------------------------------------------------------------------
