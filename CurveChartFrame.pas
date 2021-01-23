@@ -30,7 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetCurvMaxI :Integer;
        procedure SetCurvMaxI( const CurvMaxI_:Integer );
        ///// メソッド
-       procedure MakeArea;
+       procedure InitChart;
      public
        { public 宣言 }
        constructor Create( Owner_:TComponent ); override;
@@ -65,7 +65,7 @@ end;
 
 procedure TCurveChart.SetCurvMinI( const CurvMinI_:Integer );
 begin
-     _CurvMinI := CurvMinI_;  MakeArea;
+     _CurvMinI := CurvMinI_;  InitChart;
 end;
 
 function TCurveChart.GetCurvMaxI :Integer;
@@ -75,12 +75,12 @@ end;
 
 procedure TCurveChart.SetCurvMaxI( const CurvMaxI_:Integer );
 begin
-     _CurvMaxI := CurvMaxI_;  MakeArea;
+     _CurvMaxI := CurvMaxI_;  InitChart;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TCurveChart.MakeArea;
+procedure TCurveChart.InitChart;
 begin
      Camera.Area := TSingleArea2D.Create( _CurvMinI-2, -3, _CurvMaxI+2, +3 );
 
