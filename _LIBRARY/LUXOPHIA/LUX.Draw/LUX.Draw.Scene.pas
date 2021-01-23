@@ -8,9 +8,13 @@ uses System.Types, System.UITypes, System.Math.Vectors,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TDrawNode     = class;
-       TDrawScene  = class;
-       TDrawCamera = class;
+     TDrawNode       = class;
+       TDrawRoot     = class;
+       TDrawScene    = class;
+       TDrawShape    = class;
+       TDrawCamera   = class;
+       TDrawCopys    = class;
+       TDrawPosCopys = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
@@ -31,8 +35,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetMatrix( const Matrix_:TMatrix ); virtual; abstract;
        function GetAbsoMatrix :TMatrix; virtual;
        procedure SetAbsoMatrix( const GlobalMatrix_:TMatrix ); virtual;
-       function GetPosition :TPointF;
-       procedure SetPosition( const Position_:TPointF );
+       function GetPosition :TSingle2D;
+       procedure SetPosition( const Position_:TSingle2D );
        function GetOpacity :Single;
        procedure SetOpacity( const Opacity_:Single );
        function GetStroke :TStrokeBrush; virtual;
@@ -50,7 +54,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Area       :TSingleArea2D read GetArea       write SetArea      ;
        property Matrix     :TMatrix       read GetMatrix     write SetMatrix    ;
-       property Position   :TPointF       read GetPosition   write SetPosition  ;
+       property Position   :TSingle2D     read GetPosition   write SetPosition  ;
        property AbsoMatrix :TMatrix       read GetAbsoMatrix write SetAbsoMatrix;
        property Opacity    :Single        read GetOpacity    write SetOpacity   ;
        property Stroke     :TStrokeBrush  read GetStroke     write SetStroke    ;
@@ -78,9 +82,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Matrix     :TMatrix read GetMatrix    ;
-       property Position   :TPointF read GetPosition  ;
-       property AbsoMatrix :TMatrix read GetAbsoMatrix;
+       property Matrix     :TMatrix   read GetMatrix    ;
+       property Position   :TSingle2D read GetPosition  ;
+       property AbsoMatrix :TMatrix   read GetAbsoMatrix;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScene
@@ -139,6 +143,54 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Render( const Canvas_:TCanvas );
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCopys
+
+     TDrawCopys = class( TDrawShape )
+     private
+     protected
+       _Poses :TArray<TMatrix>;
+       ///// アクセス
+       function GetPoses( const I_:Integer ) :TMatrix;
+       procedure SetPoses( const I_:Integer; const Poses_:TMatrix );
+       function GetPosesN :Integer;
+       procedure SetPosesN( const PosesN_:Integer );
+       ///// メソッド
+       procedure DrawMain( const Canvas_:TCanvas ); override;
+       procedure DrawEnd( const Canvas_:TCanvas ); override;
+     public
+       constructor Create; override;
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Poses[ const I_:Integer ] :TMatrix read GetPoses  write SetPoses ;
+       property PosesN                    :Integer read GetPosesN write SetPosesN;
+       ///// メソッド
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPosCopys
+
+     TDrawPosCopys = class( TDrawShape )
+     private
+     protected
+       _Poses :TArray<TSingle2D>;
+       ///// アクセス
+       function GetPoses( const I_:Integer ) :TSingle2D;
+       procedure SetPoses( const I_:Integer; const Poses_:TSingle2D );
+       function GetPosesN :Integer;
+       procedure SetPosesN( const PosesN_:Integer );
+       ///// メソッド
+       procedure DrawMain( const Canvas_:TCanvas ); override;
+       procedure DrawEnd( const Canvas_:TCanvas ); override;
+     public
+       constructor Create; override;
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Poses[ const I_:Integer ] :TSingle2D read GetPoses  write SetPoses ;
+       property PosesN                    :Integer read GetPosesN write SetPosesN;
+       ///// メソッド
+     end;
+
 implementation //############################################################### ■
 
 uses System.Math;
@@ -177,13 +229,13 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TDrawNode.GetPosition :TPointF;
+function TDrawNode.GetPosition :TSingle2D;
 begin
      Result.X := Matrix.m31;
      Result.Y := Matrix.m32;
 end;
 
-procedure TDrawNode.SetPosition( const Position_:TPointF );
+procedure TDrawNode.SetPosition( const Position_:TSingle2D );
 var
    M :TMatrix;
 begin
@@ -531,6 +583,158 @@ begin
      Canvas_.MultiplyMatrix( AbsoMatrix.Inverse );
 
      ( Self.RootNode as TDrawScene ).Draw( Canvas_ );
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCopys
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawCopys.GetPoses( const I_:Integer ) :TMatrix;
+begin
+     Result := _Poses[ I_ ];
+end;
+
+procedure TDrawCopys.SetPoses( const I_:Integer; const Poses_:TMatrix );
+begin
+     _Poses[ I_ ] := Poses_;
+end;
+
+function TDrawCopys.GetPosesN :Integer;
+begin
+     Result := Length( _Poses );
+end;
+
+procedure TDrawCopys.SetPosesN( const PosesN_:Integer );
+var
+   I :Integer;
+begin
+     SetLength( _Poses, PosesN_ );
+
+     for I := 0 to PosesN-1 do _Poses[ I ] := TMatrix.Identity;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawCopys.DrawMain( const Canvas_:TCanvas );
+var
+   M :TMatrix;
+   I, J :Integer;
+begin
+     inherited;
+
+     M := Canvas_.Matrix;
+
+     for I := 0 to PosesN-1 do
+     begin
+          Canvas_.SetMatrix( _Poses[ I ] * M );
+
+          for J := 0 to ChildsN-1 do Childs[ J ].Draw( Canvas_ );
+     end;
+end;
+
+procedure TDrawCopys.DrawEnd( const Canvas_:TCanvas );
+begin
+     Canvas_.Assign( _State );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawCopys.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawCopys.AfterConstruction;
+begin
+     inherited;
+
+     PosesN := 1;
+end;
+
+destructor TDrawCopys.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPosCopys
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawPosCopys.GetPoses( const I_:Integer ) :TSingle2D;
+begin
+     Result := _Poses[ I_ ];
+end;
+
+procedure TDrawPosCopys.SetPoses( const I_:Integer; const Poses_:TSingle2D );
+begin
+     _Poses[ I_ ] := Poses_;
+end;
+
+function TDrawPosCopys.GetPosesN :Integer;
+begin
+     Result := Length( _Poses );
+end;
+
+procedure TDrawPosCopys.SetPosesN( const PosesN_:Integer );
+begin
+     SetLength( _Poses, PosesN_ );
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawPosCopys.DrawMain( const Canvas_:TCanvas );
+var
+   M :TMatrix;
+   I, J :Integer;
+begin
+     inherited;
+
+     M := Canvas_.Matrix;
+
+     for I := 0 to PosesN-1 do
+     begin
+          with _Poses[ I ] do Canvas_.SetMatrix( TMatrix.CreateTranslation( X, Y ) * M );
+
+          for J := 0 to ChildsN-1 do Childs[ J ].Draw( Canvas_ );
+     end;
+end;
+
+procedure TDrawPosCopys.DrawEnd( const Canvas_:TCanvas );
+begin
+     Canvas_.Assign( _State );
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawPosCopys.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawPosCopys.AfterConstruction;
+begin
+     inherited;
+
+     PosesN := 1;
+end;
+
+destructor TDrawPosCopys.Destroy;
+begin
+
+     inherited;
 end;
 
 end. //######################################################################### ■
