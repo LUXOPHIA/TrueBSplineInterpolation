@@ -31,7 +31,7 @@ type
     _Poins  :TGenPoins;
     _Interp :TBSInterp;
     ///// メソッド
-    procedure InitCurve;
+    procedure InitChart;
     procedure MakePoins( const Td_:Single );
     procedure MakeCurve;
   end;
@@ -51,20 +51,25 @@ uses System.Math.Vectors;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.InitCurve;
+procedure TForm1.InitChart;
 begin
      with _Interp do
      begin
-          _Poins.PoinMinI := PoinMinI;
-          _Poins.PoinMaxI := PoinMaxI;
+          _Poins           .MinI := PoinMinI;
+          _Poins           .MaxI := PoinMaxI;
 
-          CurveChart1.CurvMinI    := CurvMinI;
-          CurveChart1.CurvMaxI    := CurvMaxI;
-          CurveChart1.Curv.PoinsN := 8 * ( CurvMaxI - CurvMinI ) + 1;
-          CurveChart1.Poins.MinI  := PoinMinI;
-          CurveChart1.Poins.MaxI  := PoinMaxI;
-          CurveChart1.Verts.MinI  := VertMinI;
-          CurveChart1.Verts.MaxI  := VertMaxI;
+          CurveChart1      .MinX := CurvMinI;
+          CurveChart1      .MaxX := CurvMaxI;
+
+          CurveChart1.Poins.MinI := PoinMinI;
+          CurveChart1.Poins.MaxI := PoinMaxI;
+
+          CurveChart1.Verts.MinI := VertMinI;
+          CurveChart1.Verts.MaxI := VertMaxI;
+
+          CurveChart1.Curv .MinX := CurvMinI;
+          CurveChart1.Curv .MaxX := CurvMaxI;
+          CurveChart1.Curv .DivN := 8 * ( CurvMaxI - CurvMinI );
      end;
 end;
 
@@ -72,13 +77,16 @@ procedure TForm1.MakePoins( const Td_:Single );
 var
    I :Integer;
 begin
-     with _Interp do
+     with CurveChart1 do
      begin
-          for I := PoinMinI to PoinMaxI do
+          with Poins do
           begin
-               Poins[ I ] := _Poins.Poins( I, Td_ );
+               for I := MinI to MaxI do
+               begin
+                    _Interp.Poins[ I ] := _Poins.Poins( I, Td_ );
 
-               CurveChart1.Poins.PosYs[ I ] := Poins[ I ];
+                    PosYs[ I ] := _Interp.Poins[ I ];
+               end;
           end;
      end;
 end;
@@ -88,15 +96,21 @@ var
    I :Integer;
    X :Single;
 begin
-     with _Interp do
+     with CurveChart1 do
      begin
-          for I := VertMinI to VertMaxI do CurveChart1.Verts.PosYs[ I ] := Verts[ I ];
-
-          for I := 0 to CurveChart1.Curv.PoinsN-1 do
+          with Verts do
           begin
-               X := ( CurvMaxI - CurvMinI ) * I / ( CurveChart1.Curv.PoinsN-1 ) + CurvMinI;
+               for I := MinI to MaxI do PosYs[ I ] := _Interp.Verts[ I ];
+          end;
 
-               CurveChart1.Curv.Poins[ I ] := TSingle2D.Create( X, Curv( X ) );
+          with Curv do
+          begin
+               for I := 0 to DivN do
+               begin
+                    X := ( MaxX - MinX ) * I / DivN + MinX;
+
+                    Poins[ I ] := TSingle2D.Create( X, _Interp.Curv( X ) );
+               end;
           end;
      end;
 end;
@@ -116,7 +130,7 @@ begin
           CurvMaxI := Round( SpinBoxCN.Value );
      end;
 
-     InitCurve;
+     InitChart;
 
      _FrameI := 0;
 end;
@@ -134,14 +148,14 @@ procedure TForm1.SpinBoxFNChange(Sender: TObject);
 begin
      _Interp.FilterW := Round( SpinBoxFN.Value );
 
-     InitCurve;
+     InitChart;
 end;
 
 procedure TForm1.SpinBoxCNChange(Sender: TObject);
 begin
      _Interp.CurvMaxI := Round( SpinBoxCN.Value );
 
-     InitCurve;
+     InitChart;
 end;
 
 //------------------------------------------------------------------------------
