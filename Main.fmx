@@ -39,15 +39,15 @@ object Form1: TForm1
       Min = 1.000000000000000000
       Max = 32.000000000000000000
       Value = 8.000000000000000000
-      Position.X = 750.000000000000000000
+      Position.X = 770.000000000000000000
       Position.Y = 45.000000000000000000
-      Size.Width = 100.000000000000000000
+      Size.Width = 80.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
       OnChange = SpinBoxCNChange
     end
     object LabelCN: TLabel
-      Position.X = 645.000000000000000000
+      Position.X = 665.000000000000000000
       Position.Y = 45.000000000000000000
       Size.Width = 100.000000000000000000
       Size.Height = 25.000000000000000000
@@ -63,15 +63,15 @@ object Form1: TForm1
       Min = 1.000000000000000000
       Max = 16.000000000000000000
       Value = 4.000000000000000000
-      Position.X = 750.000000000000000000
+      Position.X = 770.000000000000000000
       Position.Y = 10.000000000000000000
-      Size.Width = 100.000000000000000000
+      Size.Width = 80.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
       OnChange = SpinBoxFNChange
     end
     object LabelFN: TLabel
-      Position.X = 645.000000000000000000
+      Position.X = 665.000000000000000000
       Position.Y = 10.000000000000000000
       Size.Width = 100.000000000000000000
       Size.Height = 25.000000000000000000

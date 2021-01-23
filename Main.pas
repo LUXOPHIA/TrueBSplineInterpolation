@@ -32,8 +32,8 @@ type
     _Interp :TBSInterp;
     ///// メソッド
     procedure InitCurve;
+    procedure MakePoins( const Td_:Single );
     procedure MakeCurve;
-    procedure ShowCurve;
   end;
 
 var
@@ -58,56 +58,47 @@ begin
           _Poins.PoinMinI := PoinMinI;
           _Poins.PoinMaxI := PoinMaxI;
 
-          CurveChart1.CurvMinI   := CurvMinI;
-          CurveChart1.CurvMaxI   := CurvMaxI;
-          CurveChart1.Poins.MinI := PoinMinI;
-          CurveChart1.Poins.MaxI := PoinMaxI;
-          CurveChart1.Verts.MinI := VertMinI;
-          CurveChart1.Verts.MaxI := VertMaxI;
+          CurveChart1.CurvMinI    := CurvMinI;
+          CurveChart1.CurvMaxI    := CurvMaxI;
+          CurveChart1.Curv.PoinsN := 8 * ( CurvMaxI - CurvMinI ) + 1;
+          CurveChart1.Poins.MinI  := PoinMinI;
+          CurveChart1.Poins.MaxI  := PoinMaxI;
+          CurveChart1.Verts.MinI  := VertMinI;
+          CurveChart1.Verts.MaxI  := VertMaxI;
      end;
 end;
 
-procedure TForm1.MakeCurve;
-const
-     FN = 20{Frame};
+procedure TForm1.MakePoins( const Td_:Single );
 var
-   Fd, I :Integer;
+   I :Integer;
 begin
-     Fd := _FrameI mod FN;
-
-     if Fd = 0 then _Poins.Next;
-
      with _Interp do
      begin
           for I := PoinMinI to PoinMaxI do
           begin
-               Poins[ I ] := _Poins.Poins( I, Fd / FN );
+               Poins[ I ] := _Poins.Poins( I, Td_ );
+
+               CurveChart1.Poins.PosYs[ I ] := Poins[ I ];
           end;
      end;
-
-     Inc( _FrameI );
 end;
 
-procedure TForm1.ShowCurve;
+procedure TForm1.MakeCurve;
 var
    I :Integer;
    X :Single;
 begin
      with _Interp do
      begin
-          for I := PoinMinI to PoinMaxI do CurveChart1.Poins.PosYs[ I ] := Poins[ I ];
-
           for I := VertMinI to VertMaxI do CurveChart1.Verts.PosYs[ I ] := Verts[ I ];
 
           for I := 0 to CurveChart1.Curv.PoinsN-1 do
           begin
                X := ( CurvMaxI - CurvMinI ) * I / ( CurveChart1.Curv.PoinsN-1 ) + CurvMinI;
 
-               CurveChart1.Curv.Poins[ I ] := TPointF.Create( X, Curv( X ) );
+               CurveChart1.Curv.Poins[ I ] := TSingle2D.Create( X, Curv( X ) );
           end;
      end;
-
-     CurveChart1.Repaint;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -156,10 +147,22 @@ end;
 //------------------------------------------------------------------------------
 
 procedure TForm1.Timer1Timer(Sender: TObject);
+const
+     FN = 20{Frame};
+var
+   Fd :Integer;
 begin
+     Fd := _FrameI mod FN;
+
+     if Fd = 0 then _Poins.Next;
+
+     MakePoins( Fd / FN );
+
      MakeCurve;
 
-     ShowCurve;
+     Inc( _FrameI );
+
+     CurveChart1.Repaint;
 end;
 
 end. //######################################################################### ■

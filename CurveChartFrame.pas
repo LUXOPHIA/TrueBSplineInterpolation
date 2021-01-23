@@ -91,8 +91,6 @@ begin
           Grid2.Area := TSingleArea2D.Create( _CurvMinI  , -2, _CurvMaxI  , +2 );
           Grid3.Area := TSingleArea2D.Create( _CurvMinI  , -2, _CurvMaxI  , +2 );
      end;
-
-     Curv .PoinsN := 8 * ( CurvMaxI - CurvMinI ) + 1;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
