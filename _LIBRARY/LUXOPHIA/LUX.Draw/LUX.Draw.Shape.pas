@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-uses FMX.Controls, FMX.Graphics,
+uses FMX.Graphics,
      LUX, LUX.D1, LUX.D2,
      LUX.Draw.Scene,
      LUX.Draw.Viewer;
@@ -38,7 +38,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        _Path :TPathData;
      protected
-       _Poins   :TArray<TSingle2D>;  upPoins :Boolean;
+       _Poins :TArray<TSingle2D>;  upPoins :Boolean;
        ///// アクセス
        function GetPoins( const I_:Integer ) :TSingle2D;
        procedure SetPoins( const I_:Integer; const Value_:TSingle2D );
@@ -179,20 +179,20 @@ begin
 
      if upPoins then
      begin
-          _Area := TSingleArea2D.NeInf;
+          _RelaArea := TSingleArea2D.NeInf;
 
-          _Area.Add( _Poins );
+          _RelaArea.Add( _Poins );
+
+          with _Path do
+          begin
+               Clear;
+
+               MoveTo( _Poins[ 0 ] );
+
+               for I := 1 to PoinsN-1 do LineTo( _Poins[ I ] );
+          end;
 
           upPoins := False;
-     end;
-
-     with _Path do
-     begin
-          Clear;
-
-          MoveTo( _Poins[ 0 ] );
-
-          for I := 1 to PoinsN-1 do LineTo( _Poins[ I ] );
      end;
 
      Canvas_.DrawPath( _Path, _Opacity );
