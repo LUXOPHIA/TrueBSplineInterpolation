@@ -72,14 +72,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        ///// アクセス
+       function GetStroke :TStrokeBrush; override;
+       function GetFiller :TBrush; override;
        function GetRelaPose :TMatrix; override;
        procedure SetRelaPose( const RelaPose_:TMatrix ); override;
        function GetAbsoPose :TMatrix; override;
        procedure SetAbsoPose( const AbsoPose_:TMatrix ); override;
        ///// メソッド
-       procedure DrawBegin( const Canvas_:TCanvas ); override;
-       procedure DrawMain( const Canvas_:TCanvas ); override;
-       procedure DrawEnd( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
        procedure AfterConstruction; override;
@@ -161,7 +160,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetPosesN( const PosesN_:Integer );
        ///// メソッド
        procedure DrawMain( const Canvas_:TCanvas ); override;
-       procedure DrawEnd( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
        procedure AfterConstruction; override;
@@ -185,7 +183,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetPosesN( const PosesN_:Integer );
        ///// メソッド
        procedure DrawMain( const Canvas_:TCanvas ); override;
-       procedure DrawEnd( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
        procedure AfterConstruction; override;
@@ -294,11 +291,9 @@ end;
 
 procedure TDrawNode.DrawBegin( const Canvas_:TCanvas );
 begin
-     _State.Assign( Canvas_ );
-
      with Canvas_ do
      begin
-          MultiplyMatrix( Self.RelaPose );
+          MultiplyMatrix( RelaPose );
 
           if Assigned( _Stroke ) then Stroke.Assign( _Stroke );
           if Assigned( _Filler ) then Fill  .Assign( _Filler );
@@ -315,8 +310,6 @@ var
    I :Integer;
 begin
      for I := 0 to ChildsN-1 do Childs[ I ].Draw( Canvas_ );
-
-     Canvas_.Assign( _State );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -332,12 +325,10 @@ procedure TDrawNode.AfterConstruction;
 begin
      inherited;
 
-     Area := TSingleArea2D.Create( -1, -1, +1, +1 );
-
+     Area    := TSingleArea2D.Create( -1, -1, +1, +1 );
      Opacity := 1;
-
-     Stroke := nil;
-     Filler := nil;
+     Stroke  := nil;
+     Filler  := nil;
 end;
 
 destructor TDrawNode.Destroy;
@@ -354,9 +345,13 @@ end;
 
 procedure TDrawNode.Draw( const Canvas_:TCanvas );
 begin
+     _State.Assign( Canvas_ );
+
      DrawBegin( Canvas_ );
      DrawMain ( Canvas_ );
      DrawEnd  ( Canvas_ );
+
+     Canvas_.Assign( _State );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawRoot
@@ -366,6 +361,20 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 /////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawRoot.GetStroke :TStrokeBrush;
+begin
+     Result := nil;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawRoot.GetFiller :TBrush;
+begin
+     Result := nil;
+end;
+
+//------------------------------------------------------------------------------
 
 function TDrawRoot.GetRelaPose :TMatrix;
 begin
@@ -390,23 +399,6 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TDrawRoot.DrawBegin( const Canvas_:TCanvas );
-begin
-
-end;
-
-procedure TDrawRoot.DrawMain( const Canvas_:TCanvas );
-begin
-
-end;
-
-procedure TDrawRoot.DrawEnd( const Canvas_:TCanvas );
-var
-   I :Integer;
-begin
-     for I := 0 to ChildsN-1 do Childs[ I ].Draw( Canvas_ );
-end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
@@ -627,7 +619,7 @@ end;
 procedure TDrawCopys.DrawMain( const Canvas_:TCanvas );
 var
    M :TMatrix;
-   I, J :Integer;
+   I :Integer;
 begin
      inherited;
 
@@ -637,13 +629,8 @@ begin
      begin
           Canvas_.SetMatrix( _Poses[ I ] * M );
 
-          for J := 0 to ChildsN-1 do Childs[ J ].Draw( Canvas_ );
+          DrawEnd( Canvas_ );
      end;
-end;
-
-procedure TDrawCopys.DrawEnd( const Canvas_:TCanvas );
-begin
-     Canvas_.Assign( _State );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -702,7 +689,7 @@ end;
 procedure TDrawPosCopys.DrawMain( const Canvas_:TCanvas );
 var
    M :TMatrix;
-   I, J :Integer;
+   I :Integer;
 begin
      inherited;
 
@@ -712,13 +699,8 @@ begin
      begin
           with _Poses[ I ] do Canvas_.SetMatrix( TMatrix.CreateTranslation( X, Y ) * M );
 
-          for J := 0 to ChildsN-1 do Childs[ J ].Draw( Canvas_ );
+          DrawEnd( Canvas_ );
      end;
-end;
-
-procedure TDrawPosCopys.DrawEnd( const Canvas_:TCanvas );
-begin
-     Canvas_.Assign( _State );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
