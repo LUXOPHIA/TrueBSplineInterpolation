@@ -307,7 +307,7 @@ end;
 
 procedure TDrawNode.DrawBegin( const Canvas_:TCanvas );
 begin
-     Canvas_.MultiplyMatrix( RelaPose );
+
 end;
 
 procedure TDrawNode.DrawMain( const Canvas_:TCanvas );
@@ -561,6 +561,8 @@ begin
 
      with Canvas_ do
      begin
+          MultiplyMatrix( RelaPose );
+
           if Assigned( _Stroke ) then Stroke.Assign( _Stroke );
           if Assigned( _Filler ) then Fill  .Assign( _Filler );
      end;
