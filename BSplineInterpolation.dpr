@@ -34,8 +34,8 @@ uses
   LUX.Draw.Viewer in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Viewer.pas' {DrawViewer: TFrame},
   LUX.Draw.Scene in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Scene.pas',
   CurveChartFrame in 'CurveChartFrame.pas' {CurveChart: TFrame},
-  Core in 'Core.pas',
-  GenPoins in 'GenPoins.pas';
+  GenPoins in 'GenPoins.pas',
+  LUX.Curve.BSpline.D1 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.BSpline.D1.pas';
 
 {$R *.res}
 

@@ -5,9 +5,11 @@ interface //####################################################################
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  CurveChartFrame, LUX.Draw.Viewer, FMX.Controls.Presentation, FMX.StdCtrls,
+  FMX.StdCtrls, FMX.Edit, FMX.EditBox, FMX.SpinBox, FMX.Controls.Presentation,
   LUX, LUX.D1, LUX.D2,
-  GenPoins, Core, FMX.Edit, FMX.EditBox, FMX.SpinBox;
+  LUX.Curve.BSpline.D1,
+  LUX.Draw.Viewer,
+  GenPoins, CurveChartFrame;
 
 type
   TForm1 = class(TForm)
