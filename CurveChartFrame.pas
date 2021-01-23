@@ -23,6 +23,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Grids :TDrawGrids;
        _Poins :TDrawCopys1D;
        _Verts :TDrawCopys1D;
+       _Lines :TDrawLines1D;
        _Curv  :TDrawCurv1D;
        ///// アクセス
        function GetMinX :Integer;
@@ -41,6 +42,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property MaxX  :Integer      read GetMaxX  write SetMaxX;
        property Poins :TDrawCopys1D read   _Poins              ;
        property Verts :TDrawCopys1D read   _Verts              ;
+       property Lines :TDrawLines1D read   _Lines              ;
        property Curv  :TDrawCurv1D  read   _Curv               ;
      end;
 
@@ -104,6 +106,7 @@ begin
      Camera := TDrawCamera.Create( _Scene );
 
      _Grids := TDrawGrids  .Create( _Scene );
+     _Lines := TDrawLines1D.Create( _Scene );
      _Verts := TDrawCopys1D.Create( _Scene );
      _Curv  := TDrawCurv1D .Create( _Scene );
      _Poins := TDrawCopys1D.Create( _Scene );
@@ -125,6 +128,14 @@ begin
           Stroke.Thickness := 0.05;
           Filler           := TBrush.Create( TBrushKind.Solid, 1 );
           Filler.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
+     end;
+
+     with _Lines do
+     begin
+          Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
+          Stroke.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
+          Stroke.Cap       := TStrokeCap.Round;
+          Stroke.Thickness := 0.02;
      end;
 
      with _Curv do

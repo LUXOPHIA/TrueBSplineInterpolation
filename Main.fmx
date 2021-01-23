@@ -39,7 +39,7 @@ object Form1: TForm1
       Size.Height = 80.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'pushpanel'
-      TabOrder = 1
+      TabOrder = 0
       object SpinBoxFN: TSpinBox
         Touch.InteractiveGestures = [LongTap, DoubleTap]
         TabOrder = 0
@@ -62,7 +62,7 @@ object Form1: TForm1
         Size.PlatformDefault = False
         TextSettings.HorzAlign = Trailing
         Text = 'Curve Segments :'
-        TabOrder = 4
+        TabOrder = 3
       end
       object LabelFN: TLabel
         Position.X = 5.000000000000000000
@@ -72,7 +72,7 @@ object Form1: TForm1
         Size.PlatformDefault = False
         TextSettings.HorzAlign = Trailing
         Text = 'Filter Width / 2 :'
-        TabOrder = 3
+        TabOrder = 2
       end
       object SpinBoxCN: TSpinBox
         Touch.InteractiveGestures = [LongTap, DoubleTap]
