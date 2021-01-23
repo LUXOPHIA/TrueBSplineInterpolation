@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'BSplineInterpolation'
-  ClientHeight = 640
+  ClientHeight = 510
   ClientWidth = 860
   Position = ScreenCenter
   FormFactor.Width = 320
@@ -25,11 +25,66 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Align = Bottom
-    Position.Y = 440.000000000000000000
+    Margins.Top = -10.000000000000000000
+    Position.Y = 430.000000000000000000
     Size.Width = 860.000000000000000000
-    Size.Height = 200.000000000000000000
+    Size.Height = 80.000000000000000000
     Size.PlatformDefault = False
     StyleLookup = 'pushpanel'
     TabOrder = 0
+    object SpinBoxCN: TSpinBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 1
+      Cursor = crIBeam
+      Min = 1.000000000000000000
+      Max = 32.000000000000000000
+      Value = 8.000000000000000000
+      Position.X = 750.000000000000000000
+      Position.Y = 45.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      OnChange = SpinBoxCNChange
+    end
+    object LabelCN: TLabel
+      Position.X = 645.000000000000000000
+      Position.Y = 45.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Trailing
+      Text = 'Curve Segments :'
+      TabOrder = 3
+    end
+    object SpinBoxFN: TSpinBox
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      TabOrder = 0
+      Cursor = crIBeam
+      Min = 1.000000000000000000
+      Max = 16.000000000000000000
+      Value = 4.000000000000000000
+      Position.X = 750.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      OnChange = SpinBoxFNChange
+    end
+    object LabelFN: TLabel
+      Position.X = 645.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Trailing
+      Text = 'Filter Width / 2 :'
+      TabOrder = 2
+    end
+  end
+  object Timer1: TTimer
+    Interval = 10
+    OnTimer = Timer1Timer
+    Left = 20
+    Top = 20
   end
 end

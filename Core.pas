@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-uses LUX;
+uses LUX, LUX.D1;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -11,34 +11,59 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TBSInterp
+     //
+     //  00    01    02    03    04    05    06    07    08    09    10    11
+     //  │    │    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    │    │
+     //  ○----○----◆----●━━●━━●━━●━━●━━●----◆----○----○
+     //  │    │    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    │    │
+     // -03   -02   -01    00   +01   +02   +03   +04   +05   +06   +07   +08
+     //  │          ┃    ┃                            ┃    ┃          │
+     //  │          ┃<１>┃<-----------Curv----------->┃<１>┃          │
+     //  │<---FW--->┃<-----------------Vert----------------->┃<---FW--->│
+     //  │<-----------------------------Poin----------------------------->│
 
      TBSInterp = class
      private
        procedure MakePoins;
      protected
-       _Poins  :TArray<Single>;  upPoins :Boolean;
-       _Conts  :TArray<Single>;
-       _PoinsN :Integer;
-       _MargsN :Integer;
+       _FilterW  :Integer;
+       _CurvMinI :Integer;
+       _CurvMaxI :Integer;
+       _Poins    :TArray<Single>;  upPoins :Boolean;
+       _Verts    :TArray<Single>;
        ///// アクセス
+       function GetFilterW :Integer;
+       procedure SetFilterW( const FilterW_:Integer );
+       function GetCurvMinI :Integer;
+       procedure SetCurvMinI( const CurvMinI_:Integer );
+       function GetCurvMaxI :Integer;
+       procedure SetCurvMaxI( const CurvMaxI_:Integer );
+       function GetVertMinI :Integer;
+       function GetVertMaxI :Integer;
+       function GetPoinMinI :Integer;
+       function GetPoinMaxI :Integer;
        function GetPoins( const I_:Integer ) :Single;
        procedure SetPoins( const I_:Integer; const Poins_:Single );
-       function GetPoinsN :Integer;
-       procedure SetPoinsN( const PoinsN_:Integer );
-       function GetMargsN :Integer;
-       procedure SetMargsN( const MargsN_:Integer );
+       function GetVerts( const I_:Integer ) :Single;
+       procedure SetVerts( const I_:Integer; const Verts_:Single );
        ///// メソッド
-       procedure ExtePoins;
-       procedure MakeConts;
+       procedure MakeVerts;
      public
        constructor Create;
+       procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Poins[ const I_:Integer ] :Single  read GetPoins  write SetPoins ;
-       property PoinsN                    :Integer read GetPoinsN write SetPoinsN;
-       property MargsN                    :Integer read GetMargsN write SetMargsN;
+       property FilterW                   :Integer read GetFilterW  write SetFilterW ;
+       property PoinMinI                  :Integer read GetPoinMinI                  ;
+       property PoinMaxI                  :Integer read GetPoinMaxI                  ;
+       property VertMinI                  :Integer read GetVertMinI                  ;
+       property VertMaxI                  :Integer read GetVertMaxI                  ;
+       property CurvMinI                  :Integer read GetCurvMinI write SetCurvMinI;
+       property CurvMaxI                  :Integer read GetCurvMaxI write SetCurvMaxI;
+       property Poins[ const I_:Integer ] :Single  read GetPoins    write SetPoins   ;
+       property Verts[ const I_:Integer ] :Single  read GetVerts                     ;
        ///// メソッド
-       function Interp( const X_:Single ) :Single;
+       function Curv( const X_:Single ) :Single;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -48,6 +73,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 implementation //############################################################### ■
+
+uses System.Math,
+     LUX.Curve.T1.D1;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -59,55 +87,127 @@ implementation //###############################################################
 
 procedure TBSInterp.MakePoins;
 begin
-     SetLength( _Poins, _MargsN + _PoinsN + _MargsN );  upPoins := True;
+     SetLength( _Poins, PoinMaxI - PoinMinI + 1     );  upPoins := True;
+     SetLength( _Verts, VertMaxI - VertMinI + 1 + 1 );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+function TBSInterp.GetFilterW :Integer;
+begin
+     Result := _FilterW;
+end;
+
+procedure TBSInterp.SetFilterW( const FilterW_:Integer );
+begin
+     _FilterW := FilterW_;  MakePoins;
+end;
+
+//------------------------------------------------------------------------------
+
+function TBSInterp.GetCurvMinI :Integer;
+begin
+     Result := _CurvMinI;
+end;
+
+procedure TBSInterp.SetCurvMinI( const CurvMinI_:Integer );
+begin
+     _CurvMinI := CurvMinI_;  MakePoins;
+end;
+
+function TBSInterp.GetCurvMaxI :Integer;
+begin
+     Result := _CurvMaxI;
+end;
+
+procedure TBSInterp.SetCurvMaxI( const CurvMaxI_:Integer );
+begin
+     _CurvMaxI := CurvMaxI_;  MakePoins;
+end;
+
+//------------------------------------------------------------------------------
+
+function TBSInterp.GetVertMinI :Integer;
+begin
+     Result := CurvMinI - 1;
+end;
+
+function TBSInterp.GetVertMaxI :Integer;
+begin
+     Result := CurvMaxI + 1;
+end;
+
+//------------------------------------------------------------------------------
+
+function TBSInterp.GetPoinMinI :Integer;
+begin
+     Result := VertMinI - FilterW;
+end;
+
+function TBSInterp.GetPoinMaxI :Integer;
+begin
+     Result := VertMaxI + FilterW;
+end;
+
+//------------------------------------------------------------------------------
+
 function TBSInterp.GetPoins( const I_:Integer ) :Single;
 begin
-     Result := _Poins[ _MargsN + I_ ];
+     Result := _Poins[ I_ - PoinMinI ];
 end;
 
 procedure TBSInterp.SetPoins( const I_:Integer; const Poins_:Single );
 begin
-     _Poins[ _MargsN + I_ ] := Poins_;  upPoins := True;
+     _Poins[ I_ - PoinMinI ] := Poins_;  upPoins := True;
 end;
 
 //------------------------------------------------------------------------------
 
-function TBSInterp.GetPoinsN :Integer;
+function TBSInterp.GetVerts( const I_:Integer ) :Single;
 begin
-     Result := _PoinsN;
+     if upPoins then
+     begin
+          MakeVerts;
+
+          upPoins := False;
+     end;
+
+     Result := _Verts[ I_ - VertMinI ];
 end;
 
-procedure TBSInterp.SetPoinsN( const PoinsN_:Integer );
+procedure TBSInterp.SetVerts( const I_:Integer; const Verts_:Single );
 begin
-     _PoinsN := PoinsN_;  MakePoins;
-end;
-
-//------------------------------------------------------------------------------
-
-function TBSInterp.GetMargsN :Integer;
-begin
-     Result := _MargsN;
-end;
-
-procedure TBSInterp.SetMargsN( const MargsN_:Integer );
-begin
-     _MargsN := MargsN_;  MakePoins;
+     _Verts[ I_ - VertMinI ] := Verts_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TBSInterp.ExtePoins;
+function BSplineHEF3( const X_:Integer ) :Single;
 begin
-
+     Result := Sqrt(2) * IntPower( 2*Sqrt(2)-3, Abs( X_ ) );
 end;
 
-procedure TBSInterp.MakeConts;
+function BSplineHEF4( const X_:Integer ) :Single;
 begin
+     Result := Sqrt(3) * IntPower( Sqrt(3)-2, Abs( X_ ) );
+end;
 
+procedure TBSInterp.MakeVerts;
+var
+   I, X :Integer;
+   C :Single;
+begin
+     for I := VertMinI to VertMaxI do
+     begin
+          C := 0;
+
+          for X := -FilterW to +FilterW do
+          begin
+               C := C + BSplineHEF4( X ) * Poins[ I + X ];
+          end;
+
+          SetVerts( I, C );
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -116,8 +216,16 @@ constructor TBSInterp.Create;
 begin
      inherited;
 
-     PoinsN := 8;
-     MargsN := 8;
+end;
+
+procedure TBSInterp.AfterConstruction;
+begin
+     inherited;
+
+     FilterW  := 4;
+
+     CurvMinI := 0;
+     CurvMaxI := 8;
 end;
 
 destructor TBSInterp.Destroy;
@@ -128,15 +236,24 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TBSInterp.Interp( const X_:Single ) :Single;
+function TBSInterp.Curv( const X_:Single ) :Single;
+var
+   Xi :Integer;
+   Xd :Single;
 begin
      if upPoins then
      begin
-          ExtePoins;
-          MakeConts;
+          MakeVerts;
 
           upPoins := False;
      end;
+
+     Xi := Floor( X_ );  Xd := X_ - Xi;
+
+     Result := BSpline4( Verts[ Xi-1 ],
+                         Verts[ Xi   ],
+                         Verts[ Xi+1 ],
+                         Verts[ Xi+2 ], Xd );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
