@@ -188,6 +188,30 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawLines1D
+
+     TDrawLines1D = class( TDrawCurv )
+     private
+     protected
+       _MinX :Integer;
+       _MaxX :Integer;
+       ///// アクセス
+       function GetPosYs( const I_:Integer ) :Single;
+       procedure SetPosYs( const I_:Integer; const PosYs_:Single );
+       function GetMinX :Integer;
+       procedure SetMinX( const MinX_:Integer );
+       function GetMaxX :Integer;
+       procedure SetMaxX( const MaxX_:Integer );
+       ///// メソッド
+     public
+       ///// プロパティ
+       property PosYs[ const I_:Integer ] :Single  read GetPosYs write SetPosYs; default;
+       property MinX                      :Integer read GetMinX  write SetMinX ;
+       property MaxX                      :Integer read GetMaxX  write SetMaxX ;
+       ///// メソッド
+       procedure Func( const Func_:TConstFunc<Integer,Single> );
+     end;
+
 implementation //############################################################### ■
 
 uses System.Math;
@@ -671,5 +695,58 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawLines1D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawLines1D.GetPosYs( const I_:Integer ) :Single;
+begin
+     Result := Poins[ I_ - MinX ].Y;
+end;
+
+procedure TDrawLines1D.SetPosYs( const I_:Integer; const PosYs_:Single );
+begin
+     Poins[ I_ - MinX ] := TSingle2D.Create( I_, PosYs_ );
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawLines1D.GetMinX :Integer;
+begin
+     Result := _MinX;
+end;
+
+procedure TDrawLines1D.SetMinX( const MinX_:Integer );
+begin
+     _MinX := MinX_;  PoinsN := MaxX - MinX + 1;
+end;
+
+function TDrawLines1D.GetMaxX :Integer;
+begin
+     Result := _MaxX;
+end;
+
+procedure TDrawLines1D.SetMaxX( const MaxX_:Integer );
+begin
+     _MaxX := MaxX_;  PoinsN := MaxX - MinX + 1;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawLines1D.Func( const Func_:TConstFunc<Integer,Single> );
+var
+   I :Integer;
+begin
+     for I := MinX to MaxX do PosYs[ I ] := Func_( I );
+end;
 
 end. //######################################################################### ■
