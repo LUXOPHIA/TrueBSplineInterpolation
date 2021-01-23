@@ -16,20 +16,20 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        procedure MakePoins;
      protected
-       _PoinMinI  :Integer;
-       _PoinMaxI  :Integer;
-       _PoinMinY :Single;
-       _PoinMaxY :Single;
-       _Verts    :TArray2<Single>;
+       _MinI  :Integer;
+       _MaxI  :Integer;
+       _MinY  :Single;
+       _MaxY  :Single;
+       _Verts :TArray2<Single>;
        ///// アクセス
-       function GetPoinMinI :Integer;
-       procedure SetPoinMinI( const PoinMin_:Integer );
-       function GetPoinMaxI :Integer;
-       procedure SetPoinMaxI( const PoinMax_:Integer );
-       function GetPoinMinY :Single;
-       procedure SetPoinMinY( const PoinMinY_:Single );
-       function GetPoinMaxY :Single;
-       procedure SetPoinMaxY( const PoinMaxY_:Single );
+       function GetMinI :Integer;
+       procedure SetMinI( const MinI_:Integer );
+       function GetMaxI :Integer;
+       procedure SetMaxI( const MaxI_:Integer );
+       function GetMinY :Single;
+       procedure SetMinY( const MinY_:Single );
+       function GetMaxY :Single;
+       procedure SetMaxY( const MaxY_:Single );
        function GetVerts( const Y_,X_:Integer ) :Single;
        procedure SetVerts( const Y_,X_:Integer; const Verts_:Single );
      public
@@ -37,11 +37,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property PoinMinI                     :Integer read GetPoinMinI write SetPoinMinI;
-       property PoinMaxI                     :Integer read GetPoinMaxI write SetPoinMaxI;
-       property PoinMinY                     :Single  read GetPoinMinY write SetPoinMinY;
-       property PoinMaxY                     :Single  read GetPoinMaxY write SetPoinMaxY;
-       property Verts[ const X_,Y_:Integer ] :Single  read GetVerts    write SetVerts   ;
+       property MinI                         :Integer read GetMinI  write SetMinI ;
+       property MaxI                         :Integer read GetMaxI  write SetMaxI ;
+       property MinY                         :Single  read GetMinY  write SetMinY ;
+       property MaxY                         :Single  read GetMaxY  write SetMaxY ;
+       property Verts[ const X_,Y_:Integer ] :Single  read GetVerts write SetVerts;
        ///// メソッド
        function Poins( const I_:Integer; const Td_:Single ) :Single;
        procedure Next;
@@ -70,73 +70,73 @@ var
    I :Integer;
    W :Single;
 begin
-     SetLength( _Verts, 4, PoinMaxI - PoinMinI + 1 );
+     SetLength( _Verts, 4, MaxI - MinI + 1 );
 
-     W := _PoinMaxY - _PoinMinY;
+     W := _MaxY - _MinY;
 
-     for I := PoinMinI to PoinMaxI do
+     for I := MinI to MaxI do
      begin
-          Verts[ -1, I ] := W * Random + _PoinMinY;
-          Verts[  0, I ] := W * Random + _PoinMinY;
-          Verts[ +1, I ] := W * Random + _PoinMinY;
-          Verts[ +2, I ] := W * Random + _PoinMinY;
+          Verts[ -1, I ] := W * Random + _MinY;
+          Verts[  0, I ] := W * Random + _MinY;
+          Verts[ +1, I ] := W * Random + _MinY;
+          Verts[ +2, I ] := W * Random + _MinY;
      end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-function TGenPoins.GetPoinMinI :Integer;
+function TGenPoins.GetMinI :Integer;
 begin
-     Result := _PoinMinI;
+     Result := _MinI;
 end;
 
-procedure TGenPoins.SetPoinMinI( const PoinMin_:Integer );
+procedure TGenPoins.SetMinI( const MinI_:Integer );
 begin
-     _PoinMinI := PoinMin_;  MakePoins;
+     _MinI := MinI_;  MakePoins;
 end;
 
-function TGenPoins.GetPoinMaxI :Integer;
+function TGenPoins.GetMaxI :Integer;
 begin
-     Result := _PoinMaxI;
+     Result := _MaxI;
 end;
 
-procedure TGenPoins.SetPoinMaxI( const PoinMax_:Integer );
+procedure TGenPoins.SetMaxI( const MaxI_:Integer );
 begin
-     _PoinMaxI := PoinMax_;  MakePoins;
+     _MaxI := MaxI_;  MakePoins;
 end;
 
 //------------------------------------------------------------------------------
 
-function TGenPoins.GetPoinMinY :Single;
+function TGenPoins.GetMinY :Single;
 begin
-     Result := _PoinMinY;
+     Result := _MinY;
 end;
 
-procedure TGenPoins.SetPoinMinY( const PoinMinY_:Single );
+procedure TGenPoins.SetMinY( const MinY_:Single );
 begin
-     _PoinMinY := PoinMinY_;  MakePoins;
+     _MinY := MinY_;  MakePoins;
 end;
 
-function TGenPoins.GetPoinMaxY :Single;
+function TGenPoins.GetMaxY :Single;
 begin
-     Result := _PoinMaxY;
+     Result := _MaxY;
 end;
 
-procedure TGenPoins.SetPoinMaxY( const PoinMaxY_:Single );
+procedure TGenPoins.SetMaxY( const MaxY_:Single );
 begin
-     _PoinMaxY := PoinMaxY_;  MakePoins;
+     _MaxY := MaxY_;  MakePoins;
 end;
 
 //------------------------------------------------------------------------------
 
 function TGenPoins.GetVerts( const Y_,X_:Integer ) :Single;
 begin
-     Result := _Verts[ 1 + Y_, X_ - _PoinMinI ];
+     Result := _Verts[ 1 + Y_, X_ - _MinI ];
 end;
 
 procedure TGenPoins.SetVerts( const Y_,X_:Integer; const Verts_:Single );
 begin
-     _Verts[ 1 + Y_, X_ - _PoinMinI ] := Verts_;
+     _Verts[ 1 + Y_, X_ - _MinI ] := Verts_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -151,11 +151,11 @@ procedure TGenPoins.AfterConstruction;
 begin
      inherited;
 
-     PoinMinI := 0;
-     PoinMaxI := 8;
+     MinI := 0;
+     MaxI := 8;
 
-     PoinMinY := -1.5;
-     PoinMaxY := +1.5;
+     MinY := -1.5;
+     MaxY := +1.5;
 end;
 
 destructor TGenPoins.Destroy;
@@ -181,14 +181,14 @@ var
    I :Integer;
    W :Single;
 begin
-     W := _PoinMaxY - _PoinMinY;
+     W := _MaxY - _MinY;
 
-     for I := PoinMinI to PoinMaxI do
+     for I := MinI to MaxI do
      begin
           Verts[ -1, I ] := Verts[  0, I ];
           Verts[  0, I ] := Verts[ +1, I ];
           Verts[ +1, I ] := Verts[ +2, I ];
-          Verts[ +2, I ] := W * Random + _PoinMinY;
+          Verts[ +2, I ] := W * Random + _MinY;
      end;
 end;
 
