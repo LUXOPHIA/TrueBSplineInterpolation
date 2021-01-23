@@ -57,6 +57,30 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv1D
+
+     TDrawCurv1D = class( TDrawCurv )
+     private
+     protected
+       _MinX :Single;
+       _MaxX :Single;
+       ///// アクセス
+       function GetMinX :Single;
+       procedure SetMinX( const MinX_:Single );
+       function GetMaxX :Single;
+       procedure SetMaxX( const MaxX_:Single );
+       function GetDivN :Integer;
+       procedure SetDivN( const DivN_:Integer );
+       ///// メソッド
+     public
+       ///// プロパティ
+       property MinX :Single  read GetMinX write SetMinX;
+       property MaxX :Single  read GetMaxX write SetMaxX;
+       property DivN :Integer read GetDivN write SetDivN;
+       ///// メソッド
+       procedure Func( const Func_:TConstFunc<Single,Single> );
+     end;
+
 implementation //############################################################### ■
 
 uses System.Math;
@@ -203,5 +227,64 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv1D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawCurv1D.GetMinX :Single;
+begin
+     Result := _MinX;
+end;
+
+procedure TDrawCurv1D.SetMinX( const MinX_:Single );
+begin
+     _MinX := MinX_;
+end;
+
+function TDrawCurv1D.GetMaxX :Single;
+begin
+     Result := _MaxX;
+end;
+
+procedure TDrawCurv1D.SetMaxX( const MaxX_:Single );
+begin
+     _MaxX := MaxX_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawCurv1D.GetDivN :Integer;
+begin
+     Result := PoinsN - 1;
+end;
+
+procedure TDrawCurv1D.SetDivN( const DivN_:Integer );
+begin
+     PoinsN := DivN_ + 1;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawCurv1D.Func( const Func_:TConstFunc<Single,Single> );
+var
+   I :Integer;
+   X :Single;
+begin
+     for I := 0 to DivN do
+     begin
+          X := ( MaxX - MinX ) * I / DivN + MinX;
+
+          Poins[ I ] := TSingle2D.Create( X, Func_( X ) );
+     end;
+end;
 
 end. //######################################################################### ■
