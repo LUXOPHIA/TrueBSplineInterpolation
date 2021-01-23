@@ -192,7 +192,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Poses[ const I_:Integer ] :TSingle2D read GetPoses  write SetPoses ;
-       property PosesN                    :Integer read GetPosesN write SetPosesN;
+       property PosesN                    :Integer   read GetPosesN write SetPosesN;
        ///// メソッド
      end;
 
