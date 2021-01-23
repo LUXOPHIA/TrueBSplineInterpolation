@@ -272,9 +272,6 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D2.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D3.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D4.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D3.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D1.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D2.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D5.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.DN.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D2x2.pas"/>
@@ -302,7 +299,14 @@
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="GenPoins.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.BSpline.D1.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.D2.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.BSpline.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.Bezier.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.Poly.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.CatRom.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.Bezier.D2.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.BSpline.D2.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

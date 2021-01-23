@@ -1,9 +1,5 @@
 ﻿program BSplineInterpolation;
 
-
-
-
-
 uses
   System.StartUpCopy,
   FMX.Forms,
@@ -13,9 +9,6 @@ uses
   LUX.D2 in '_LIBRARY\LUXOPHIA\LUX\LUX.D2.pas',
   LUX.D3 in '_LIBRARY\LUXOPHIA\LUX\LUX.D3.pas',
   LUX.D4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D4.pas',
-  LUX.Curve.T1.D3 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D3.pas',
-  LUX.Curve.T1.D1 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D1.pas',
-  LUX.Curve.T1.D2 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D2.pas',
   LUX.D5 in '_LIBRARY\LUXOPHIA\LUX\LUX.D5.pas',
   LUX.DN in '_LIBRARY\LUXOPHIA\LUX\LUX.DN.pas',
   LUX.D2x2 in '_LIBRARY\LUXOPHIA\LUX\LUX.D2x2.pas',
@@ -35,7 +28,14 @@ uses
   LUX.Draw.Scene in '_LIBRARY\LUXOPHIA\LUX.Draw\LUX.Draw.Scene.pas',
   CurveChartFrame in 'CurveChartFrame.pas' {CurveChart: TFrame},
   GenPoins in 'GenPoins.pas',
-  LUX.Curve.BSpline.D1 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.BSpline.D1.pas';
+  LUX.Curve.D2 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.D2.pas',
+  LUX.Curve.BSpline in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.BSpline.pas',
+  LUX.Curve in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.pas',
+  LUX.Curve.Bezier in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.Bezier.pas',
+  LUX.Curve.Poly in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.Poly.pas',
+  LUX.Curve.CatRom in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.CatRom.pas',
+  LUX.Curve.Bezier.D2 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.Bezier.D2.pas',
+  LUX.Curve.BSpline.D2 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.BSpline.D2.pas';
 
 {$R *.res}
 

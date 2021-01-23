@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.StdCtrls, FMX.Edit, FMX.EditBox, FMX.SpinBox, FMX.Controls.Presentation,
   LUX, LUX.D1, LUX.D2,
-  LUX.Curve.BSpline.D1,
+  LUX.Curve.BSpline,
   LUX.Draw.Viewer,
   GenPoins, CurveChartFrame;
 
