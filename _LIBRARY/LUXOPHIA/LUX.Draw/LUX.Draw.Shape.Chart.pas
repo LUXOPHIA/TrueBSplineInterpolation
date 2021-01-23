@@ -73,7 +73,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _ScalX :TDrawScalX;
        _ScalY :TDrawScalY;
        ///// アクセス
-       procedure SetArea( const Area_:TSingleArea2D ); override;
+       procedure SetRelaArea( const Area_:TSingleArea2D ); override;
        function GetInterv :Single; override;
        procedure SetInterv( const Interv_:Single ); override;
      public
@@ -119,7 +119,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _AxisX :TDrawAxisX;
        _AxisY :TDrawAxisY;
        ///// アクセス
-       procedure SetArea( const Area_:TSingleArea2D ); override;
+       procedure SetRelaArea( const Area_:TSingleArea2D ); override;
      public
        constructor Create; override;
        procedure AfterConstruction; override;
@@ -139,7 +139,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Grid2 :TDrawGrid;
        _Grid3 :TDrawGrid;
        ///// アクセス
-       procedure SetArea( const Area_:TSingleArea2D ); override;
+       procedure SetRelaArea( const Area_:TSingleArea2D ); override;
      public
        constructor Create; override;
        procedure AfterConstruction; override;
@@ -174,6 +174,8 @@ procedure TDrawScal.SetInterv( const Interv_:Single );
 begin
      _Interv := Interv_;
 end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
@@ -327,7 +329,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawGrid.SetArea( const Area_:TSingleArea2D );
+procedure TDrawGrid.SetRelaArea( const Area_:TSingleArea2D );
 begin
      inherited;
 
@@ -451,7 +453,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawAxis.SetArea( const Area_:TSingleArea2D );
+procedure TDrawAxis.SetRelaArea( const Area_:TSingleArea2D );
 begin
      inherited;
 
@@ -491,7 +493,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TDrawGrids.SetArea( const Area_:TSingleArea2D );
+procedure TDrawGrids.SetRelaArea( const Area_:TSingleArea2D );
 begin
      inherited;
 
@@ -511,6 +513,11 @@ begin
      _Grid2 := TDrawGrid.Create( Self );
      _Grid1 := TDrawGrid.Create( Self );
      _Axis  := TDrawAxis.Create( Self );
+end;
+
+procedure TDrawGrids.AfterConstruction;
+begin
+     inherited;
 
      with _Grid3 do
      begin
@@ -538,12 +545,6 @@ begin
           Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColorF.Create( 1/2, 1/2, 1/2 ).ToAlphaColor );
           Stroke.Thickness := 0.02;
      end;
-end;
-
-procedure TDrawGrids.AfterConstruction;
-begin
-     inherited;
-
 end;
 
 destructor TDrawGrids.Destroy;
