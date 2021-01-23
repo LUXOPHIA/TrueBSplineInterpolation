@@ -17,16 +17,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TCurveChart = class( TDrawViewer )
      private
        { private 宣言 }
+       _MinX  :Integer;
+       _MaxX  :Integer;
        _Scene :TDrawScene;
        _Grids :TDrawGrids;
        _Poins :TDrawCopys1D;
        _Verts :TDrawCopys1D;
        _Curv  :TDrawCurv1D;
        ///// アクセス
-       function GetMinX :Single;
-       procedure SetMinX( const MinX_:Single );
-       function GetMaxX :Single;
-       procedure SetMaxX( const MaxX_:Single );
+       function GetMinX :Integer;
+       procedure SetMinX( const MinX_:Integer );
+       function GetMaxX :Integer;
+       procedure SetMaxX( const MaxX_:Integer );
        ///// メソッド
        procedure InitChart;
      public
@@ -35,8 +37,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property MinX  :Single       read GetMinX  write SetMinX;
-       property MaxX  :Single       read GetMaxX  write SetMaxX;
+       property MinX  :Integer      read GetMinX  write SetMinX;
+       property MaxX  :Integer      read GetMaxX  write SetMaxX;
        property Poins :TDrawCopys1D read   _Poins              ;
        property Verts :TDrawCopys1D read   _Verts              ;
        property Curv  :TDrawCurv1D  read   _Curv               ;
@@ -56,24 +58,24 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TCurveChart.GetMinX :Single;
+function TCurveChart.GetMinX :Integer;
 begin
-     Result := _Curv.MinX;
+     Result := _MinX;
 end;
 
-procedure TCurveChart.SetMinX( const MinX_:Single );
+procedure TCurveChart.SetMinX( const MinX_:Integer );
 begin
-     _Curv.MinX := MinX_;  InitChart;
+     _MinX := MinX_;  InitChart;
 end;
 
-function TCurveChart.GetMaxX :Single;
+function TCurveChart.GetMaxX :Integer;
 begin
-     Result := _Curv.MaxX;
+     Result := _MaxX;
 end;
 
-procedure TCurveChart.SetMaxX( const MaxX_:Single );
+procedure TCurveChart.SetMaxX( const MaxX_:Integer );
 begin
-     _Curv.MaxX := MaxX_;  InitChart;
+     _MaxX := MaxX_;  InitChart;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -89,8 +91,6 @@ begin
           Grid2.Area := TSingleArea2D.Create( MinX  , -2, MaxX  , +2 );
           Grid3.Area := TSingleArea2D.Create( MinX  , -2, MaxX  , +2 );
      end;
-
-     Curv.DivN := Round( 8 * ( MaxX - MinX ) );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
