@@ -21,8 +21,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _CurvMaxI :Integer;
        _Scene    :TDrawScene;
        _Grids    :TDrawGrids;
-       _Poins    :TDrawPosCopys;
-       _Verts    :TDrawPosCopys;
+       _Poins    :TDrawCopys1D;
+       _Verts    :TDrawCopys1D;
        _Curv     :TDrawCurv;
        ///// アクセス
        function GetCurvMinI :Integer;
@@ -37,11 +37,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property CurvMinI :Integer       read GetCurvMinI write SetCurvMinI;
-       property CurvMaxI :Integer       read GetCurvMaxI write SetCurvMaxI;
-       property Poins    :TDrawPosCopys read   _Poins                     ;
-       property Verts    :TDrawPosCopys read   _Verts                     ;
-       property Curv     :TDrawCurv     read   _Curv                      ;
+       property CurvMinI :Integer      read GetCurvMinI write SetCurvMinI;
+       property CurvMaxI :Integer      read GetCurvMaxI write SetCurvMaxI;
+       property Poins    :TDrawCopys1D read   _Poins                     ;
+       property Verts    :TDrawCopys1D read   _Verts                     ;
+       property Curv     :TDrawCurv    read   _Curv                      ;
      end;
 
 implementation //############################################################### ■
@@ -105,10 +105,10 @@ begin
 
      Camera := TDrawCamera.Create( _Scene );
 
-     _Grids := TDrawGrids   .Create( _Scene );
-     _Verts := TDrawPosCopys.Create( _Scene );
-     _Curv  := TDrawCurv    .Create( _Scene );
-     _Poins := TDrawPosCopys.Create( _Scene );
+     _Grids := TDrawGrids  .Create( _Scene );
+     _Verts := TDrawCopys1D.Create( _Scene );
+     _Curv  := TDrawCurv   .Create( _Scene );
+     _Poins := TDrawCopys1D.Create( _Scene );
 
      with TDrawCirc.Create( _Poins ) do
      begin

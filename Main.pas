@@ -58,10 +58,12 @@ begin
           _Poins.PoinMinI := PoinMinI;
           _Poins.PoinMaxI := PoinMaxI;
 
-          CurveChart1.CurvMinI     := CurvMinI;
-          CurveChart1.CurvMaxI     := CurvMaxI;
-          CurveChart1.Poins.PosesN :=       PoinMaxI - PoinMinI   + 1;
-          CurveChart1.Verts.PosesN :=       VertMaxI - VertMinI   + 1;
+          CurveChart1.CurvMinI   := CurvMinI;
+          CurveChart1.CurvMaxI   := CurvMaxI;
+          CurveChart1.Poins.MinI := PoinMinI;
+          CurveChart1.Poins.MaxI := PoinMaxI;
+          CurveChart1.Verts.MinI := VertMinI;
+          CurveChart1.Verts.MaxI := VertMaxI;
      end;
 end;
 
@@ -88,24 +90,14 @@ end;
 
 procedure TForm1.ShowCurve;
 var
-   I, J :Integer;
+   I :Integer;
    X :Single;
 begin
      with _Interp do
      begin
-          for I := 0 to CurveChart1.Poins.PosesN-1 do
-          begin
-               J := PoinMinI + I;
+          for I := PoinMinI to PoinMaxI do CurveChart1.Poins.PosYs[ I ] := Poins[ I ];
 
-               CurveChart1.Poins.Poses[ I ] := TSingle2D.Create( J, Poins[ J ] );
-          end;
-
-          for I := 0 to CurveChart1.Verts.PosesN-1 do
-          begin
-               J := VertMinI + I;
-
-               CurveChart1.Verts.Poses[ I ] := TSingle2D.Create( J, Verts[ J ] );
-          end;
+          for I := VertMinI to VertMaxI do CurveChart1.Verts.PosYs[ I ] := Verts[ I ];
 
           for I := 0 to CurveChart1.Curv.PoinsN-1 do
           begin
