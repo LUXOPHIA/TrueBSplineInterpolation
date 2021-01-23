@@ -15,10 +15,11 @@ type
   TForm1 = class(TForm)
     CurveChart1: TCurveChart;
     Panel1: TPanel;
-      LabelFN: TLabel;
-        SpinBoxFN: TSpinBox;
-      LabelCN: TLabel;
-        SpinBoxCN: TSpinBox;
+      Panel2: TPanel;
+        LabelFN: TLabel;
+          SpinBoxFN: TSpinBox;
+        LabelCN: TLabel;
+          SpinBoxCN: TSpinBox;
     Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

@@ -32,53 +32,62 @@ object Form1: TForm1
     Size.PlatformDefault = False
     StyleLookup = 'pushpanel'
     TabOrder = 0
-    object SpinBoxCN: TSpinBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
+    object Panel2: TPanel
+      Align = Right
+      Position.X = 660.000000000000000000
+      Size.Width = 200.000000000000000000
+      Size.Height = 80.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'pushpanel'
       TabOrder = 1
-      Cursor = crIBeam
-      Min = 1.000000000000000000
-      Max = 32.000000000000000000
-      Value = 8.000000000000000000
-      Position.X = 770.000000000000000000
-      Position.Y = 45.000000000000000000
-      Size.Width = 80.000000000000000000
-      Size.Height = 25.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = SpinBoxCNChange
-    end
-    object LabelCN: TLabel
-      Position.X = 665.000000000000000000
-      Position.Y = 45.000000000000000000
-      Size.Width = 100.000000000000000000
-      Size.Height = 25.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Trailing
-      Text = 'Curve Segments :'
-      TabOrder = 3
-    end
-    object SpinBoxFN: TSpinBox
-      Touch.InteractiveGestures = [LongTap, DoubleTap]
-      TabOrder = 0
-      Cursor = crIBeam
-      Min = 1.000000000000000000
-      Max = 16.000000000000000000
-      Value = 4.000000000000000000
-      Position.X = 770.000000000000000000
-      Position.Y = 10.000000000000000000
-      Size.Width = 80.000000000000000000
-      Size.Height = 25.000000000000000000
-      Size.PlatformDefault = False
-      OnChange = SpinBoxFNChange
-    end
-    object LabelFN: TLabel
-      Position.X = 665.000000000000000000
-      Position.Y = 10.000000000000000000
-      Size.Width = 100.000000000000000000
-      Size.Height = 25.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Trailing
-      Text = 'Filter Width / 2 :'
-      TabOrder = 2
+      object SpinBoxFN: TSpinBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 0
+        Cursor = crIBeam
+        Min = 1.000000000000000000
+        Max = 16.000000000000000000
+        Value = 4.000000000000000000
+        Position.X = 110.000000000000000000
+        Position.Y = 10.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = SpinBoxFNChange
+      end
+      object LabelCN: TLabel
+        Position.X = 5.000000000000000000
+        Position.Y = 45.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.HorzAlign = Trailing
+        Text = 'Curve Segments :'
+        TabOrder = 4
+      end
+      object LabelFN: TLabel
+        Position.X = 5.000000000000000000
+        Position.Y = 10.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.HorzAlign = Trailing
+        Text = 'Filter Width / 2 :'
+        TabOrder = 3
+      end
+      object SpinBoxCN: TSpinBox
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 1
+        Cursor = crIBeam
+        Min = 1.000000000000000000
+        Max = 32.000000000000000000
+        Value = 8.000000000000000000
+        Position.X = 110.000000000000000000
+        Position.Y = 45.000000000000000000
+        Size.Width = 80.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        OnChange = SpinBoxCNChange
+      end
     end
   end
   object Timer1: TTimer
