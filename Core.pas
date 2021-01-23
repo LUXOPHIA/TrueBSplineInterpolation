@@ -75,8 +75,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure MakeVerts;
      public
        ///// プロパティ
-       property Poins[ const I_:Integer ] :Single  read GetPoins    write SetPoins   ;
-       property Verts[ const I_:Integer ] :Single  read GetVerts                     ;
+       property Poins[ const I_:Integer ] :Single read GetPoins write SetPoins;
+       property Verts[ const I_:Integer ] :Single read GetVerts               ;
        ///// メソッド
        function Curv( const X_:Single ) :Single;
      end;
@@ -100,8 +100,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure MakeVerts;
      public
        ///// プロパティ
-       property Poins[ const I_:Integer ] :Double  read GetPoins    write SetPoins   ;
-       property Verts[ const I_:Integer ] :Double  read GetVerts                     ;
+       property Poins[ const I_:Integer ] :Double read GetPoins write SetPoins;
+       property Verts[ const I_:Integer ] :Double read GetVerts               ;
        ///// メソッド
        function Curv( const X_:Double ) :Double;
      end;
