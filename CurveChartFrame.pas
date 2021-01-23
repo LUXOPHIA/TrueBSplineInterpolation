@@ -89,6 +89,8 @@ begin
           Grid2.Area := TSingleArea2D.Create( MinX  , -2, MaxX  , +2 );
           Grid3.Area := TSingleArea2D.Create( MinX  , -2, MaxX  , +2 );
      end;
+
+     Curv.DivN := Round( 8 * ( MaxX - MinX ) );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
