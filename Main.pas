@@ -29,7 +29,7 @@ type
   public
     { public 宣言 }
     _Poins  :TGenPoins;
-    _Interp :TBSInterp;
+    _Interp :TSingleBSInterp;
     ///// メソッド
     procedure InitChart;
     procedure MakePoins( const Td_:Single );
@@ -121,7 +121,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
      _Poins := TGenPoins.Create;
 
-     _Interp := TBSInterp.Create;
+     _Interp := TSingleBSInterp.Create;
 
      with _Interp do
      begin

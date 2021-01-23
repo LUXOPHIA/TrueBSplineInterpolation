@@ -10,7 +10,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TBSInterp
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleBSInterp
      //
      //  00    01    02    03    04    05    06    07    08    09    10    11
      //  │    │    ┃    ┃    ┃    ┃    ┃    ┃    ┃    ┃    │    │
@@ -22,7 +22,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //  │<---FW--->┃<-----------------Vert----------------->┃<---FW--->│
      //  │<-----------------------------Poin----------------------------->│
 
-     TBSInterp = class
+     TSingleBSInterp = class
      private
        procedure MakePoins;
      protected
@@ -81,11 +81,11 @@ uses System.Math,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TBSInterp
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleBSInterp
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-procedure TBSInterp.MakePoins;
+procedure TSingleBSInterp.MakePoins;
 begin
      SetLength( _Poins, PoinMaxI - PoinMinI + 1     );  upPoins := True;
      SetLength( _Verts, VertMaxI - VertMinI + 1 + 1 );
@@ -93,77 +93,77 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-function TBSInterp.GetFilterW :Integer;
+function TSingleBSInterp.GetFilterW :Integer;
 begin
      Result := _FilterW;
 end;
 
-procedure TBSInterp.SetFilterW( const FilterW_:Integer );
+procedure TSingleBSInterp.SetFilterW( const FilterW_:Integer );
 begin
      _FilterW := FilterW_;  MakePoins;
 end;
 
 //------------------------------------------------------------------------------
 
-function TBSInterp.GetCurvMinI :Integer;
+function TSingleBSInterp.GetCurvMinI :Integer;
 begin
      Result := _CurvMinI;
 end;
 
-procedure TBSInterp.SetCurvMinI( const CurvMinI_:Integer );
+procedure TSingleBSInterp.SetCurvMinI( const CurvMinI_:Integer );
 begin
      _CurvMinI := CurvMinI_;  MakePoins;
 end;
 
-function TBSInterp.GetCurvMaxI :Integer;
+function TSingleBSInterp.GetCurvMaxI :Integer;
 begin
      Result := _CurvMaxI;
 end;
 
-procedure TBSInterp.SetCurvMaxI( const CurvMaxI_:Integer );
+procedure TSingleBSInterp.SetCurvMaxI( const CurvMaxI_:Integer );
 begin
      _CurvMaxI := CurvMaxI_;  MakePoins;
 end;
 
 //------------------------------------------------------------------------------
 
-function TBSInterp.GetVertMinI :Integer;
+function TSingleBSInterp.GetVertMinI :Integer;
 begin
      Result := CurvMinI - 1;
 end;
 
-function TBSInterp.GetVertMaxI :Integer;
+function TSingleBSInterp.GetVertMaxI :Integer;
 begin
      Result := CurvMaxI + 1;
 end;
 
 //------------------------------------------------------------------------------
 
-function TBSInterp.GetPoinMinI :Integer;
+function TSingleBSInterp.GetPoinMinI :Integer;
 begin
      Result := VertMinI - FilterW;
 end;
 
-function TBSInterp.GetPoinMaxI :Integer;
+function TSingleBSInterp.GetPoinMaxI :Integer;
 begin
      Result := VertMaxI + FilterW;
 end;
 
 //------------------------------------------------------------------------------
 
-function TBSInterp.GetPoins( const I_:Integer ) :Single;
+function TSingleBSInterp.GetPoins( const I_:Integer ) :Single;
 begin
      Result := _Poins[ I_ - PoinMinI ];
 end;
 
-procedure TBSInterp.SetPoins( const I_:Integer; const Poins_:Single );
+procedure TSingleBSInterp.SetPoins( const I_:Integer; const Poins_:Single );
 begin
      _Poins[ I_ - PoinMinI ] := Poins_;  upPoins := True;
 end;
 
 //------------------------------------------------------------------------------
 
-function TBSInterp.GetVerts( const I_:Integer ) :Single;
+function TSingleBSInterp.GetVerts( const I_:Integer ) :Single;
 begin
      if upPoins then
      begin
@@ -175,7 +175,7 @@ begin
      Result := _Verts[ I_ - VertMinI ];
 end;
 
-procedure TBSInterp.SetVerts( const I_:Integer; const Verts_:Single );
+procedure TSingleBSInterp.SetVerts( const I_:Integer; const Verts_:Single );
 begin
      _Verts[ I_ - VertMinI ] := Verts_;
 end;
@@ -192,7 +192,7 @@ begin
      Result := Sqrt(3) * IntPower( Sqrt(3)-2, Abs( X_ ) );
 end;
 
-procedure TBSInterp.MakeVerts;
+procedure TSingleBSInterp.MakeVerts;
 var
    I, X :Integer;
    C :Single;
@@ -212,13 +212,13 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TBSInterp.Create;
+constructor TSingleBSInterp.Create;
 begin
      inherited;
 
 end;
 
-procedure TBSInterp.AfterConstruction;
+procedure TSingleBSInterp.AfterConstruction;
 begin
      inherited;
 
@@ -228,7 +228,7 @@ begin
      CurvMaxI := 8;
 end;
 
-destructor TBSInterp.Destroy;
+destructor TSingleBSInterp.Destroy;
 begin
 
      inherited;
@@ -236,7 +236,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TBSInterp.Curv( const X_:Single ) :Single;
+function TSingleBSInterp.Curv( const X_:Single ) :Single;
 var
    Xi :Integer;
    Xd :Single;
