@@ -2,8 +2,7 @@
 
 interface //#################################################################### ■
 
-uses
-     FMX.Controls, FMX.Graphics,
+uses FMX.Controls, FMX.Graphics,
      LUX, LUX.D1, LUX.D2,
      LUX.Draw.Scene,
      LUX.Draw.Viewer;
@@ -31,29 +30,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Radius :Single read GetRadius write SetRadius;
-     end;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCircs
-
-     TDrawCircs = class( TDrawShape )
-     private
-     protected
-       _Root   :TDrawRoot;
-       _Radius :Single;
-       ///// アクセス
-       function GetCircs( const I_:Integer ) :TDrawCirc;
-       function GetCircsN :Integer;
-       procedure SetCircsN( const CircsN_:Integer );
-       function GetRadius :Single;
-       procedure SetRadius( const Radius_:Single );
-     public
-       constructor Create; override;
-       procedure AfterConstruction; override;
-       destructor Destroy; override;
-       ///// プロパティ
-       property Circs[ const I_:Integer ] :TDrawCirc read GetCircs                 ;
-       property CircsN                    :Integer   read GetCircsN write SetCircsN;
-       property Radius                    :Single    read GetRadius write SetRadius;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
@@ -137,73 +113,6 @@ begin
 end;
 
 destructor TDrawCirc.Destroy;
-begin
-
-     inherited;
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCircs
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TDrawCircs.GetCircs( const I_:Integer ) :TDrawCirc;
-begin
-     Result := _Root.Childs[ I_ ] as TDrawCirc;
-end;
-
-//------------------------------------------------------------------------------
-
-function TDrawCircs.GetCircsN :Integer;
-begin
-     Result := _Root.ChildsN;
-end;
-
-procedure TDrawCircs.SetCircsN( const CircsN_:Integer );
-var
-   I :Integer;
-begin
-     _Root.DeleteChilds;
-
-     for I := 0 to CircsN_-1 do TDrawCirc.Create( _Root ).Radius := Radius;
-end;
-
-//------------------------------------------------------------------------------
-
-function TDrawCircs.GetRadius :Single;
-begin
-     Result := _Radius;
-end;
-
-procedure TDrawCircs.SetRadius( const Radius_:Single );
-var
-   I :Integer;
-begin
-     _Radius := Radius_;
-
-     for I := 0 to CircsN-1 do Circs[ I ].Radius := _Radius;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TDrawCircs.Create;
-begin
-     inherited;
-
-     _Root := TDrawRoot.Create( Self );
-end;
-
-procedure TDrawCircs.AfterConstruction;
-begin
-     inherited;
-
-     Radius := 1;
-end;
-
-destructor TDrawCircs.Destroy;
 begin
 
      inherited;
