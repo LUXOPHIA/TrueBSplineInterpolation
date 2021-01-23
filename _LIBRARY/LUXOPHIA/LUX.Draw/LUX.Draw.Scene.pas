@@ -8,13 +8,14 @@ uses System.UITypes, System.Math.Vectors,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TDrawNode       = class;
-       TDrawRoot     = class;
-       TDrawScene    = class;
-       TDrawShape    = class;
-       TDrawCamera   = class;
-       TDrawCopys    = class;
-       TDrawPosCopys = class;
+     TDrawNode           = class;
+       TDrawRoot         = class;
+         TDrawScene      = class;
+       TDrawKnot         = class;
+         TDrawShape      = class;
+           TDrawCamera   = class;
+           TDrawCopys    = class;
+           TDrawPosCopys = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
@@ -22,7 +23,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TDrawNode = class( TTreeNode<TDrawNode,TDrawNode> )
      private
-       _State :TCanvasSaveState;
      protected
        _RelaArea :TSingleArea2D;
        _Opacity  :Single;
@@ -63,7 +63,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Stroke   :TStrokeBrush  read GetStroke   write SetStroke  ;
        property Filler   :TBrush        read GetFiller   write SetFiller  ;
        ///// メソッド
-       procedure Draw( const Canvas_:TCanvas );
+       procedure Draw( const Canvas_:TCanvas ); virtual;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawRoot
@@ -89,6 +89,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property RelaPosi :TSingle2D read GetRelaPosi;
        property Position :TSingle2D read GetRelaPosi;
        property AbsoPose :TMatrix   read GetAbsoPose;
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScene
@@ -111,11 +112,29 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property BackColor :TAlphaColor read GetBackColor write SetBackColor;
+       ///// メソッド
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawKnot
+
+     TDrawKnot = class( TDrawNode )
+     private
+       _State :TCanvasSaveState;
+     protected
+       ///// アクセス
+       ///// メソッド
+     public
+       constructor Create; override;
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       ///// メソッド
+       procedure Draw( const Canvas_:TCanvas ); override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawShape
 
-     TDrawShape = class( TDrawNode )
+     TDrawShape = class( TDrawKnot )
      private
      protected
        _RelaPose :TMatrix;
@@ -318,7 +337,6 @@ constructor TDrawNode.Create;
 begin
      inherited;
 
-     _State := TCanvasSaveState.Create;
 end;
 
 procedure TDrawNode.AfterConstruction;
@@ -336,8 +354,6 @@ begin
      if Assigned( _Stroke ) then _Stroke.Free;
      if Assigned( _Filler ) then _Filler.Free;
 
-     _State.Free;
-
      inherited;
 end;
 
@@ -345,13 +361,9 @@ end;
 
 procedure TDrawNode.Draw( const Canvas_:TCanvas );
 begin
-     _State.Assign( Canvas_ );
-
      DrawBegin( Canvas_ );
      DrawMain ( Canvas_ );
      DrawEnd  ( Canvas_ );
-
-     Canvas_.Assign( _State );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawRoot
@@ -497,6 +509,49 @@ destructor TDrawScene.Destroy;
 begin
 
      inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawKnot
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawKnot.Create;
+begin
+     inherited;
+
+     _State := TCanvasSaveState.Create;
+end;
+
+procedure TDrawKnot.AfterConstruction;
+begin
+     inherited;
+
+end;
+
+destructor TDrawKnot.Destroy;
+begin
+     _State.Free;
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawKnot.Draw( const Canvas_:TCanvas );
+begin
+     _State.Assign( Canvas_ );
+
+     inherited;
+
+     Canvas_.Assign( _State );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawShape
