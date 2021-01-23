@@ -25,8 +25,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _RelaArea :TSingleArea2D;
-       _Stroke   :TStrokeBrush;
-       _Filler   :TBrush;
        ///// アクセス
        function GetRelaArea :TSingleArea2D; virtual;
        procedure SetRelaArea( const RelaArea_:TSingleArea2D ); virtual;
@@ -93,10 +91,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDrawScene = class( TDrawRoot )
      private
      protected
+       _Stroke    :TStrokeBrush;
+       _Filler    :TBrush;
        _BackColor :TAlphaColor;
        ///// アクセス
        function GetStroke :TStrokeBrush; override;
+       procedure SetStroke( const Stroke_:TStrokeBrush ); override;
        function GetFiller :TBrush; override;
+       procedure SetFiller( const Filler_:TBrush ); override;
        function GetBackColor :TAlphaColor;
        procedure SetBackColor( const BackColor_:TAlphaColor );
        ///// メソッド
@@ -120,10 +122,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _State :TCanvasSaveState;
      protected
        _Opacity :Single;
+       _Stroke  :TStrokeBrush;
+       _Filler  :TBrush;
        ///// アクセス
        function GetOpacity :Single; virtual;
        procedure SetOpacity( const Opacity_:Single ); virtual;
+       function GetStroke :TStrokeBrush; override;
+       procedure SetStroke( const Stroke_:TStrokeBrush ); override;
+       function GetFiller :TBrush; override;
+       procedure SetFiller( const Filler_:TBrush ); override;
        ///// メソッド
+       procedure DrawBegin( const Canvas_:TCanvas ); override;
      public
        constructor Create; override;
        procedure AfterConstruction; override;
@@ -274,39 +283,31 @@ end;
 
 function TDrawNode.GetStroke :TStrokeBrush;
 begin
-     if Assigned( _Stroke ) then Result :=       _Stroke
-                            else Result := Parent.Stroke;
+     Result := nil;
 end;
 
 procedure TDrawNode.SetStroke( const Stroke_:TStrokeBrush );
 begin
-     _Stroke := Stroke_;
+
 end;
 
 //------------------------------------------------------------------------------
 
 function TDrawNode.GetFiller :TBrush;
 begin
-     if Assigned( _Filler ) then Result :=       _Filler
-                            else Result := Parent.Filler;
+     Result := nil;
 end;
 
 procedure TDrawNode.SetFiller( const Filler_:TBrush );
 begin
-     _Filler := Filler_;
+
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TDrawNode.DrawBegin( const Canvas_:TCanvas );
 begin
-     with Canvas_ do
-     begin
-          MultiplyMatrix( RelaPose );
-
-          if Assigned( _Stroke ) then Stroke.Assign( _Stroke );
-          if Assigned( _Filler ) then Fill  .Assign( _Filler );
-     end;
+     Canvas_.MultiplyMatrix( RelaPose );
 end;
 
 procedure TDrawNode.DrawMain( const Canvas_:TCanvas );
@@ -327,8 +328,6 @@ constructor TDrawNode.Create;
 begin
      inherited;
 
-     _Stroke := nil;
-     _Filler := nil;
 end;
 
 procedure TDrawNode.AfterConstruction;
@@ -340,8 +339,6 @@ end;
 
 destructor TDrawNode.Destroy;
 begin
-     if Assigned( _Stroke ) then _Stroke.Free;
-     if Assigned( _Filler ) then _Filler.Free;
 
      inherited;
 end;
@@ -429,11 +426,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-//------------------------------------------------------------------------------
-
 function TDrawScene.GetStroke :TStrokeBrush;
 begin
      Result := _Stroke;
+end;
+
+procedure TDrawScene.SetStroke( const Stroke_:TStrokeBrush );
+begin
+
 end;
 
 //------------------------------------------------------------------------------
@@ -441,6 +441,11 @@ end;
 function TDrawScene.GetFiller :TBrush;
 begin
      Result := _Filler;
+end;
+
+procedure TDrawScene.SetFiller( const Filler_:TBrush );
+begin
+
 end;
 
 //------------------------------------------------------------------------------
@@ -498,6 +503,8 @@ end;
 
 destructor TDrawScene.Destroy;
 begin
+     _Stroke.Free;
+     _Filler.Free;
 
      inherited;
 end;
@@ -520,7 +527,44 @@ begin
      _Opacity := Opacity_;
 end;
 
+//------------------------------------------------------------------------------
+
+function TDrawKnot.GetStroke :TStrokeBrush;
+begin
+     if Assigned( _Stroke ) then Result :=       _Stroke
+                            else Result := Parent.Stroke;
+end;
+
+procedure TDrawKnot.SetStroke( const Stroke_:TStrokeBrush );
+begin
+     _Stroke := Stroke_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawKnot.GetFiller :TBrush;
+begin
+     if Assigned( _Filler ) then Result :=       _Filler
+                            else Result := Parent.Filler;
+end;
+
+procedure TDrawKnot.SetFiller( const Filler_:TBrush );
+begin
+     _Filler := Filler_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TDrawKnot.DrawBegin( const Canvas_:TCanvas );
+begin
+     inherited;
+
+     with Canvas_ do
+     begin
+          if Assigned( _Stroke ) then Stroke.Assign( _Stroke );
+          if Assigned( _Filler ) then Fill  .Assign( _Filler );
+     end;
+end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
@@ -529,6 +573,9 @@ begin
      inherited;
 
      _State := TCanvasSaveState.Create;
+
+     _Stroke := nil;
+     _Filler := nil;
 end;
 
 procedure TDrawKnot.AfterConstruction;
@@ -540,6 +587,9 @@ end;
 
 destructor TDrawKnot.Destroy;
 begin
+     if Assigned( _Stroke ) then _Stroke.Free;
+     if Assigned( _Filler ) then _Filler.Free;
+
      _State.Free;
 
      inherited;
