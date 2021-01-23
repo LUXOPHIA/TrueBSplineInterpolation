@@ -30,6 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Radius :Single read GetRadius write SetRadius;
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
@@ -53,6 +54,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property Poins[ const I_:Integer ] :TSingle2D read GetPoins  write SetPoins ; default;
        property PoinsN                    :Integer   read GetPoinsN write SetPoinsN;
+       ///// メソッド
      end;
 
 implementation //############################################################### ■
@@ -118,6 +120,8 @@ begin
      inherited;
 end;
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCurv
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -144,29 +148,6 @@ end;
 procedure TDrawCurv.SetPoinsN( const PoinsN_:Integer );
 begin
      SetLength( _Poins, PoinsN_ );  upPoins := True;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TDrawCurv.Create;
-begin
-     inherited;
-
-     _Path := TPathData.Create;
-end;
-
-procedure TDrawCurv.AfterConstruction;
-begin
-     inherited;
-
-     PoinsN := 100;
-end;
-
-destructor TDrawCurv.Destroy;
-begin
-     _Path.DisposeOf;
-
-     inherited;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -197,5 +178,30 @@ begin
 
      Canvas_.DrawPath( _Path, _Opacity );
 end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawCurv.Create;
+begin
+     inherited;
+
+     _Path := TPathData.Create;
+end;
+
+procedure TDrawCurv.AfterConstruction;
+begin
+     inherited;
+
+     PoinsN := 100;
+end;
+
+destructor TDrawCurv.Destroy;
+begin
+     _Path.DisposeOf;
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 end. //######################################################################### ■
