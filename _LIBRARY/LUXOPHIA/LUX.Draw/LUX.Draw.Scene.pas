@@ -24,25 +24,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        _State :TCanvasSaveState;
      protected
-       _Area    :TSingleArea2D;
-       _Opacity :Single;
-       _Stroke  :TStrokeBrush;
-       _Filler  :TBrush;
+       _RelaArea :TSingleArea2D;
+       _Opacity  :Single;
+       _Stroke   :TStrokeBrush;
+       _Filler   :TBrush;
        ///// アクセス
-       function GetArea :TSingleArea2D;
-       procedure SetArea( const Area_:TSingleArea2D ); virtual;
-       function GetMatrix :TMatrix; virtual; abstract;
-       procedure SetMatrix( const Matrix_:TMatrix ); virtual; abstract;
-       function GetAbsoMatrix :TMatrix; virtual;
-       procedure SetAbsoMatrix( const GlobalMatrix_:TMatrix ); virtual;
-       function GetPosition :TSingle2D;
-       procedure SetPosition( const Position_:TSingle2D );
-       function GetOpacity :Single;
-       procedure SetOpacity( const Opacity_:Single );
+       function GetRelaArea :TSingleArea2D; virtual;
+       procedure SetRelaArea( const RelaArea_:TSingleArea2D ); virtual;
+       function GetRelaPose :TMatrix; virtual; abstract;
+       procedure SetRelaPose( const RelaPose_:TMatrix ); virtual; abstract;
+       function GetAbsoPose :TMatrix; virtual;
+       procedure SetAbsoPose( const AbsoPose_:TMatrix ); virtual;
+       function GetRelaPosi :TSingle2D; virtual;
+       procedure SetRelaPosi( const RelaPosi_:TSingle2D ); virtual;
+       function GetOpacity :Single; virtual;
+       procedure SetOpacity( const Opacity_:Single ); virtual;
        function GetStroke :TStrokeBrush; virtual;
-       procedure SetStroke( const Stroke_:TStrokeBrush );
+       procedure SetStroke( const Stroke_:TStrokeBrush ); virtual;
        function GetFiller :TBrush; virtual;
-       procedure SetFiller( const Filler_:TBrush );
+       procedure SetFiller( const Filler_:TBrush ); virtual;
        ///// メソッド
        procedure DrawBegin( const Canvas_:TCanvas ); virtual;
        procedure DrawMain( const Canvas_:TCanvas ); virtual;
@@ -52,13 +52,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Area       :TSingleArea2D read GetArea       write SetArea      ;
-       property Matrix     :TMatrix       read GetMatrix     write SetMatrix    ;
-       property Position   :TSingle2D     read GetPosition   write SetPosition  ;
-       property AbsoMatrix :TMatrix       read GetAbsoMatrix write SetAbsoMatrix;
-       property Opacity    :Single        read GetOpacity    write SetOpacity   ;
-       property Stroke     :TStrokeBrush  read GetStroke     write SetStroke    ;
-       property Filler     :TBrush        read GetFiller     write SetFiller    ;
+       property RelaArea :TSingleArea2D read GetRelaArea write SetRelaArea;
+       property     Area :TSingleArea2D read GetRelaArea write SetRelaArea;
+       property RelaPose :TMatrix       read GetRelaPose write SetRelaPose;
+       property     Pose :TMatrix       read GetRelaPose write SetRelaPose;
+       property RelaPosi :TSingle2D     read GetRelaPosi write SetRelaPosi;
+       property Position :TSingle2D     read GetRelaPosi write SetRelaPosi;
+       property AbsoPose :TMatrix       read GetAbsoPose write SetAbsoPose;
+       property Opacity  :Single        read GetOpacity  write SetOpacity ;
+       property Stroke   :TStrokeBrush  read GetStroke   write SetStroke  ;
+       property Filler   :TBrush        read GetFiller   write SetFiller  ;
        ///// メソッド
        procedure Draw( const Canvas_:TCanvas );
      end;
@@ -69,10 +72,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        ///// アクセス
-       function GetMatrix :TMatrix; override;
-       procedure SetMatrix( const Matrix_:TMatrix ); override;
-       function GetAbsoMatrix :TMatrix; override;
-       procedure SetAbsoMatrix( const GlobalMatrix_:TMatrix ); override;
+       function GetRelaPose :TMatrix; override;
+       procedure SetRelaPose( const RelaPose_:TMatrix ); override;
+       function GetAbsoPose :TMatrix; override;
+       procedure SetAbsoPose( const AbsoPose_:TMatrix ); override;
        ///// メソッド
        procedure DrawBegin( const Canvas_:TCanvas ); override;
        procedure DrawMain( const Canvas_:TCanvas ); override;
@@ -82,9 +85,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Matrix     :TMatrix   read GetMatrix    ;
-       property Position   :TSingle2D read GetPosition  ;
-       property AbsoMatrix :TMatrix   read GetAbsoMatrix;
+       property RelaPose :TMatrix   read GetRelaPose;
+       property     Pose :TMatrix   read GetRelaPose;
+       property RelaPosi :TSingle2D read GetRelaPosi;
+       property Position :TSingle2D read GetRelaPosi;
+       property AbsoPose :TMatrix   read GetAbsoPose;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScene
@@ -114,10 +119,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDrawShape = class( TDrawNode )
      private
      protected
-       _Matrix :TMatrix;
+       _RelaPose :TMatrix;
        ///// アクセス
-       function GetMatrix :TMatrix; override;
-       procedure SetMatrix( const Matrix_:TMatrix ); override;
+       function GetRelaPose :TMatrix; override;
+       procedure SetRelaPose( const RelaPose_:TMatrix ); override;
        ///// メソッド
      public
        constructor Create; override;
@@ -205,46 +210,46 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDrawNode.GetArea :TSingleArea2D;
+function TDrawNode.GetRelaArea :TSingleArea2D;
 begin
-     Result := _Area;
+     Result := _RelaArea;
 end;
 
-procedure TDrawNode.SetArea( const Area_:TSingleArea2D );
+procedure TDrawNode.SetRelaArea( const RelaArea_:TSingleArea2D );
 begin
-     _Area := Area_;
-end;
-
-//------------------------------------------------------------------------------
-
-function TDrawNode.GetAbsoMatrix :TMatrix;
-begin
-     Result := Parent.AbsoMatrix * Matrix;
-end;
-
-procedure TDrawNode.SetAbsoMatrix( const GlobalMatrix_:TMatrix );
-begin
-     Matrix := Parent.AbsoMatrix.Inverse * GlobalMatrix_;
+     _RelaArea := RelaArea_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TDrawNode.GetPosition :TSingle2D;
+function TDrawNode.GetAbsoPose :TMatrix;
 begin
-     Result.X := Matrix.m31;
-     Result.Y := Matrix.m32;
+     Result := Parent.AbsoPose * RelaPose;
 end;
 
-procedure TDrawNode.SetPosition( const Position_:TSingle2D );
+procedure TDrawNode.SetAbsoPose( const AbsoPose_:TMatrix );
+begin
+     RelaPose := Parent.AbsoPose.Inverse * AbsoPose_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawNode.GetRelaPosi :TSingle2D;
+begin
+     Result.X := RelaPose.m31;
+     Result.Y := RelaPose.m32;
+end;
+
+procedure TDrawNode.SetRelaPosi( const RelaPosi_:TSingle2D );
 var
    M :TMatrix;
 begin
-     M := Matrix;
+     M := RelaPose;
 
-     M.m31 := Position_.X;
-     M.m32 := Position_.Y;
+     M.m31 := RelaPosi_.X;
+     M.m32 := RelaPosi_.Y;
 
-     Matrix := M;
+     RelaPose := M;
 end;
 
 //------------------------------------------------------------------------------
@@ -293,7 +298,7 @@ begin
 
      with Canvas_ do
      begin
-          MultiplyMatrix( Self.Matrix );
+          MultiplyMatrix( Self.RelaPose );
 
           if Assigned( _Stroke ) then Stroke.Assign( _Stroke );
           if Assigned( _Filler ) then Fill  .Assign( _Filler );
@@ -362,24 +367,24 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDrawRoot.GetMatrix :TMatrix;
+function TDrawRoot.GetRelaPose :TMatrix;
 begin
      Result := TMatrix.Identity;
 end;
 
-procedure TDrawRoot.SetMatrix( const Matrix_:TMatrix );
+procedure TDrawRoot.SetRelaPose( const RelaPose_:TMatrix );
 begin
 
 end;
 
 //------------------------------------------------------------------------------
 
-function TDrawRoot.GetAbsoMatrix :TMatrix;
+function TDrawRoot.GetAbsoPose :TMatrix;
 begin
-     Result := Matrix;
+     Result := RelaPose;
 end;
 
-procedure TDrawRoot.SetAbsoMatrix( const GlobalMatrix_:TMatrix );
+procedure TDrawRoot.SetAbsoPose( const AbsoPose_:TMatrix );
 begin
 
 end;
@@ -510,14 +515,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDrawShape.GetMatrix :TMatrix;
+function TDrawShape.GetRelaPose :TMatrix;
 begin
-     Result := _Matrix;
+     Result := _RelaPose;
 end;
 
-procedure TDrawShape.SetMatrix( const Matrix_:TMatrix );
+procedure TDrawShape.SetRelaPose( const RelaPose_:TMatrix );
 begin
-     _Matrix := Matrix_;
+     _RelaPose := RelaPose_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -534,7 +539,7 @@ procedure TDrawShape.AfterConstruction;
 begin
      inherited;
 
-     Matrix := TMatrix.Identity;
+     RelaPose := TMatrix.Identity;
 end;
 
 destructor TDrawShape.Destroy;
@@ -580,7 +585,7 @@ end;
 
 procedure TDrawCamera.Render( const Canvas_:TCanvas );
 begin
-     Canvas_.MultiplyMatrix( AbsoMatrix.Inverse );
+     Canvas_.MultiplyMatrix( AbsoPose.Inverse );
 
      ( Self.RootNode as TDrawScene ).Draw( Canvas_ );
 end;
