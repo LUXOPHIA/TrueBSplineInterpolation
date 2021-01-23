@@ -37,6 +37,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property Interv :Single read GetInterv write SetInterv;
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScalX
@@ -50,6 +51,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        procedure AfterConstruction; override;
        destructor Destroy; override;
+       ///// プロパティ
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScalY
@@ -63,6 +66,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        procedure AfterConstruction; override;
        destructor Destroy; override;
+       ///// プロパティ
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
@@ -83,6 +88,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property ScalX :TDrawScalX read _ScalX;
        property ScalY :TDrawScalY read _ScalY;
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisX
@@ -96,6 +102,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        procedure AfterConstruction; override;
        destructor Destroy; override;
+       ///// プロパティ
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisY
@@ -109,6 +117,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        procedure AfterConstruction; override;
        destructor Destroy; override;
+       ///// プロパティ
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxis
@@ -127,6 +137,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property AxisX :TDrawAxisX read _AxisX;
        property AxisY :TDrawAxisY read _AxisY;
+       ///// メソッド
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrids
@@ -149,6 +160,32 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Grid1 :TDrawGrid read _Grid1;
        property Grid2 :TDrawGrid read _Grid2;
        property Grid3 :TDrawGrid read _Grid3;
+       ///// メソッド
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCopys1D
+
+     TDrawCopys1D = class( TDrawPosCopys )
+     private
+     protected
+       _MinI :Integer;
+       _MaxI :Integer;
+       ///// アクセス
+       function GetMinI :Integer; virtual;
+       procedure SetMinI( const MinI_:Integer ); virtual;
+       function GetMaxI :Integer; virtual;
+       procedure SetMaxI( const MaxI_:Integer ); virtual;
+       function GetPosYs( const I_:Integer ) :Single; virtual;
+       procedure SetPosYs( const I_:Integer; const PosYs_:Single ); virtual;
+     public
+       constructor Create; override;
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property MinI                      :Integer read GetMinI  write SetMinI ;
+       property MaxI                      :Integer read GetMaxI  write SetMaxI ;
+       property PosYs[ const I_:Integer ] :Single  read GetPosYs write SetPosYs;
+       ///// メソッド
      end;
 
 implementation //############################################################### ■
@@ -199,6 +236,8 @@ begin
 
      inherited;
 end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScalX
 
@@ -254,6 +293,8 @@ begin
      inherited;
 end;
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawScalY
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -308,6 +349,8 @@ begin
      inherited;
 end;
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrid
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -359,6 +402,8 @@ begin
      inherited;
 end;
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisX
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -400,6 +445,8 @@ begin
 
      inherited;
 end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxisY
 
@@ -443,6 +490,8 @@ begin
      inherited;
 end;
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawAxis
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -482,6 +531,8 @@ begin
 
      inherited;
 end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawGrids
 
@@ -552,5 +603,73 @@ begin
 
      inherited;
 end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawCopys1D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawCopys1D.GetMinI :Integer;
+begin
+     Result := _MinI;
+end;
+
+procedure TDrawCopys1D.SetMinI( const MinI_:Integer );
+begin
+     _MinI := MinI_;  PosesN := MaxI - MinI + 1;
+end;
+
+function TDrawCopys1D.GetMaxI :Integer;
+begin
+     Result := _MaxI;
+end;
+
+procedure TDrawCopys1D.SetMaxI( const MaxI_:Integer );
+begin
+     _MaxI := MaxI_;  PosesN := MaxI - MinI + 1;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawCopys1D.GetPosYs( const I_:Integer ) :Single;
+begin
+     Result := Poses[ I_ - MinI ].Y;
+end;
+
+procedure TDrawCopys1D.SetPosYs( const I_:Integer; const PosYs_:Single );
+begin
+     Poses[ I_ - MinI ] := TSingle2D.Create( I_, PosYs_ );
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawCopys1D.Create;
+begin
+     inherited;
+
+end;
+
+procedure TDrawCopys1D.AfterConstruction;
+begin
+     inherited;
+
+     MinI := 0;
+     MaxI := 0;
+end;
+
+destructor TDrawCopys1D.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 end. //######################################################################### ■
