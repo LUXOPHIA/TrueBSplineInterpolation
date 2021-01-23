@@ -25,7 +25,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _RelaArea :TSingleArea2D;
-       _Opacity  :Single;
        _Stroke   :TStrokeBrush;
        _Filler   :TBrush;
        ///// アクセス
@@ -37,8 +36,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetAbsoPose( const AbsoPose_:TMatrix ); virtual;
        function GetRelaPosi :TSingle2D; virtual;
        procedure SetRelaPosi( const RelaPosi_:TSingle2D ); virtual;
-       function GetOpacity :Single; virtual;
-       procedure SetOpacity( const Opacity_:Single ); virtual;
        function GetStroke :TStrokeBrush; virtual;
        procedure SetStroke( const Stroke_:TStrokeBrush ); virtual;
        function GetFiller :TBrush; virtual;
@@ -59,7 +56,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property RelaPosi :TSingle2D     read GetRelaPosi write SetRelaPosi;
        property Position :TSingle2D     read GetRelaPosi write SetRelaPosi;
        property AbsoPose :TMatrix       read GetAbsoPose write SetAbsoPose;
-       property Opacity  :Single        read GetOpacity  write SetOpacity ;
        property Stroke   :TStrokeBrush  read GetStroke   write SetStroke  ;
        property Filler   :TBrush        read GetFiller   write SetFiller  ;
        ///// メソッド
@@ -111,7 +107,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property BackColor :TAlphaColor read GetBackColor write SetBackColor;
+       property Stroke    :TStrokeBrush read GetStroke                      ;
+       property Filler    :TBrush       read GetFiller                      ;
+       property BackColor :TAlphaColor  read GetBackColor write SetBackColor;
        ///// メソッド
      end;
 
@@ -121,13 +119,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        _State :TCanvasSaveState;
      protected
+       _Opacity :Single;
        ///// アクセス
+       function GetOpacity :Single; virtual;
+       procedure SetOpacity( const Opacity_:Single ); virtual;
        ///// メソッド
      public
        constructor Create; override;
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
+       property Opacity :Single read GetOpacity write SetOpacity;
        ///// メソッド
        procedure Draw( const Canvas_:TCanvas ); override;
      end;
@@ -270,18 +272,6 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TDrawNode.GetOpacity :Single;
-begin
-     Result := _Opacity;
-end;
-
-procedure TDrawNode.SetOpacity( const Opacity_:Single );
-begin
-     _Opacity := Opacity_;
-end;
-
-//------------------------------------------------------------------------------
-
 function TDrawNode.GetStroke :TStrokeBrush;
 begin
      if Assigned( _Stroke ) then Result :=       _Stroke
@@ -337,16 +327,15 @@ constructor TDrawNode.Create;
 begin
      inherited;
 
+     _Stroke := nil;
+     _Filler := nil;
 end;
 
 procedure TDrawNode.AfterConstruction;
 begin
      inherited;
 
-     Area    := TSingleArea2D.Create( -1, -1, +1, +1 );
-     Opacity := 1;
-     Stroke  := nil;
-     Filler  := nil;
+     Area := TSingleArea2D.Create( -1, -1, +1, +1 );
 end;
 
 destructor TDrawNode.Destroy;
@@ -440,6 +429,8 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
+//------------------------------------------------------------------------------
+
 function TDrawScene.GetStroke :TStrokeBrush;
 begin
      Result := _Stroke;
@@ -468,8 +459,6 @@ end;
 
 procedure TDrawScene.DrawBegin( const Canvas_:TCanvas );
 begin
-     inherited;
-
      with Canvas_ do
      begin
           Stroke.Assign( _Stroke );
@@ -490,17 +479,19 @@ constructor TDrawScene.Create;
 begin
      inherited;
 
+     _Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Black );
+     _Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.White );
 end;
 
 procedure TDrawScene.AfterConstruction;
 begin
      inherited;
 
-     Stroke := TStrokeBrush.Create( TBrushKind.Solid, TAlphaColors.Black );
-     Filler := TBrush      .Create( TBrushKind.Solid, TAlphaColors.White );
-
-     Stroke.Join := TStrokeJoin.Round;
-     Stroke.Thickness := 0.02;
+     with Stroke do
+     begin
+          Join      := TStrokeJoin.Round;
+          Thickness := 0.02;
+     end;
 
      BackColor := TAlphaColors.White;
 end;
@@ -519,6 +510,16 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
+function TDrawKnot.GetOpacity :Single;
+begin
+     Result := _Opacity;
+end;
+
+procedure TDrawKnot.SetOpacity( const Opacity_:Single );
+begin
+     _Opacity := Opacity_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -534,6 +535,7 @@ procedure TDrawKnot.AfterConstruction;
 begin
      inherited;
 
+     Opacity := 1;
 end;
 
 destructor TDrawKnot.Destroy;
