@@ -46,8 +46,6 @@ implementation //###############################################################
 
 {$R *.fmx}
 
-uses System.Math.Vectors;
-
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -58,23 +56,15 @@ procedure TForm1.InitChart;
 begin
      with _Interp do
      begin
-          _Poins           .MinI := PoinMinI;
-          _Poins           .MaxI := PoinMaxI;
+          _Poins.MinI := PoinMinI;
+          _Poins.MaxI := PoinMaxI;
 
-          CurveChart1      .MinX := CurvMinI;
-          CurveChart1      .MaxX := CurvMaxI;
-
-          CurveChart1.Poins.MinI := PoinMinI;
-          CurveChart1.Poins.MaxI := PoinMaxI;
-
-          CurveChart1.Verts.MinI := VertMinI;
-          CurveChart1.Verts.MaxI := VertMaxI;
-          CurveChart1.Lines.MinX := VertMinI;
-          CurveChart1.Lines.MaxX := VertMaxI;
-
-          CurveChart1.Curv .MinX := CurvMinI;
-          CurveChart1.Curv .MaxX := CurvMaxI;
-          CurveChart1.Curv .DivN := 8 * ( CurvMaxI - CurvMinI );
+          CurveChart1.PoinMinI := PoinMinI;
+          CurveChart1.PoinMaxI := PoinMaxI;
+          CurveChart1.VertMinI := VertMinI;
+          CurveChart1.VertMaxI := VertMaxI;
+          CurveChart1.CurvMinI := CurvMinI;
+          CurveChart1.CurvMaxI := CurvMaxI;
      end;
 end;
 
