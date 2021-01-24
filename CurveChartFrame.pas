@@ -25,8 +25,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _CurvMaxI :Integer;
        _Scene    :TDrawScene;
        _Grids    :TDrawGrids;
-       _Lines    :TDrawLines1D;
-       _Verts    :TDrawCopys1D;
+       _Verts    :TDrawChain1D;
        _Curv     :TDrawCurv1D;
        _Poins    :TDrawPoins1D;
        ///// アクセス
@@ -56,8 +55,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property VertMaxI :Integer      read GetVertMaxI write SetVertMaxI;
        property CurvMinI :Integer      read GetCurvMinI write SetCurvMinI;
        property CurvMaxI :Integer      read GetCurvMaxI write SetCurvMaxI;
-       property Lines    :TDrawLines1D read   _Lines                     ;
-       property Verts    :TDrawCopys1D read   _Verts                     ;
+       property Verts    :TDrawChain1D read   _Verts                     ;
        property Curv     :TDrawCurv1D  read   _Curv                      ;
        property Poins    :TDrawPoins1D read   _Poins                     ;
      end;
@@ -150,9 +148,6 @@ begin
           Grid3.Area := TSingleArea2D.Create( CurvMinI  , -2, CurvMaxI  , +2 );
      end;
 
-     Lines.MinX := VertMinI;
-     Lines.MaxX := VertMaxI;
-
      Verts.MinI := VertMinI;
      Verts.MaxI := VertMaxI;
 
@@ -175,27 +170,29 @@ begin
      Camera := TDrawCamera.Create( _Scene );
 
      _Grids := TDrawGrids  .Create( _Scene );
-     _Lines := TDrawLines1D.Create( _Scene );
-     _Verts := TDrawCopys1D.Create( _Scene );
+     _Verts := TDrawChain1D.Create( _Scene );
      _Curv  := TDrawCurv1D .Create( _Scene );
      _Poins := TDrawPoins1D.Create( _Scene );
 
-     with _Lines do
+     with _Verts do
      begin
-          Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
-          Stroke.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
-          Stroke.Cap       := TStrokeCap.Round;
-          Stroke.Thickness := 0.02;
-     end;
+          with Lines do
+          begin
+               Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
+               Stroke.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
+               Stroke.Cap       := TStrokeCap.Round;
+               Stroke.Thickness := 0.02;
+          end;
 
-     with TDrawCirc.Create( _Verts ) do
-     begin
-          Radius           := 0.1;
-          Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
-          Stroke.Color     := TAlphaColorF.Create( 1, 1, 1 ).ToAlphaColor;
-          Stroke.Thickness := 0.05;
-          Filler           := TBrush.Create( TBrushKind.Solid, 1 );
-          Filler.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
+          with Poins.Poin do
+          begin
+               Radius           := 0.1;
+               Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
+               Stroke.Color     := TAlphaColorF.Create( 1, 1, 1 ).ToAlphaColor;
+               Stroke.Thickness := 0.05;
+               Filler           := TBrush.Create( TBrushKind.Solid, 1 );
+               Filler.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
+          end;
      end;
 
      with _Curv do
