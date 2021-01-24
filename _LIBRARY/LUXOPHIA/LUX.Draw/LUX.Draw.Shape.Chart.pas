@@ -214,18 +214,45 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// アクセス
        function GetPosYs( const I_:Integer ) :Single;
        procedure SetPosYs( const I_:Integer; const PosYs_:Single );
-       function GetMinX :Integer;
-       procedure SetMinX( const MinX_:Integer );
-       function GetMaxX :Integer;
-       procedure SetMaxX( const MaxX_:Integer );
+       function GetMinI :Integer;
+       procedure SetMinI( const MinI_:Integer );
+       function GetMaxI :Integer;
+       procedure SetMaxI( const MaxI_:Integer );
        ///// メソッド
      public
        ///// プロパティ
        property PosYs[ const I_:Integer ] :Single  read GetPosYs write SetPosYs; default;
-       property MinX                      :Integer read GetMinX  write SetMinX ;
-       property MaxX                      :Integer read GetMaxX  write SetMaxX ;
+       property MinI                      :Integer read GetMinI  write SetMinI ;
+       property MaxI                      :Integer read GetMaxI  write SetMaxI ;
        ///// メソッド
        procedure Func( const Func_:TConstFunc<Integer,Single> );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawChain1D
+
+     TDrawChain1D = class( TDrawShape )
+     private
+     protected
+       _Poins :TDrawPoins1D;
+       _Lines :TDrawLines1D;
+       ///// アクセス
+       function GetPosYs( const I_:Integer ) :Single;
+       procedure SetPosYs( const I_:Integer; const PosYs_:Single );
+       function GetMinI :Integer;
+       procedure SetMinI( const MinI_:Integer );
+       function GetMaxI :Integer;
+       procedure SetMaxI( const MaxI_:Integer );
+     public
+       constructor Create; override;
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property PosYs[ const I_:Integer ] :Single       read GetPosYs write SetPosYs; default;
+       property MinI                      :Integer      read GetMinI  write SetMinI ;
+       property MaxI                      :Integer      read GetMaxI  write SetMaxI ;
+       property Poins                     :TDrawPoins1D read   _Poins               ;
+       property Lines                     :TDrawLines1D read   _Lines               ;
+       ///// メソッド
      end;
 
 implementation //############################################################### ■
@@ -756,34 +783,34 @@ end;
 
 function TDrawLines1D.GetPosYs( const I_:Integer ) :Single;
 begin
-     Result := Poins[ I_ - MinX ].Y;
+     Result := Poins[ I_ - MinI ].Y;
 end;
 
 procedure TDrawLines1D.SetPosYs( const I_:Integer; const PosYs_:Single );
 begin
-     Poins[ I_ - MinX ] := TSingle2D.Create( I_, PosYs_ );
+     Poins[ I_ - MinI ] := TSingle2D.Create( I_, PosYs_ );
 end;
 
 //------------------------------------------------------------------------------
 
-function TDrawLines1D.GetMinX :Integer;
+function TDrawLines1D.GetMinI :Integer;
 begin
      Result := _MinX;
 end;
 
-procedure TDrawLines1D.SetMinX( const MinX_:Integer );
+procedure TDrawLines1D.SetMinI( const MinI_:Integer );
 begin
-     _MinX := MinX_;  PoinsN := MaxX - MinX + 1;
+     _MinX := MinI_;  PoinsN := MaxI - MinI + 1;
 end;
 
-function TDrawLines1D.GetMaxX :Integer;
+function TDrawLines1D.GetMaxI :Integer;
 begin
      Result := _MaxX;
 end;
 
-procedure TDrawLines1D.SetMaxX( const MaxX_:Integer );
+procedure TDrawLines1D.SetMaxI( const MaxI_:Integer );
 begin
-     _MaxX := MaxX_;  PoinsN := MaxX - MinX + 1;
+     _MaxX := MaxI_;  PoinsN := MaxI - MinI + 1;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -796,7 +823,76 @@ procedure TDrawLines1D.Func( const Func_:TConstFunc<Integer,Single> );
 var
    I :Integer;
 begin
-     for I := MinX to MaxX do PosYs[ I ] := Func_( I );
+     for I := MinI to MaxI do PosYs[ I ] := Func_( I );
 end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawChain1D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TDrawChain1D.GetPosYs( const I_:Integer ) :Single;
+begin
+     Result := _Poins.PosYs[ I_ ];
+end;
+
+procedure TDrawChain1D.SetPosYs( const I_:Integer; const PosYs_:Single );
+begin
+     _Poins.PosYs[ I_ ] := PosYs_;
+     _Lines.PosYs[ I_ ] := PosYs_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDrawChain1D.GetMinI :Integer;
+begin
+     Result := _Poins.MinI;
+end;
+
+procedure TDrawChain1D.SetMinI( const MinI_:Integer );
+begin
+     _Poins.MinI := MinI_;
+     _Lines.MinI := MinI_;
+end;
+
+function TDrawChain1D.GetMaxI :Integer;
+begin
+     Result := _Poins.MaxI;
+end;
+
+procedure TDrawChain1D.SetMaxI( const MaxI_:Integer );
+begin
+     _Poins.MaxI := MaxI_;
+     _Lines.MaxI := MaxI_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawChain1D.Create;
+begin
+     inherited;
+
+     _Poins := TDrawPoins1D.Create( Self );
+     _Lines := TDrawLines1D.Create( Self );
+end;
+
+procedure TDrawChain1D.AfterConstruction;
+begin
+     inherited;
+
+end;
+
+destructor TDrawChain1D.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 end. //######################################################################### ■
