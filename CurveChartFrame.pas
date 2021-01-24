@@ -17,19 +17,31 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TCurveChart = class( TDrawViewer )
      private
        { private 宣言 }
-       _MinX  :Integer;
-       _MaxX  :Integer;
-       _Scene :TDrawScene;
-       _Grids :TDrawGrids;
-       _Poins :TDrawCopys1D;
-       _Verts :TDrawCopys1D;
-       _Lines :TDrawLines1D;
-       _Curv  :TDrawCurv1D;
+       _PoinMinI :Integer;
+       _PoinMaxI :Integer;
+       _VertMinI :Integer;
+       _VertMaxI :Integer;
+       _CurvMinI :Integer;
+       _CurvMaxI :Integer;
+       _Scene    :TDrawScene;
+       _Grids    :TDrawGrids;
+       _Lines    :TDrawLines1D;
+       _Verts    :TDrawCopys1D;
+       _Curv     :TDrawCurv1D;
+       _Poins    :TDrawPoins1D;
        ///// アクセス
-       function GetMinX :Integer;
-       procedure SetMinX( const MinX_:Integer );
-       function GetMaxX :Integer;
-       procedure SetMaxX( const MaxX_:Integer );
+       function GetPoinMinI :Integer;
+       procedure SetPoinMinI( const PoinMinI_:Integer );
+       function GetPoinMaxI :Integer;
+       procedure SetPoinMaxI( const PoinMaxI_:Integer );
+       function GetVertMinI :Integer;
+       procedure SetVertMinI( const VertMinI_:Integer );
+       function GetVertMaxI :Integer;
+       procedure SetVertMaxI( const VertMaxI_:Integer );
+       function GetCurvMinI :Integer;
+       procedure SetCurvMinI( const CurvMinI_:Integer );
+       function GetCurvMaxI :Integer;
+       procedure SetCurvMaxI( const CurvMaxI_:Integer );
        ///// メソッド
        procedure InitChart;
      public
@@ -38,12 +50,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property MinX  :Integer      read GetMinX  write SetMinX;
-       property MaxX  :Integer      read GetMaxX  write SetMaxX;
-       property Poins :TDrawCopys1D read   _Poins              ;
-       property Verts :TDrawCopys1D read   _Verts              ;
-       property Lines :TDrawLines1D read   _Lines              ;
-       property Curv  :TDrawCurv1D  read   _Curv               ;
+       property PoinMinI :Integer      read GetPoinMinI write SetPoinMinI;
+       property PoinMaxI :Integer      read GetPoinMaxI write SetPoinMaxI;
+       property VertMinI :Integer      read GetVertMinI write SetVertMinI;
+       property VertMaxI :Integer      read GetVertMaxI write SetVertMaxI;
+       property CurvMinI :Integer      read GetCurvMinI write SetCurvMinI;
+       property CurvMaxI :Integer      read GetCurvMaxI write SetCurvMaxI;
+       property Lines    :TDrawLines1D read   _Lines                     ;
+       property Verts    :TDrawCopys1D read   _Verts                     ;
+       property Curv     :TDrawCurv1D  read   _Curv                      ;
+       property Poins    :TDrawPoins1D read   _Poins                     ;
      end;
 
 implementation //############################################################### ■
@@ -60,39 +76,92 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TCurveChart.GetMinX :Integer;
+function TCurveChart.GetPoinMinI :Integer;
 begin
-     Result := _MinX;
+     Result := _PoinMinI;
 end;
 
-procedure TCurveChart.SetMinX( const MinX_:Integer );
+procedure TCurveChart.SetPoinMinI( const PoinMinI_:Integer );
 begin
-     _MinX := MinX_;  InitChart;
+     _PoinMinI := PoinMinI_;  InitChart;
 end;
 
-function TCurveChart.GetMaxX :Integer;
+function TCurveChart.GetPoinMaxI :Integer;
 begin
-     Result := _MaxX;
+     Result := _PoinMaxI;
 end;
 
-procedure TCurveChart.SetMaxX( const MaxX_:Integer );
+procedure TCurveChart.SetPoinMaxI( const PoinMaxI_:Integer );
 begin
-     _MaxX := MaxX_;  InitChart;
+     _PoinMaxI := PoinMaxI_;  InitChart;
+end;
+
+function TCurveChart.GetVertMinI :Integer;
+begin
+     Result := _VertMinI;
+end;
+
+procedure TCurveChart.SetVertMinI( const VertMinI_:Integer );
+begin
+     _VertMinI := VertMinI_;  InitChart;
+end;
+
+function TCurveChart.GetVertMaxI :Integer;
+begin
+     Result := _VertMaxI;
+end;
+
+procedure TCurveChart.SetVertMaxI( const VertMaxI_:Integer );
+begin
+     _VertMaxI := VertMaxI_;  InitChart;
+end;
+
+function TCurveChart.GetCurvMinI :Integer;
+begin
+     Result := _CurvMinI;
+end;
+
+procedure TCurveChart.SetCurvMinI( const CurvMinI_:Integer );
+begin
+     _CurvMinI := CurvMinI_;  InitChart;
+end;
+
+function TCurveChart.GetCurvMaxI :Integer;
+begin
+     Result := _CurvMaxI;
+end;
+
+procedure TCurveChart.SetCurvMaxI( const CurvMaxI_:Integer );
+begin
+     _CurvMaxI := CurvMaxI_;  InitChart;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TCurveChart.InitChart;
 begin
-     Camera.Area := TSingleArea2D.Create( MinX-2, -3, MaxX+2, +3 );
+     Camera.Area := TSingleArea2D.Create( VertMinI-1, -3, VertMaxI+1, +3 );
 
      with _Grids do
      begin
-          Axis .Area := TSingleArea2D.Create( MinX-2, -3, MaxX+2, +3 );
-          Grid1.Area := TSingleArea2D.Create( MinX-1, -2, MaxX+1, +2 );
-          Grid2.Area := TSingleArea2D.Create( MinX  , -2, MaxX  , +2 );
-          Grid3.Area := TSingleArea2D.Create( MinX  , -2, MaxX  , +2 );
+          Axis .Area := TSingleArea2D.Create( VertMinI-1, -3, VertMaxI+1, +3 );
+          Grid1.Area := TSingleArea2D.Create( VertMinI  , -2, VertMaxI  , +2 );
+          Grid2.Area := TSingleArea2D.Create( CurvMinI  , -2, CurvMaxI  , +2 );
+          Grid3.Area := TSingleArea2D.Create( CurvMinI  , -2, CurvMaxI  , +2 );
      end;
+
+     Lines.MinX := VertMinI;
+     Lines.MaxX := VertMaxI;
+
+     Verts.MinI := VertMinI;
+     Verts.MaxI := VertMaxI;
+
+     Curv .MinX := CurvMinI;
+     Curv .MaxX := CurvMaxI;
+     Curv .DivN := 8 * ( CurvMaxI - CurvMinI );
+
+     Poins.MinI := PoinMinI;
+     Poins.MaxI := PoinMaxI;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -109,15 +178,14 @@ begin
      _Lines := TDrawLines1D.Create( _Scene );
      _Verts := TDrawCopys1D.Create( _Scene );
      _Curv  := TDrawCurv1D .Create( _Scene );
-     _Poins := TDrawCopys1D.Create( _Scene );
+     _Poins := TDrawPoins1D.Create( _Scene );
 
-     with TDrawCirc.Create( _Poins ) do
+     with _Lines do
      begin
-          Radius           := 0.1;
           Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
-          Stroke.Color     := TAlphaColorF.Create( 255/255, 133/255, 133/255 ).ToAlphaColor;
-          Stroke.Thickness := 0.05;
-          Filler           := TBrush.Create( TBrushKind.None, 1 );
+          Stroke.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
+          Stroke.Cap       := TStrokeCap.Round;
+          Stroke.Thickness := 0.02;
      end;
 
      with TDrawCirc.Create( _Verts ) do
@@ -130,14 +198,6 @@ begin
           Filler.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
      end;
 
-     with _Lines do
-     begin
-          Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
-          Stroke.Color     := TAlphaColorF.Create( 115/255, 222/255, 115/255 ).ToAlphaColor;
-          Stroke.Cap       := TStrokeCap.Round;
-          Stroke.Thickness := 0.02;
-     end;
-
      with _Curv do
      begin
           Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
@@ -145,14 +205,27 @@ begin
           Stroke.Cap       := TStrokeCap.Round;
           Stroke.Thickness := 0.1;
      end;
+
+     with _Poins.Poin do
+     begin
+          Radius           := 0.1;
+          Stroke           := TStrokeBrush.Create( TBrushKind.Solid, 1 );
+          Stroke.Color     := TAlphaColorF.Create( 255/255, 133/255, 133/255 ).ToAlphaColor;
+          Stroke.Thickness := 0.05;
+          Filler           := TBrush.Create( TBrushKind.None, 1 );
+     end;
 end;
 
 procedure TCurveChart.AfterConstruction;
 begin
      inherited;
 
-     MinX := 0;
-     MaxX := 8;
+     CurvMinI := 0;
+     CurvMaxI := 8;
+     VertMinI := CurvMinI - 1;
+     VertMaxI := CurvMaxI + 1;
+     PoinMinI := VertMinI - 4;
+     PoinMaxI := VertMaxI + 4;
 end;
 
 destructor TCurveChart.Destroy;
