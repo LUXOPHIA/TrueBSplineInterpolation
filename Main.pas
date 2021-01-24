@@ -31,8 +31,8 @@ type
     _FrameI :Integer;
   public
     { public 宣言 }
-    _Poins  :TGenPoins;
-    _Interp :TSingleBSInterp;
+    _Poins :TGenPoins;
+    _Curve :TSingleBSInterp;
     ///// メソッド
     procedure InitChart;
     procedure MakePoins( const Td_:Single );
@@ -54,7 +54,7 @@ implementation //###############################################################
 
 procedure TForm1.InitChart;
 begin
-     with _Interp do
+     with _Curve do
      begin
           _Poins.MinI := PoinMinI;
           _Poins.MaxI := PoinMaxI;
@@ -78,9 +78,9 @@ begin
           begin
                for I := MinI to MaxI do
                begin
-                    _Interp.Poins[ I ] := _Poins.Poins( I, Td_ );
+                    _Curve.Poins[ I ] := _Poins.Poins( I, Td_ );
 
-                    PosYs[ I ] := _Interp.Poins[ I ];
+                    PosYs[ I ] := _Curve.Poins[ I ];
                end;
           end;
      end;
@@ -95,7 +95,7 @@ begin
      begin
           with Verts do
           begin
-               for I := MinI to MaxI do PosYs[ I ] := _Interp.Verts[ I ];
+               for I := MinI to MaxI do PosYs[ I ] := _Curve.Verts[ I ];
           end;
 
           with Curv  do
@@ -104,7 +104,7 @@ begin
                begin
                     X := ( MaxX - MinX ) * I / DivN + MinX;
 
-                    Poins[ I ] := TSingle2D.Create( X, _Interp.Curv( X ) );
+                    Poins[ I ] := TSingle2D.Create( X, _Curve.Curv( X ) );
                end;
           end;
      end;
@@ -116,9 +116,9 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
      _Poins := TGenPoins.Create;
 
-     _Interp := TSingleBSInterp.Create;
+     _Curve := TSingleBSInterp.Create;
 
-     with _Interp do
+     with _Curve do
      begin
           FilterW  := Round( SpinBoxFN.Value );
           CurvMinI := 0;
@@ -132,7 +132,7 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _Interp.Free;
+     _Curve.Free;
 
      _Poins.Free;
 end;
@@ -141,14 +141,14 @@ end;
 
 procedure TForm1.SpinBoxFNChange(Sender: TObject);
 begin
-     _Interp.FilterW := Round( SpinBoxFN.Value );
+     _Curve.FilterW := Round( SpinBoxFN.Value );
 
      InitChart;
 end;
 
 procedure TForm1.SpinBoxCNChange(Sender: TObject);
 begin
-     _Interp.CurvMaxI := Round( SpinBoxCN.Value );
+     _Curve.CurvMaxI := Round( SpinBoxCN.Value );
 
      InitChart;
 end;
