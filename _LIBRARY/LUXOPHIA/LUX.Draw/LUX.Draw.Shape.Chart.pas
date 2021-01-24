@@ -188,6 +188,22 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
      end;
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPoins1D
+
+     TDrawPoins1D = class( TDrawCopys1D )
+     private
+     protected
+       _Poin :TDrawCirc;
+       ///// アクセス
+     public
+       constructor Create; override;
+       procedure AfterConstruction; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Poin :TDrawCirc read _Poin;
+       ///// メソッド
+     end;
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawLines1D
 
      TDrawLines1D = class( TDrawCurv )
@@ -689,6 +705,40 @@ begin
 end;
 
 destructor TDrawCopys1D.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawPoins1D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDrawPoins1D.Create;
+begin
+     inherited;
+
+     _Poin := TDrawCirc.Create( Self );
+end;
+
+procedure TDrawPoins1D.AfterConstruction;
+begin
+     inherited;
+
+     Poin.Radius := 0.1;
+end;
+
+destructor TDrawPoins1D.Destroy;
 begin
 
      inherited;
