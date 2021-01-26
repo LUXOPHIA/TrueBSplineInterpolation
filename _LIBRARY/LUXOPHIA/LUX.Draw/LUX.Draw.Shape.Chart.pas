@@ -877,8 +877,8 @@ constructor TDrawChain1D.Create;
 begin
      inherited;
 
-     _Poins := TDrawPoins1D.Create( Self );
      _Lines := TDrawLines1D.Create( Self );
+     _Poins := TDrawPoins1D.Create( Self );
 end;
 
 procedure TDrawChain1D.AfterConstruction;
