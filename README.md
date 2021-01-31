@@ -29,7 +29,7 @@ The frequency distribution of the B-Spline basis is defined as the power of the 
 -->
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-## 2. B-Spline Basis is Discrete Filter
+## 2. B-Spline Basis as Discrete Filter
 Although the B-Spline basis is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-Spline basis function (DBS: discrete B-Spline basis)**.  
 ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数（ＤＢＳ：離散ＢＳ基底）** の周波数特性に依存している。
 
@@ -51,7 +51,7 @@ The frequency distribution of the discrete B-Spline basis is periodic. Still, ab
 -->
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-## 3. High frequency component of control point
+## 3. High frequency component of control points
 In order to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-Spline basis. In other words, its frequency distribution is the inverse of that in the discrete B-Spline basis.  
 制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底の低域通過特性を打ち消す **離散高域強調フィルタ（ＤＨＥ）** を設計すればよい。つまりその周波数分布は、離散ＢＳ基底のそれの逆数となる。
 
