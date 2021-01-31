@@ -6,8 +6,8 @@ A method to generate control points (green) for a uniform B-Spline curve (blue) 
 
 ----
 ## 1. B-Spline Curve is not Interpolation
-The uniform B-Spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-Spline basis functions (CBS, hereinafter called “B-Spline basis”)** with different weights (control point positions) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-Spline basis as a filter.  
-一様Ｂスプライン曲線（ＢＳＣ）は、重み（制御点位置）の異なる **一様Ｂスプライン基底関数（ＣＢＳ，以降“ＢＳ基底”）** を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列（ＣＰｓ）を離散信号と見なせば、ＢＳ基底をフィルタとして用いる一種の信号処理であるといえる。
+The uniform B-Spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-Spline basis functions (CBS: B-Spline basis)** with different weights (control point positions) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-Spline basis as a filter.  
+一様Ｂスプライン曲線（ＢＳＣ）は、重み（制御点位置）の異なる **一様Ｂスプライン基底関数（ＣＢＳ：ＢＳ基底）** を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列（ＣＰｓ）を離散信号と見なせば、ＢＳ基底をフィルタとして用いる一種の信号処理であるといえる。
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
 
@@ -30,8 +30,8 @@ The frequency distribution of the B-Spline basis is defined as the power of the 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
 ## 2. B-Spline Basis is Discrete Filter
-Although the B-Spline basis is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-Spline basis function (DBS, hereinafter called “discrete B-Spline basis”)**.  
-ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数（ＤＢＳ，以降“離散ＢＳ基底”）** の周波数特性に依存している。
+Although the B-Spline basis is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-Spline basis function (DBS: discrete B-Spline basis)**.  
+ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数（ＤＢＳ：離散ＢＳ基底）** の周波数特性に依存している。
 
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
