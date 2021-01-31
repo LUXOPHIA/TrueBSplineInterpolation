@@ -16,7 +16,7 @@ The B-Spline basis can freely change the degree of the polynomial. In zero-order
 
 > ```CBS[ N_, X_ ] = BSplineBasis[ N-1, (X+N/2)/N ];```  @ Wolfram Language
 >
-> Ｎ：order(階数) ＝ 1 + degree(次数)
+> N：Order（階数）= 1 + Degree（次数）
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
