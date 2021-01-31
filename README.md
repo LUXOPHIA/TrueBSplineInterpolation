@@ -6,7 +6,7 @@ A method to generate control points (green) for a uniform B-spline curve (blue) 
 
 ----
 ## 1. B-spline Curve is not Interpolation
-The uniform B-spline Curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-spline basis functions (CBS)** with different weights (position of control point) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-spline basis function as a filter.  
+The uniform B-spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-spline basis functions (CBS)** with different weights (control point positions) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-spline basis function as a filter.  
 一様Ｂスプライン曲線(BSC) は、重み(制御点位置) の異なる **一様Ｂスプライン基底関数(CBS)**（以降“ＢＳ基底関数”）を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列(CPs) を離散信号と見なせば、ＢＳ基底関数をフィルタとして用いる一種の信号処理であるといえる。
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
@@ -30,7 +30,7 @@ The frequency distribution of the B-spline basis function is defined as the powe
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
 ## 2. B-spline Basis is Discrete Filter
-Although the B-spline basis function (CBS) is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-spline basis functions (DBS)**.  
+Although the uniform B-spline basis function is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-spline basis functions (DBS)**.  
 ＢＳ基底関数は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散ＢＳ基底関数(DBS)** の周波数特性に依存している。
 
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
@@ -106,7 +106,7 @@ Furthermore, since the original function's sign is alternating positive and nega
 -->
 ![](./--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(SD).svg)
 
-The discrete high-enhancement filter (DHE) is an infinite impulse response (IIR) filter. Therefore, it is necessary to cut off the coefficient sequence with an appropriate number of taps in a practical implementation.  
+The discrete high-enhancement filter is an infinite impulse response (IIR) filter. Therefore, it is necessary to cut off the coefficient sequence with an appropriate number of taps in a practical implementation.  
 離散高域強調フィルタは、無限インパルス応答(IIR)フィルタである。ゆえに実際の実装では、適当なタップ数で打ち切る必要がある。
 
 > | DHE 3 | DHE 4 |
