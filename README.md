@@ -1,14 +1,13 @@
 # Uniform B-spline Interpolation
 A method to generate control points (green) for a uniform B-spline curve (blue) that **passes through all data points (red)**.  
-**すべての データ点（赤）を通る** 一様Ｂスプライン曲線（青）のための 制御点（緑）を生成する方法。
+**すべての データ点(赤) を通る** 一様Ｂスプライン曲線(青) のための 制御点(緑) を生成する方法。
 
 ![](./--------/_SCREENSHOT/B-Spline%20Interpolation.png)
 
 ----
-## 1. B-spline curve does not pass through all control points.
-
-The uniform B-spline Curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging “**uniform B-spline basis functions (CBS)**” with different weights (position of control point) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-spline basis function as a filter.  
-一様Ｂスプライン曲線（BSC）は、重み（制御点の位置）の異なる“**一様Ｂスプライン基底関数（CBS）**”を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで制御点列（CPs）を離散信号と見なせば、ＢＳ基底関数をフィルタとして用いる一種の信号処理であるといえる。
+## 1. B-spline Curve is not Interpolation
+The uniform B-spline Curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-spline basis functions (CBS)** with different weights (position of control point) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-spline basis function as a filter.  
+一様Ｂスプライン曲線(BSC) は、重み(制御点位置) の異なる **一様Ｂスプライン基底関数(CBS)**（以降“ＢＳ基底関数”）を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列(CPs) を離散信号と見なせば、ＢＳ基底関数をフィルタとして用いる一種の信号処理であるといえる。
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
 
@@ -17,12 +16,12 @@ The B-spline basis function can freely change the degree of the polynomial. In z
 
 > ```CBS[ N_, X_ ] = BSplineBasis[ N-1, (X+N/2)/N ];```  @ Wolfram Language
 >
-> Ｎ：order（階数）＝ degree（次数）+ 1
+> Ｎ：order(階数) ＝ 1 + degree(次数)
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
-The frequency distribution of the B-spline basis function is defined as the power of the Sinc function. Since it has a strong low-pass characteristic, filtering by the B-spline basis function significantly attenuates the high-frequency components inherent in the control point sequence. In other words, the smoothing effect is so strong that the generating curve is very smooth, but it is an “**approximate curve**” that does not pass through any control points.   
-ＢＳ基底関数の周波数分布は、Sinc 関数の累乗として定義される。つまり強い低域通過特性を持っているため、ＢＳ基底関数によるフィルタリングは、制御点列が本来持つ高周波成分を大幅に減衰させる。つまり平滑化の作用が強いため、生成される曲線は非常に滑らかであるが、制御点を通らない“**近似曲線**”となる。
+The frequency distribution of the B-spline basis function is defined as the power of the Sinc function. Since it has a strong low-pass characteristic, filtering by the B-spline basis function significantly attenuates the high-frequency components inherent in the control point sequence. In other words, the smoothing effect is so strong that the generating curve is very smooth, but it is an **approximate curve** that does not pass through any control points.   
+ＢＳ基底関数の周波数分布は、Sinc 関数の累乗として定義される。強い低域通過特性を持っているため、ＢＳ基底関数によるフィルタリングは、制御点列が本来持つ高周波成分を大幅に減衰させる。つまり平滑化の作用が強いため、生成される曲線は非常に滑らかであるが、制御点を通らない **近似曲線** となる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cwidehat%7B%7B%5Crm%20CBS%7D%7D_N%28%5Comega%29%20%3D%20%7B%5Cleft%5B%5Cfrac%7B2%20%5Csin%5Cleft%28%5Cfrac%7B%5Comega%7D%7B2%7D%5Cright%29%7D%7B%5Comega%7D%5Cright%5D%7D%5EN)
 <!--
@@ -30,14 +29,14 @@ The frequency distribution of the B-spline basis function is defined as the powe
 -->
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-## ■ 2. Consider B-spline basis functions as a discrete filter.
+## 2. B-spline Basis is Discrete Filter
 Although the B-spline basis function (CBS) is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-spline basis functions (DBS)**.  
-ＢＳ基底関数（CBS）は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散ＢＳ基底関数（DBS）** の周波数特性に依存している。
+ＢＳ基底関数は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散ＢＳ基底関数(DBS)** の周波数特性に依存している。
 
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
 The frequency distribution of the discrete B-spline basis functions is periodic. Still, above the 3rd-order, it has a low-pass characteristic most attenuated at the Nyquist frequency (π). Conversely, discrete B-spline basis functions below the 2nd-order do not attenuate the high-frequency components, so the generated curve always passes through the control point.  
-離散ＢＳ基底関数の周波数分布は周期性を持つが、３階以上ではナイキスト周波数（π）において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底関数は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
+離散ＢＳ基底関数の周波数分布は周期性を持つが、３階以上では ナイキスト周波数(π) において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底関数は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B4%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;3%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B3%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;2%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B192%7D%20%2876%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B60%7D%20%2826%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%20%5Cend%7Balign*%7D)
 <!--
@@ -52,8 +51,9 @@ The frequency distribution of the discrete B-spline basis functions is periodic.
 -->
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-In other words, to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a “**discrete high-enhancement filter (DHE)**” that cancels the low-pass characteristics of the discrete B-spline basis functions. Its frequency distribution is the inverse of that in the discrete B-spline basis functions.  
-制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底関数の低域通過特性を打ち消す“**離散高域増幅フィルタ（DHE）**”を設計すればよい。その周波数分布は、離散ＢＳ基底関数のそれの逆数となる。
+## 3. High frequency component of control point
+In other words, to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-spline basis functions. Its frequency distribution is the inverse of that in the discrete B-spline basis functions.  
+つまり制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底関数の低域通過特性を打ち消す **離散高域強調フィルタ(DHE)** を設計すればよい。その周波数分布は、離散ＢＳ基底関数のそれの逆数となる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B4%7D%7B%5Ccos%20%28%5Comega%20%29&plus;3%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B3%7D%7B%5Ccos%20%28%5Comega%20%29&plus;2%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B192%7D%7B76%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B60%7D%7B26%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%7D%20%5Cend%7Balign*%7D)
 <!--
@@ -68,8 +68,8 @@ In other words, to pass a curve through the control points, it is necessary to r
 -->
 ![](./--------/_README/Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
 
-A discrete high-enhancement filter (DHE) below the 4th-order can be derived analytically using the [**Hypergeometric function**](https://en.wikipedia.org/wiki/Hypergeometric_function).  
-４階以下の離散高域強調フィルタ(DHE)は、[**超幾何関数**](https://ja.wikipedia.org/wiki/%E8%B6%85%E5%B9%BE%E4%BD%95%E9%96%A2%E6%95%B0)を用いて解析的に導くことができる。
+A discrete high-enhancement filter below the 4th-order can be derived analytically using the [**Hypergeometric function**](https://en.wikipedia.org/wiki/Hypergeometric_function).  
+４階以下の離散高域強調フィルタは、[**超幾何関数**](https://ja.wikipedia.org/wiki/%E8%B6%85%E5%B9%BE%E4%BD%95%E9%96%A2%E6%95%B0)を用いて解析的に導くことができる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%7B%5Crm%20DHE%7D_1%28i%29%26%3D%5Cdelta%20%28i%29%5C%5C%20%7B%5Crm%20DHE%7D_2%28i%29%26%3D%5Cdelta%20%28i%29%5C%5C%20%7B%5Crm%20DHE%7D_3%28i%29%26%3D2%20%5C%2C%20_3%5Ctilde%7BF%7D_2%5Cleft%28%5Cfrac%7B1%7D%7B2%7D%2C1%2C1%3B1-i%2Ci&plus;1%3B-1%5Cright%29%5C%5C%20%7B%5Crm%20DHE%7D_4%28i%29%26%3D3%20%5C%2C%20_3%5Ctilde%7BF%7D_2%5Cleft%28%5Cfrac%7B1%7D%7B2%7D%2C1%2C1%3B1-i%2Ci&plus;1%3B-2%5Cright%29%20%5Cend%7Balign*%7D)
 <!--
@@ -83,7 +83,7 @@ A discrete high-enhancement filter (DHE) below the 4th-order can be derived anal
 ![](./--------/_README/Discrete%20High-Enhancement%20Filter%20function%20(SD).svg)
 
 At first glance, the expression seems complicated, but we can see that the absolute value follows a simple exponential function (CHE).  
-一見複雑な関数に思えるが、絶対値が単純な指数関数(CHE)に沿っていることが分かる。
+一見複雑な関数に思えるが、絶対値が 単純な指数関数(CHE) に沿っていることが分かる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cleft%7C%7B%5Crm%20CHE%7D_3%28x%29%5Cright%7C%26%3D%5Csqrt%7B2%7D%5Cleft%283%20-2%5Csqrt%7B2%7D%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%5C%5C%20%5Cleft%7C%7B%5Crm%20CHE%7D_4%28x%29%5Cright%7C%26%3D%5Csqrt%7B3%7D%5Cleft%282-%5Csqrt%7B3%7D%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%20%5Cend%7Balign*%7D)
 <!--
@@ -95,7 +95,7 @@ At first glance, the expression seems complicated, but we can see that the absol
 ![](./--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(AbsSD).svg)
 
 Furthermore, since the original function's sign is alternating positive and negative, we can eliminate the hypergeometric function and derive a very simple expression (CHE).   
-さらに、元々の関数の符合が正負を交互に繰り返していることから、超幾何関数を排して非常に簡単な式(CHE)を導くことができる。
+さらに、元々の関数の符合が正負を交互に繰り返していることから、超幾何関数を排して 非常に簡単な式(CHE) を導くことができる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%7B%5Crm%20CHE%7D_3%28x%29%26%3D%5Csqrt%7B2%7D%5Cleft%282%5Csqrt%7B2%7D-3%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%5C%5C%20%7B%5Crm%20CHE%7D_4%28x%29%26%3D%5Csqrt%7B3%7D%5Cleft%28%5Csqrt%7B3%7D-2%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%20%5Cend%7Balign*%7D)
 <!--
@@ -107,7 +107,7 @@ Furthermore, since the original function's sign is alternating positive and nega
 ![](./--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(SD).svg)
 
 The discrete high-enhancement filter (DHE) is an infinite impulse response (IIR) filter. Therefore, it is necessary to cut off the coefficient sequence with an appropriate number of taps in a practical implementation.  
-離散高域強調フィルタ(DHE) は、無限インパルス応答(IIR)フィルタである。ゆえに実際の実装では、適当なタップ数でカットする必要がある。
+離散高域強調フィルタは、無限インパルス応答(IIR)フィルタである。ゆえに実際の実装では、適当なタップ数で打ち切る必要がある。
 
 > | DHE 3 | DHE 4 |
 > | :---: | :---: |
@@ -140,7 +140,7 @@ The discrete high-enhancement filter (DHE) is an infinite impulse response (IIR)
 -->
 
 The frequency distribution of a finite impulse response (FIR) filter, i.e., an approximated discrete high-enhancement filter (AHE), is almost identical to that of an ideal discrete high-enhancement filter (DHE). Empirically, 7-taps (±3) for the 3rd-order case and 9-taps (±4) for the 4th-order case are enough to guarantee accuracy.  
-有限インパルス応答(FIR)フィルタ，すなわち近似的な離散高域強調フィルタ(AHE)の周波数分布は、理想的な離散高域強調フィルタ(DHE)のそれとほぼ一致する。経験的には、３次の場合で７タップ（±３）、４次の場合で９タップ（±４）あれば、十分な精度が保証される。
+有限インパルス応答(FIR)フィルタ，すなわち 近似的な離散高域強調フィルタ(AHE) の周波数分布は、理想的な離散高域強調フィルタ(DHE) のそれとほぼ一致する。経験的には、３次の場合で７タップ(±３) 、４次の場合で９タップ(±４) あれば、十分な精度が保証される。
 
 ![](./--------/_README/Approximate%20Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
 ----
