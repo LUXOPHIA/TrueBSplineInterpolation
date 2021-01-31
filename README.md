@@ -1,13 +1,13 @@
 # Uniform B-Spline Interpolation
 A method to generate control points (green) for a uniform B-Spline curve (blue) that **passes through all data points (red)**.  
-**すべての データ点(赤) を通る** 一様Ｂスプライン曲線(青) のための 制御点(緑) を生成する方法。
+**すべての データ点（赤）を通る** 一様Ｂスプライン曲線（青）のための 制御点（緑）を生成する方法。
 
 ![](./--------/_SCREENSHOT/B-Spline%20Interpolation.png)
 
 ----
 ## 1. B-Spline Curve is not Interpolation
 The uniform B-Spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-Spline basis functions (CBS, hereinafter called “B-Spline basis”)** with different weights (control point positions) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-Spline basis as a filter.  
-一様Ｂスプライン曲線(BSC) は、重み(制御点位置) の異なる **一様Ｂスプライン基底関数(CBS, 以降“ＢＳ基底”)** を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列(CPs) を離散信号と見なせば、ＢＳ基底をフィルタとして用いる一種の信号処理であるといえる。
+一様Ｂスプライン曲線（ＢＳＣ）は、重み（制御点位置）の異なる **一様Ｂスプライン基底関数（ＣＢＳ，以降“ＢＳ基底”）** を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列（ＣＰｓ）を離散信号と見なせば、ＢＳ基底をフィルタとして用いる一種の信号処理であるといえる。
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
 
@@ -31,12 +31,12 @@ The frequency distribution of the B-Spline basis is defined as the power of the 
 
 ## 2. B-Spline Basis is Discrete Filter
 Although the B-Spline basis is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-Spline basis function (DBS, hereinafter called “discrete B-Spline basis”)**.  
-ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数(DBS, 以降“離散ＢＳ基底”)** の周波数特性に依存している。
+ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数（ＤＢＳ，以降“離散ＢＳ基底”）** の周波数特性に依存している。
 
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
 The frequency distribution of the discrete B-Spline basis is periodic. Still, above the 3rd-order, it has a low-pass characteristic most attenuated at the Nyquist frequency (π). Conversely, discrete B-Spline basis below the 2nd-order do not attenuate the high-frequency components, so the generated curve always passes through the control point.  
-離散ＢＳ基底の周波数分布は周期性を持つが、３階以上では ナイキスト周波数(π) において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
+離散ＢＳ基底の周波数分布は周期性を持つが、３階以上では ナイキスト周波数（π）において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B4%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;3%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B3%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;2%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B192%7D%20%2876%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B60%7D%20%2826%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%20%5Cend%7Balign*%7D)
 <!--
@@ -53,7 +53,7 @@ The frequency distribution of the discrete B-Spline basis is periodic. Still, ab
 
 ## 3. High frequency component of control point
 In other words, to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-Spline basis. Its frequency distribution is the inverse of that in the discrete B-Spline basis.  
-つまり制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底の低域通過特性を打ち消す **離散高域強調フィルタ(DHE)** を設計すればよい。その周波数分布は、離散ＢＳ基底のそれの逆数となる。
+つまり制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底の低域通過特性を打ち消す **離散高域強調フィルタ（ＤＨＥ）** を設計すればよい。その周波数分布は、離散ＢＳ基底のそれの逆数となる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B4%7D%7B%5Ccos%20%28%5Comega%20%29&plus;3%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B3%7D%7B%5Ccos%20%28%5Comega%20%29&plus;2%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B192%7D%7B76%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B60%7D%7B26%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%7D%20%5Cend%7Balign*%7D)
 <!--
@@ -83,7 +83,7 @@ A discrete high-enhancement filter below the 4th-order can be derived analytical
 ![](./--------/_README/Discrete%20High-Enhancement%20Filter%20function%20(SD).svg)
 
 At first glance, the expression seems complicated, but we can see that the absolute value follows a simple exponential function (CHE).  
-一見複雑な関数に思えるが、絶対値が 単純な指数関数(CHE) に沿っていることが分かる。
+一見複雑な関数に思えるが、絶対値が 単純な指数関数（ＣＨＥ）に沿っていることが分かる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cleft%7C%7B%5Crm%20CHE%7D_3%28x%29%5Cright%7C%26%3D%5Csqrt%7B2%7D%5Cleft%283%20-2%5Csqrt%7B2%7D%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%5C%5C%20%5Cleft%7C%7B%5Crm%20CHE%7D_4%28x%29%5Cright%7C%26%3D%5Csqrt%7B3%7D%5Cleft%282-%5Csqrt%7B3%7D%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%20%5Cend%7Balign*%7D)
 <!--
@@ -95,7 +95,7 @@ At first glance, the expression seems complicated, but we can see that the absol
 ![](./--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(AbsSD).svg)
 
 Furthermore, since the original function's sign is alternating positive and negative, we can eliminate the hypergeometric function and derive a very simple expression (CHE).   
-さらに、元々の関数の符合が正負を交互に繰り返していることから、超幾何関数を排して 非常に簡単な式(CHE) を導くことができる。
+さらに、元々の関数の符合が正負を交互に繰り返していることから、超幾何関数を排して 非常に簡単な式（ＣＨＥ）を導くことができる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%7B%5Crm%20CHE%7D_3%28x%29%26%3D%5Csqrt%7B2%7D%5Cleft%282%5Csqrt%7B2%7D-3%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%5C%5C%20%7B%5Crm%20CHE%7D_4%28x%29%26%3D%5Csqrt%7B3%7D%5Cleft%28%5Csqrt%7B3%7D-2%5Cright%29%5E%7B%5Cleft%7C%20x%5Cright%7C%20%7D%20%5Cend%7Balign*%7D)
 <!--
@@ -107,7 +107,7 @@ Furthermore, since the original function's sign is alternating positive and nega
 ![](./--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(SD).svg)
 
 The discrete high-enhancement filter is an infinite impulse response (IIR) filter. Therefore, it is necessary to cut off the coefficient sequence with an appropriate number of taps in a practical implementation.  
-離散高域強調フィルタは、無限インパルス応答(IIR)フィルタである。ゆえに実際の実装では、適当なタップ数で打ち切る必要がある。
+離散高域強調フィルタは、無限インパルス応答（ＩＩＲ）フィルタである。ゆえに実際の実装では、適当なタップ数で打ち切る必要がある。
 
 > | DHE 3 | DHE 4 |
 > | :---: | :---: |
@@ -140,7 +140,7 @@ The discrete high-enhancement filter is an infinite impulse response (IIR) filte
 -->
 
 The frequency distribution of a finite impulse response (FIR) filter, i.e., an approximated discrete high-enhancement filter (AHE), is almost identical to that of an ideal discrete high-enhancement filter (DHE). Empirically, 7-taps (±3) for the 3rd-order case and 9-taps (±4) for the 4th-order case are enough to guarantee accuracy.  
-有限インパルス応答(FIR)フィルタ，すなわち 近似的な離散高域強調フィルタ(AHE) の周波数分布は、理想的な離散高域強調フィルタ(DHE) のそれとほぼ一致する。経験的には、３次の場合で７タップ(±３) 、４次の場合で９タップ(±４) あれば、十分な精度が保証される。
+有限インパルス応答（ＦＩＲ）フィルタ，すなわち 近似的な離散高域強調フィルタ（ＡＨＥ）の周波数分布は、理想的な離散高域強調フィルタ（ＤＨＥ）のそれとほぼ一致する。経験的には、３次の場合で７タップ（±３）、４次の場合で９タップ（±４）あれば、十分な精度が保証される。
 
 ![](./--------/_README/Approximate%20Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
 ----
