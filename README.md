@@ -1,18 +1,18 @@
-# Uniform B-spline Interpolation
-A method to generate control points (green) for a uniform B-spline curve (blue) that **passes through all data points (red)**.  
+# Uniform B-Spline Interpolation
+A method to generate control points (green) for a uniform B-Spline curve (blue) that **passes through all data points (red)**.  
 **すべての データ点(赤) を通る** 一様Ｂスプライン曲線(青) のための 制御点(緑) を生成する方法。
 
 ![](./--------/_SCREENSHOT/B-Spline%20Interpolation.png)
 
 ----
-## 1. B-spline Curve is not Interpolation
-The uniform B-spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-spline basis functions (CBS)** with different weights (control point positions) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-spline basis function as a filter.  
-一様Ｂスプライン曲線(BSC) は、重み(制御点位置) の異なる **一様Ｂスプライン基底関数(CBS)**（以降“ＢＳ基底関数”）を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列(CPs) を離散信号と見なせば、ＢＳ基底関数をフィルタとして用いる一種の信号処理であるといえる。
+## 1. B-Spline Curve is not Interpolation
+The uniform B-Spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-Spline basis functions (CBS, hereinafter called “B-Spline basis”)** with different weights (control point positions) in equal intervals. If the control point sequence (CPs) is considered a discrete signal, it can be regarded as a kind of signal processing using the B-Spline basis as a filter.  
+一様Ｂスプライン曲線(BSC) は、重み(制御点位置) の異なる **一様Ｂスプライン基底関数(CBS, 以降“ＢＳ基底”)** を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列(CPs) を離散信号と見なせば、ＢＳ基底をフィルタとして用いる一種の信号処理であるといえる。
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
 
-The B-spline basis function can freely change the degree of the polynomial. In zero-order, it is equivalent to the segmented staircase approximation using square waves, and In the 1st-order, it is identical to the segmented linear approximation using triangular waves.  
-ＢＳ基底関数は多項式の次数を自在に変化させることができる。０次では矩形波による区分階段近似と等価となり、１次では三角波による区分線形近似と等価となる。
+The B-Spline basis can freely change the degree of the polynomial. In zero-order, it is equivalent to the segmented staircase approximation using square waves, and In the 1st-order, it is identical to the segmented linear approximation using triangular waves.  
+ＢＳ基底は多項式の次数を自在に変化させることができる。０次では矩形波による区分階段近似と等価となり、１次では三角波による区分線形近似と等価となる。
 
 > ```CBS[ N_, X_ ] = BSplineBasis[ N-1, (X+N/2)/N ];```  @ Wolfram Language
 >
@@ -20,8 +20,8 @@ The B-spline basis function can freely change the degree of the polynomial. In z
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
-The frequency distribution of the B-spline basis function is defined as the power of the Sinc function. Since it has a strong low-pass characteristic, filtering by the B-spline basis function significantly attenuates the high-frequency components inherent in the control point sequence. In other words, the smoothing effect is so strong that the generating curve is very smooth, but it is an **approximate curve** that does not pass through any control points.   
-ＢＳ基底関数の周波数分布は、Sinc 関数の累乗として定義される。強い低域通過特性を持っているため、ＢＳ基底関数によるフィルタリングは、制御点列が本来持つ高周波成分を大幅に減衰させる。つまり平滑化の作用が強いため、生成される曲線は非常に滑らかであるが、制御点を通らない **近似曲線** となる。
+The frequency distribution of the B-Spline basis is defined as the power of the Sinc function. Since it has a strong low-pass characteristic, filtering by the B-Spline basis significantly attenuates the high-frequency components inherent in the control point sequence. In other words, the smoothing effect is so strong that the generating curve is very smooth, but it is an **approximate curve** that does not pass through any control points.   
+ＢＳ基底の周波数分布は、Sinc 関数の累乗として定義される。強い低域通過特性を持っているため、ＢＳ基底によるフィルタリングは、制御点列が本来持つ高周波成分を大幅に減衰させる。つまり平滑化の作用が強いため、生成される曲線は非常に滑らかであるが、制御点を通らない **近似曲線** となる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cwidehat%7B%7B%5Crm%20CBS%7D%7D_N%28%5Comega%29%20%3D%20%7B%5Cleft%5B%5Cfrac%7B2%20%5Csin%5Cleft%28%5Cfrac%7B%5Comega%7D%7B2%7D%5Cright%29%7D%7B%5Comega%7D%5Cright%5D%7D%5EN)
 <!--
@@ -29,14 +29,14 @@ The frequency distribution of the B-spline basis function is defined as the powe
 -->
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-## 2. B-spline Basis is Discrete Filter
-Although the uniform B-spline basis function is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-spline basis functions (DBS)**.  
-ＢＳ基底関数は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散ＢＳ基底関数(DBS)** の周波数特性に依存している。
+## 2. B-Spline Basis is Discrete Filter
+Although the B-Spline basis is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-Spline basis function (DBS, hereinafter called “discrete B-Spline basis”)**.  
+ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数(DBS, 以降“離散ＢＳ基底”)** の周波数特性に依存している。
 
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
-The frequency distribution of the discrete B-spline basis functions is periodic. Still, above the 3rd-order, it has a low-pass characteristic most attenuated at the Nyquist frequency (π). Conversely, discrete B-spline basis functions below the 2nd-order do not attenuate the high-frequency components, so the generated curve always passes through the control point.  
-離散ＢＳ基底関数の周波数分布は周期性を持つが、３階以上では ナイキスト周波数(π) において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底関数は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
+The frequency distribution of the discrete B-Spline basis is periodic. Still, above the 3rd-order, it has a low-pass characteristic most attenuated at the Nyquist frequency (π). Conversely, discrete B-Spline basis below the 2nd-order do not attenuate the high-frequency components, so the generated curve always passes through the control point.  
+離散ＢＳ基底の周波数分布は周期性を持つが、３階以上では ナイキスト周波数(π) において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B4%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;3%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B3%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;2%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B192%7D%20%2876%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B60%7D%20%2826%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%20%5Cend%7Balign*%7D)
 <!--
@@ -52,8 +52,8 @@ The frequency distribution of the discrete B-spline basis functions is periodic.
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
 ## 3. High frequency component of control point
-In other words, to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-spline basis functions. Its frequency distribution is the inverse of that in the discrete B-spline basis functions.  
-つまり制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底関数の低域通過特性を打ち消す **離散高域強調フィルタ(DHE)** を設計すればよい。その周波数分布は、離散ＢＳ基底関数のそれの逆数となる。
+In other words, to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-Spline basis. Its frequency distribution is the inverse of that in the discrete B-Spline basis.  
+つまり制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底の低域通過特性を打ち消す **離散高域強調フィルタ(DHE)** を設計すればよい。その周波数分布は、離散ＢＳ基底のそれの逆数となる。
 
 > ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B4%7D%7B%5Ccos%20%28%5Comega%20%29&plus;3%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B3%7D%7B%5Ccos%20%28%5Comega%20%29&plus;2%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B192%7D%7B76%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%7D%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DHE%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B60%7D%7B26%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%7D%20%5Cend%7Balign*%7D)
 <!--
