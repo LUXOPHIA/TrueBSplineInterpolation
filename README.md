@@ -38,7 +38,7 @@ Although the B-Spline basis is a continuous filter, it can be regarded as a disc
 The frequency distribution of the discrete B-Spline basis is periodic. Still, above the 3rd-order, it has a low-pass characteristic most attenuated at the Nyquist frequency (π). Conversely, discrete B-Spline basis below the 2nd-order do not attenuate the high-frequency components, so the generated curve always passes through the control point.  
 離散ＢＳ基底の周波数分布は周期性を持つが、３階以上では ナイキスト周波数（π）において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
 
-> ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B4%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;3%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B3%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;2%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B192%7D%20%2876%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B60%7D%20%2826%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%20%5Cend%7Balign*%7D)
+> ![](https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_1%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_2%28%5Comega%29%26%3D1%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_3%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B4%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;3%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_4%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B3%7D%20%28%5Ccos%20%28%5Comega%20%29&plus;2%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_5%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B192%7D%20%2876%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;115%29%5C%5C%20%5Cwidehat%7B%7B%5Crm%20DBS%7D%7D_6%28%5Comega%29%26%3D%5Cfrac%7B1%7D%7B60%7D%20%2826%20%5Ccos%20%28%5Comega%20%29&plus;%5Ccos%20%282%20%5Comega%20%29&plus;33%29%20%5Cend%7Balign*%7D)
 <!--
 \begin{align*}
 \widehat{{\rm DBS}}_1(\omega)&=1\\
@@ -46,7 +46,7 @@ The frequency distribution of the discrete B-Spline basis is periodic. Still, ab
 \widehat{{\rm DBS}}_3(\omega)&=\frac{1}{4} (\cos (\omega )+3)\\
 \widehat{{\rm DBS}}_4(\omega)&=\frac{1}{3} (\cos (\omega )+2)\\
 \widehat{{\rm DBS}}_5(\omega)&=\frac{1}{192} (76 \cos (\omega )+\cos (2 \omega )+115)\\
-\widehat{{\rm DBS}}_6(\omega)&=\frac{1}{60} (26 \cos (\omega )+\cos (2 \omega )+33
+\widehat{{\rm DBS}}_6(\omega)&=\frac{1}{60} (26 \cos (\omega )+\cos (2 \omega )+33)
 \end{align*}
 -->
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
