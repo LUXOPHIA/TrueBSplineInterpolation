@@ -1,4 +1,4 @@
-﻿program BSplineInterpolation;
+﻿program TrueBSplineInterpolation;
 
 uses
   System.StartUpCopy,
