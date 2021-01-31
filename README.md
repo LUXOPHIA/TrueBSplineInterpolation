@@ -2,7 +2,7 @@
 A method to generate control points (green) for a uniform B-Spline curve (blue) that **passes through all data points (red)**.  
 **すべての データ点（赤）を通る** 一様Ｂスプライン曲線（青）のための 制御点（緑）を生成する方法。
 
-![](./--------/_SCREENSHOT/B-Spline%20Interpolation.png)
+![](./--------/_SCREENSHOT/True%20B-Spline%20Interpolation.png)
 
 ----
 ## 1. B-Spline Curve is not Interpolation
