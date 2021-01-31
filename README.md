@@ -11,12 +11,12 @@ The uniform B-Spline curve (BSC) is a method to generate smooth and controllable
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
 
-The B-Spline basis can freely change the degree of the polynomial. In zero-order, it is equivalent to the segmented staircase approximation using square waves, and In the 1st-order, it is equivalent to the segmented linear approximation using triangular waves.    
-ＢＳ基底は多項式の次数を自在に変化させることができる。０次では矩形波による区分階段近似と等価となり、１次では三角波による区分線形近似と等価となる。
+The B-Spline basis can freely change the degree of the polynomial. In zero-degree (1st-order), it is equivalent to the segmented staircase approximation using square waves, and In the 1st-degree (2st-order), it is equivalent to the segmented linear approximation using triangular waves.    
+ＢＳ基底は多項式の次数を自在に変化させることができる。０次（１階）では矩形波による区分階段近似と等価となり、１次（２階）では三角波による区分線形近似と等価となる。
 
 > ```CBS[ N_, X_ ] = BSplineBasis[ N-1, (X+N/2)/N ];```  @ Wolfram Language
 >
-> N：Order（階数）= 1 + Degree（次数）
+> N：order（階数）= 1 + degree（次数）
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
@@ -140,7 +140,7 @@ The discrete high-enhancement filter is an infinite impulse response (IIR) filte
 -->
 
 The frequency distribution of a finite impulse response (FIR) filter, i.e., an approximated discrete high-enhancement filter (AHE), is almost identical to that of an ideal discrete high-enhancement filter (DHE). Empirically, 7-taps (±3) for the 3rd-order case and 9-taps (±4) for the 4th-order case are enough to guarantee accuracy.  
-有限インパルス応答（ＦＩＲ）フィルタ，すなわち 近似的な離散高域強調フィルタ（ＡＨＥ）の周波数分布は、理想的な離散高域強調フィルタ（ＤＨＥ）のそれとほぼ一致する。経験的には、３次の場合で７タップ（±３）、４次の場合で９タップ（±４）あれば、十分な精度が保証される。
+有限インパルス応答（ＦＩＲ）フィルタ，すなわち 近似的な離散高域強調フィルタ（ＡＨＥ）の周波数分布は、理想的な離散高域強調フィルタ（ＤＨＥ）のそれとほぼ一致する。経験的には、３階では７タップ（±３）、４階では９タップ（±４）あれば、十分な精度が保証される。
 
 ![](./--------/_README/Approximate%20Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
 ----
