@@ -11,7 +11,7 @@ The uniform B-Spline curve (BSC) is a method to generate smooth and controllable
 
 ![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
 
-The B-Spline basis can freely change the degree of the polynomial. In zero-degree (1st-order), it is equivalent to the segmented staircase approximation using square waves, and In the 1st-degree (2st-order), it is equivalent to the segmented linear approximation using triangular waves.    
+The B-Spline basis can freely change the degree of the polynomial. In zero-degree (1st-order), it is equivalent to the segmented staircase approximation using square waves, and In the 1st-degree (2nd-order), it is equivalent to the segmented linear approximation using triangular waves.    
 ＢＳ基底は多項式の次数を自在に変化させることができる。０次（１階）では矩形波による区分階段近似と等価となり、１次（２階）では三角波による区分線形近似と等価となる。
 
 > ```CBS[ N_, X_ ] = BSplineBasis[ N-1, (X+N/2)/N ];```  @ Wolfram Language
