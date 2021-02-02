@@ -51,7 +51,7 @@ The frequency distribution of the discrete B-Spline basis is periodic. Still, ab
 -->
 ![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-## 3. High frequency component of control points
+## 3. Discrete High-Enhancement filter
 In order to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-Spline basis. In other words, its frequency distribution is the inverse of that in the discrete B-Spline basis.  
 制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底の低域通過特性を打ち消す **離散高域強調フィルタ（ＤＨＥ）** を設計すればよい。つまりその周波数分布は、離散ＢＳ基底のそれの逆数となる。
 
