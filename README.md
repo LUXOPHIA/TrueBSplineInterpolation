@@ -143,6 +143,8 @@ The frequency distribution of a finite impulse response (FIR) filter, i.e., an a
 有限インパルス応答（ＦＩＲ）フィルタ，すなわち 近似的な離散高域強調フィルタ（ＡＨＥ）の周波数分布は、理想的な離散高域強調フィルタ（ＤＨＥ）のそれとほぼ一致する。経験的には、３階では７タップ（±３）、４階では９タップ（±４）あれば、十分な精度が保証される。
 
 ![](./--------/_README/Approximate%20Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
+
 ----
+* [True B-Spline Interpolation.nb](./--------/True%20B-Spline%20Interpolation.nb)
 
 [![Delphi Starter](http://img.en25.com/EloquaImages/clients/Embarcadero/%7B063f1eec-64a6-4c19-840f-9b59d407c914%7D_dx-starter-bn159.png)](https://www.embarcadero.com/jp/products/delphi/starter)
