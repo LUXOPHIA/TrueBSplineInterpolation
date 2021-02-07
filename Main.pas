@@ -104,7 +104,7 @@ begin
                begin
                     X := ( MaxX - MinX ) * I / DivN + MinX;
 
-                    Poins[ I ] := TSingle2D.Create( X, _Curve.Curv( X ) );
+                    Poins[ I ] := TSingle2D.Create( X, _Curve.Curve( X ) );
                end;
           end;
      end;
@@ -120,7 +120,7 @@ begin
 
      with _Curve do
      begin
-          FilterW  := Round( SpinBoxFN.Value );
+          MargsN   := Round( SpinBoxFN.Value );
           CurvMinI := 0;
           CurvMaxI := Round( SpinBoxCN.Value );
      end;
@@ -141,7 +141,7 @@ end;
 
 procedure TForm1.SpinBoxFNChange(Sender: TObject);
 begin
-     _Curve.FilterW := Round( SpinBoxFN.Value );
+     _Curve.MargsN := Round( SpinBoxFN.Value );
 
      InitChart;
 end;

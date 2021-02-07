@@ -152,7 +152,7 @@ begin
      inherited;
 
      MinI := 0;
-     MaxI := 8;
+     MaxI := 1;
 
      MinY := -1.5;
      MaxY := +1.5;
