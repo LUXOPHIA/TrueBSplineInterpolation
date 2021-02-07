@@ -38,6 +38,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetStroke( const Stroke_:TStrokeBrush ); virtual;
        function GetFiller :TBrush; virtual;
        procedure SetFiller( const Filler_:TBrush ); virtual;
+       function GetVisible :Boolean; virtual;
+       procedure SetVisible( const Visible_:Boolean ); virtual;
        ///// メソッド
        procedure DrawBegin( const Canvas_:TCanvas ); virtual;
        procedure DrawMain( const Canvas_:TCanvas ); virtual;
@@ -56,6 +58,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property AbsoPose :TMatrix       read GetAbsoPose write SetAbsoPose;
        property Stroke   :TStrokeBrush  read GetStroke   write SetStroke  ;
        property Filler   :TBrush        read GetFiller   write SetFiller  ;
+       property Visible  :Boolean       read GetVisible  write SetVisible ;
        ///// メソッド
        procedure Draw( const Canvas_:TCanvas ); virtual;
      end;
@@ -124,6 +127,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Opacity :Single;
        _Stroke  :TStrokeBrush;
        _Filler  :TBrush;
+       _Visible :Boolean;
        ///// アクセス
        function GetOpacity :Single; virtual;
        procedure SetOpacity( const Opacity_:Single ); virtual;
@@ -131,6 +135,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetStroke( const Stroke_:TStrokeBrush ); override;
        function GetFiller :TBrush; override;
        procedure SetFiller( const Filler_:TBrush ); override;
+       function GetVisible :Boolean; override;
+       procedure SetVisible( const Visible_:Boolean ); override;
        ///// メソッド
        procedure DrawBegin( const Canvas_:TCanvas ); override;
      public
@@ -303,6 +309,18 @@ begin
 
 end;
 
+//------------------------------------------------------------------------------
+
+function TDrawNode.GetVisible :Boolean;
+begin
+     Result := True;
+end;
+
+procedure TDrawNode.SetVisible( const Visible_:Boolean );
+begin
+
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TDrawNode.DrawBegin( const Canvas_:TCanvas );
@@ -347,9 +365,12 @@ end;
 
 procedure TDrawNode.Draw( const Canvas_:TCanvas );
 begin
-     DrawBegin( Canvas_ );
-     DrawMain ( Canvas_ );
-     DrawEnd  ( Canvas_ );
+     if Visible then
+     begin
+          DrawBegin( Canvas_ );
+          DrawMain ( Canvas_ );
+          DrawEnd  ( Canvas_ );
+     end;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDrawRoot
@@ -553,6 +574,18 @@ begin
      _Filler := Filler_;
 end;
 
+//------------------------------------------------------------------------------
+
+function TDrawKnot.GetVisible :Boolean;
+begin
+     Result := _Visible;
+end;
+
+procedure TDrawKnot.SetVisible( const Visible_:Boolean );
+begin
+     _Visible := Visible_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TDrawKnot.DrawBegin( const Canvas_:TCanvas );
@@ -585,6 +618,7 @@ begin
      inherited;
 
      Opacity := 1;
+     Visible := True;
 end;
 
 destructor TDrawKnot.Destroy;
