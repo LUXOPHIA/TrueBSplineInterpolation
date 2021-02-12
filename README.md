@@ -24,8 +24,8 @@ The B-Spline basis can freely change the degree of the polynomial. In zero-degre
 > ![](https://latex.codecogs.com/png.latex?B_2%28x%29%20%3D%20%5Cbegin%7Bcases%7D%201-%7C%20x%7C%20%26%20%7C%20x%7C%20%5Cleq%201%20%5C%5C%200%20%26%20%5Ctext%7Botherwise%7D%20%5C%5C%20%5Cend%7Bcases%7D)  
 > ![](https://latex.codecogs.com/png.latex?B_3%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20%5Cfrac%7B3%7D%7B4%7D-%7C%20x%7C%20%5E2%20%26%20%7C%20x%7C%20%3C%20%5Cfrac%7B1%7D%7B2%7D%20%5C%5C%20%5Cfrac%7B1%7D%7B8%7D%20%283-2%20%7C%20x%7C%20%29%5E2%20%26%20%5Cfrac%7B1%7D%7B2%7D%5Cleq%20%7C%20x%7C%20%3C%20%5Cfrac%7B3%7D%7B2%7D%20%5C%5C%200%20%26%20%5Ctext%7Botherwise%7D%20%5C%5C%20%5Cend%7Bcases%7D)  
 > ![](https://latex.codecogs.com/png.latex?B_4%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20%5Cfrac%7B1%7D%7B6%7D%20%5Cleft%283%20%7C%20x%7C%20%5E3-6%20%7C%20x%7C%20%5E2&plus;4%5Cright%29%20%26%20%7C%20x%7C%20%3C%201%20%5C%5C%20-%5Cfrac%7B1%7D%7B6%7D%20%28%7C%20x%7C%20-2%29%5E3%20%26%201%5Cleq%20%7C%20x%7C%20%3C%202%20%5C%5C%200%20%26%20%5Ctext%7Botherwise%7D%20%5C%5C%20%5Cend%7Bcases%7D)  
-> ![](https://latex.codecogs.com/png.latex?B_5%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20%5Cfrac%7B1%7D%7B4%7D%20%7C%20x%7C%20%5E4-%5Cfrac%7B5%7D%7B8%7D%20%7C%20x%7C%20%5E2&plus;%5Cfrac%7B115%7D%7B192%7D%20%26%20%7C%20x%7C%20%3C%20%5Cfrac%7B1%7D%7B2%7D%20%5C%5C%20%5Cfrac%7B1%7D%7B96%7D%20%5Cleft%28-16%20%7C%20x%7C%20%5E4&plus;80%20%7C%20x%7C%20%5E3-120%20%7C%20x%7C%20%5E2&plus;20%20%7C%20x%7C%20&plus;55%5Cright%29%20%26%20%5Cfrac%7B1%7D%7B2%7D%5Cleq%20%7C%20x%7C%20%3C%20%5Cfrac%7B3%7D%7B2%7D%20%5C%5C%20%5Cfrac%7B1%7D%7B384%7D%20%285-2%20%7C%20x%7C%20%29%5E4%20%26%20%5Cfrac%7B3%7D%7B2%7D%5Cleq%20%7C%20x%7C%20%3C%20%5Cfrac%7B5%7D%7B2%7D%20%5C%5C%200%20%26%20%28otherwise%29%20%5Cend%7Bcases%7D)  
-> ![](https://latex.codecogs.com/png.latex?B_6%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20%5Cfrac%7B1%7D%7B60%7D%20%5Cleft%28-5%20%7C%20x%7C%20%5E5&plus;15%20%7C%20x%7C%20%5E4-30%20%7C%20x%7C%20%5E2&plus;33%5Cright%29%20%26%20%7C%20x%7C%20%3C%201%20%5C%5C%20%5Cfrac%7B1%7D%7B120%7D%20%5Cleft%285%20%7C%20x%7C%20%5E5-45%20%7C%20x%7C%20%5E4&plus;150%20%7C%20x%7C%20%5E3-210%20%7C%20x%7C%20%5E2&plus;75%20%7C%20x%7C%20&plus;51%5Cright%29%20%26%201%5Cleq%20%7C%20x%7C%20%3C%202%20%5C%5C%20-%5Cfrac%7B1%7D%7B120%7D%20%28%7C%20x%7C%20-3%29%5E5%20%26%202%5Cleq%20%7C%20x%7C%20%3C%203%20%5C%5C%200%20%26%20%28otherwise%29%20%5Cend%7Bcases%7D)
+> ![](https://latex.codecogs.com/png.latex?B_5%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20%5Cfrac%7B1%7D%7B4%7D%20%7C%20x%7C%20%5E4-%5Cfrac%7B5%7D%7B8%7D%20%7C%20x%7C%20%5E2&plus;%5Cfrac%7B115%7D%7B192%7D%20%26%20%7C%20x%7C%20%3C%20%5Cfrac%7B1%7D%7B2%7D%20%5C%5C%20%5Cfrac%7B1%7D%7B96%7D%20%5Cleft%28-16%20%7C%20x%7C%20%5E4&plus;80%20%7C%20x%7C%20%5E3-120%20%7C%20x%7C%20%5E2&plus;20%20%7C%20x%7C%20&plus;55%5Cright%29%20%26%20%5Cfrac%7B1%7D%7B2%7D%5Cleq%20%7C%20x%7C%20%3C%20%5Cfrac%7B3%7D%7B2%7D%20%5C%5C%20%5Cfrac%7B1%7D%7B384%7D%20%285-2%20%7C%20x%7C%20%29%5E4%20%26%20%5Cfrac%7B3%7D%7B2%7D%5Cleq%20%7C%20x%7C%20%3C%20%5Cfrac%7B5%7D%7B2%7D%20%5C%5C%200%20%26%20%5Ctext%7Botherwise%7D%20%5C%5C%20%5Cend%7Bcases%7D)  
+> ![](https://latex.codecogs.com/png.latex?B_6%28x%29%20%3D%20%5Cbegin%7Bcases%7D%20%5Cfrac%7B1%7D%7B60%7D%20%5Cleft%28-5%20%7C%20x%7C%20%5E5&plus;15%20%7C%20x%7C%20%5E4-30%20%7C%20x%7C%20%5E2&plus;33%5Cright%29%20%26%20%7C%20x%7C%20%3C%201%20%5C%5C%20%5Cfrac%7B1%7D%7B120%7D%20%5Cleft%285%20%7C%20x%7C%20%5E5-45%20%7C%20x%7C%20%5E4&plus;150%20%7C%20x%7C%20%5E3-210%20%7C%20x%7C%20%5E2&plus;75%20%7C%20x%7C%20&plus;51%5Cright%29%20%26%201%5Cleq%20%7C%20x%7C%20%3C%202%20%5C%5C%20-%5Cfrac%7B1%7D%7B120%7D%20%28%7C%20x%7C%20-3%29%5E5%20%26%202%5Cleq%20%7C%20x%7C%20%3C%203%20%5C%5C%200%20%26%20%5Ctext%7Botherwise%7D%20%5C%5C%20%5Cend%7Bcases%7D)
 <!--
 B_1(x) = \begin{cases}
  1 & | x| \leq \frac{1}{2} \\
@@ -53,14 +53,14 @@ B_5(x) = \begin{cases}
  \frac{1}{4} | x| ^4-\frac{5}{8} | x| ^2+\frac{115}{192} & | x| < \frac{1}{2} \\
  \frac{1}{96} \left(-16 | x| ^4+80 | x| ^3-120 | x| ^2+20 | x| +55\right) & \frac{1}{2}\leq | x| < \frac{3}{2} \\
  \frac{1}{384} (5-2 | x| )^4 & \frac{3}{2}\leq | x| < \frac{5}{2} \\
-  0 & (otherwise)
+ 0 & \text{otherwise} \\
 \end{cases}
 
 B_6(x) = \begin{cases}
  \frac{1}{60} \left(-5 | x| ^5+15 | x| ^4-30 | x| ^2+33\right) & | x| < 1 \\
  \frac{1}{120} \left(5 | x| ^5-45 | x| ^4+150 | x| ^3-210 | x| ^2+75 | x| +51\right) & 1\leq | x| < 2 \\
  -\frac{1}{120} (| x| -3)^5 & 2\leq | x| < 3 \\
-  0 & (otherwise)
+ 0 & \text{otherwise} \\
 \end{cases}
 -->
 
