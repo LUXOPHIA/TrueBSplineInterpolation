@@ -5,7 +5,7 @@ How to generate control points (green) for a uniform B-Spline curve (blue) that 
 ![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_SCREENSHOT/True%20B-Spline%20Interpolation.png)
 
 ----
-## 1. B-Spline Curve is not Interpolation
+## ■ 1. B-Spline Curve is not Interpolation
 The uniform B-Spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-Spline basis functions (CBS: B-Spline basis)** with different weights (control point positions) in equal intervals. Here, if we consider the control point sequence (CPs) as a discrete signal, it can be interpreted as a kind of signal processing using the B-spline basis as a filter.  
 一様Ｂスプライン曲線（ＢＳＣ）は、重み（制御点位置）の異なる **一様Ｂスプライン基底関数（ＣＢＳ：ＢＳ基底）** を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列（ＣＰｓ）を離散信号とみなせば、ＢＳ基底をフィルタとして用いる一種の信号処理であると解釈できる。
 
@@ -76,7 +76,7 @@ The frequency distribution of the B-Spline basis is defined as the power of the 
 
 ![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-## 2. B-Spline Basis as Discrete Filter
+## ■ 2. B-Spline Basis as Discrete Filter
 Although the B-Spline basis is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-Spline basis function (DBS: discrete B-Spline basis)**.  
 ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数（ＤＢＳ：離散ＢＳ基底）** の周波数特性に依存している。
 
@@ -100,7 +100,7 @@ The frequency distribution of the discrete B-Spline basis is periodic. Still, ab
 
 ![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
-## 3. Discrete High-Enhancement filter
+## ■ 3. Discrete High-Enhancement filter
 In order to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-Spline basis. In other words, its frequency distribution is the inverse of that in the discrete B-Spline basis.  
 制御点に曲線を通すためには、制御点列が持つ本来の高周波成分を復元する必要がある。そのためには、離散ＢＳ基底の低域通過特性を打ち消す **離散高域強調フィルタ（ＤＨＥ）** を設計すればよい。つまりその周波数分布は、離散ＢＳ基底のそれの逆数となる。
 
@@ -166,8 +166,8 @@ Furthermore, since the original function's sign is alternating positive and nega
 The discrete high-enhancement filter is an infinite impulse response (IIR) filter. Therefore, it is necessary to cut off the coefficient sequence with an appropriate number of taps in a practical implementation.  
 離散高域強調フィルタは、無限インパルス応答（ＩＩＲ）フィルタである。ゆえに実際の実装では、適当なタップ数で打ち切る必要がある。
 
-> |DHE 3|DHE 4|
-> |:---:|:---:|
+> | DHE 3 | DHE 4 |
+> | :---: | :---: |
 > | ![](https://latex.codecogs.com/svg.latex?%5Cbegin%7Balign*%7D%20%7B%5Crm%20DHE%7D_3%28%5Cpm%200%29%26%3D%5Csqrt%7B2%7D%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%201%29%26%3D4-3%20%5Csqrt%7B2%7D%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%202%29%26%3D17%20%5Csqrt%7B2%7D-24%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%203%29%26%3D140-99%20%5Csqrt%7B2%7D%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%204%29%26%3D577%20%5Csqrt%7B2%7D-816%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%205%29%26%3D4756-3363%20%5Csqrt%7B2%7D%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%206%29%26%3D19601%20%5Csqrt%7B2%7D-27720%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%207%29%26%3D161564-114243%20%5Csqrt%7B2%7D%5C%5C%20%7B%5Crm%20DHE%7D_3%28%5Cpm%208%29%26%3D665857%20%5Csqrt%7B2%7D-941664%20%5Cend%7Balign*%7D) | ![](https://latex.codecogs.com/svg.latex?%5Cbegin%7Balign*%7D%20%7B%5Crm%20DHE%7D_4%28%5Cpm%200%29%26%3D%5Csqrt%7B3%7D%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%201%29%26%3D3-2%20%5Csqrt%7B3%7D%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%202%29%26%3D7%20%5Csqrt%7B3%7D-12%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%203%29%26%3D45-26%20%5Csqrt%7B3%7D%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%204%29%26%3D97%20%5Csqrt%7B3%7D-168%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%205%29%26%3D627-362%20%5Csqrt%7B3%7D%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%206%29%26%3D1351%20%5Csqrt%7B3%7D-2340%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%207%29%26%3D8733-5042%20%5Csqrt%7B3%7D%5C%5C%20%7B%5Crm%20DHE%7D_4%28%5Cpm%208%29%26%3D18817%20%5Csqrt%7B3%7D-32592%20%5Cend%7Balign*%7D) |
 
 <!--
@@ -203,7 +203,7 @@ The frequency distribution of a finite impulse response (FIR) filter, i.e., an a
 ![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Approximate%20Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
 
 ----
-## 4. Reference
+## ■ 4. Reference
 * [True B-Spline Interpolation.nb](./--------/True%20B-Spline%20Interpolation.nb) @ [Mathematica](https://www.wolfram.com/mathematica/)
 
 ----
