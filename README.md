@@ -1,3 +1,9 @@
+<!---
+layout: page
+title: "README (English)"
+permalink: /
+-->
+
 # True B-Spline Interpolation
 How to generate control points (green) for a uniform B-Spline curve (blue) that **passes through all data points (red)**.  
 **すべての データ点（赤）を通る** 一様Ｂスプライン曲線（青）のための 制御点（緑）を生成する方法。
