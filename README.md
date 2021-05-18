@@ -9,12 +9,12 @@ How to generate control points (green) for a uniform B-Spline curve (blue) that 
 The uniform B-Spline curve (BSC) is a method to generate smooth and controllable segmented polynomials by arranging **uniform B-Spline basis functions (CBS: B-Spline basis)** with different weights (control point positions) in equal intervals. Here, if we consider the control point sequence (CPs) as a discrete signal, it can be interpreted as a kind of signal processing using the B-spline basis as a filter.  
 一様Ｂスプライン曲線（ＢＳＣ）は、重み（制御点位置）の異なる **一様Ｂスプライン基底関数（ＣＢＳ：ＢＳ基底）** を等間隔に並べることで、滑らかで制御性の高い区分多項式を生成する手法である。ここで 制御点列（ＣＰｓ）を離散信号とみなせば、ＢＳ基底をフィルタとして用いる一種の信号処理であると解釈できる。
 
-![](./--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Continuous%20Uniform%20B-Spline%20curve.svg)
 
 The B-Spline basis can freely change the degree of the polynomial. In zero-degree (1st-order), it is equivalent to the segmented staircase approximation using square waves, and In the 1st-degree (2nd-order), it is equivalent to the segmented linear approximation using triangular waves.    
 ＢＳ基底は多項式の次数を自在に変化させることができる。０次（１階）では矩形波による区分階段近似と等価となり、１次（２階）では三角波による区分線形近似と等価となる。
 
-![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
 > ```CBS[ N_, X_ ] = BSplineBasis[ N-1, (X+N/2)/N ];```  @ Wolfram Language
 >
@@ -71,13 +71,13 @@ The frequency distribution of the B-Spline basis is defined as the power of the 
 <!--
 \widehat{{\rm CBS}}_N(\omega) = {\left[\frac{2 \sin\left(\frac{\omega}{2}\right)}{\omega}\right]}^N
 -->
-![](./--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Continuous%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
 ## 2. B-Spline Basis as Discrete Filter
 Although the B-Spline basis is a continuous filter, it can be regarded as a discrete filter if we focus only on the control points' values. In other words, whether or not the curve passes through the control point depends on the frequency response of the **Discrete B-Spline basis function (DBS: discrete B-Spline basis)**.  
 ＢＳ基底は連続フィルタであるが、制御点での値のみに注目すると、離散フィルタとみなすことができる。つまり曲線が制御点を通るか否かは、**離散Ｂスプライン基底関数（ＤＢＳ：離散ＢＳ基底）** の周波数特性に依存している。
 
-![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(SD).svg)
 
 The frequency distribution of the discrete B-Spline basis is periodic. Still, above the 3rd-order, it has a low-pass characteristic most attenuated at the Nyquist frequency (π). Conversely, discrete B-Spline basis below the 2nd-order do not attenuate the high-frequency components, so the generated curve always passes through the control point.  
 離散ＢＳ基底の周波数分布は周期性を持つが、３階以上では ナイキスト周波数（π）において最も減衰する低域通過特性を持つ。逆に２階以下のＢＳ基底は高周波成分を減衰させないので、生成される曲線は必ず制御点を通過する。
@@ -93,7 +93,7 @@ The frequency distribution of the discrete B-Spline basis is periodic. Still, ab
 \widehat{{\rm DBS}}_6(\omega)&=\frac{1}{60} (26 \cos (\omega )+\cos (2 \omega )+33)
 \end{align*}
 -->
-![](./--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Discrete%20Uniform%20B-Spline%20basis%20function%20(FD).svg)
 
 ## 3. Discrete High-Enhancement filter
 In order to pass a curve through the control points, it is necessary to restore the original high-frequency components of the control point sequence. To do this, we can design a **Discrete High-Enhancement filter (DHE)** that cancels the low-pass characteristics of the discrete B-Spline basis. In other words, its frequency distribution is the inverse of that in the discrete B-Spline basis.  
@@ -110,7 +110,7 @@ In order to pass a curve through the control points, it is necessary to restore 
 \widehat{{\rm DHE}}_6(\omega)&=\frac{60}{26 \cos (\omega )+\cos (2 \omega )+33}
 \end{align*}
 -->
-![](./--------/_README/Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
 
 A discrete high-enhancement filter below the 4th-order can be derived analytically using the [**Hypergeometric function**](https://en.wikipedia.org/wiki/Hypergeometric_function).  
 ４階以下の離散高域強調フィルタは、[**超幾何関数**](https://ja.wikipedia.org/wiki/%E8%B6%85%E5%B9%BE%E4%BD%95%E9%96%A2%E6%95%B0)を用いて解析的に導くことができる。
@@ -124,7 +124,7 @@ A discrete high-enhancement filter below the 4th-order can be derived analytical
 {\rm DHE}_4(i)&=3 \, _3\tilde{F}_2\left(\frac{1}{2},1,1;1-i,i+1;-2\right)
 \end{align*}
 -->
-![](./--------/_README/Discrete%20High-Enhancement%20Filter%20function%20(SD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Discrete%20High-Enhancement%20Filter%20function%20(SD).svg)
 
 At first glance, the expression seems complicated, but we can see that the absolute value follows a simple exponential function (CHE).  
 一見複雑な関数に思えるが、絶対値が 単純な指数関数（ＣＨＥ）に沿っていることが分かる。
@@ -136,7 +136,7 @@ At first glance, the expression seems complicated, but we can see that the absol
 \left|{\rm CHE}_4(x)\right|&=\sqrt{3}\left(2-\sqrt{3}\right)^{\left| x\right| }
 \end{align*}
 -->
-![](./--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(AbsSD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(AbsSD).svg)
 
 Furthermore, since the original function's sign is alternating positive and negative, we can eliminate the hypergeometric function and derive a very simple expression (CHE).   
 さらに、元々の関数の符合が正負を交互に繰り返していることから、超幾何関数を排して 非常に簡単な式（ＣＨＥ）を導くことができる。
@@ -148,7 +148,7 @@ Furthermore, since the original function's sign is alternating positive and nega
 {\rm CHE}_4(x)&=\sqrt{3}\left(\sqrt{3}-2\right)^{\left| x\right| }
 \end{align*}
 -->
-![](./--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(SD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Continuous%20High-Enhancement%20Filter%20function%20(SD).svg)
 
 The discrete high-enhancement filter is an infinite impulse response (IIR) filter. Therefore, it is necessary to cut off the coefficient sequence with an appropriate number of taps in a practical implementation.  
 離散高域強調フィルタは、無限インパルス応答（ＩＩＲ）フィルタである。ゆえに実際の実装では、適当なタップ数で打ち切る必要がある。
@@ -186,7 +186,7 @@ The discrete high-enhancement filter is an infinite impulse response (IIR) filte
 The frequency distribution of a finite impulse response (FIR) filter, i.e., an approximated discrete high-enhancement filter (AHE), is almost identical to that of an ideal discrete high-enhancement filter (DHE). Empirically, 7-taps (±3) for the 3rd-order case and 9-taps (±4) for the 4th-order case are enough to guarantee accuracy.  
 有限インパルス応答（ＦＩＲ）フィルタ，すなわち 近似的な離散高域強調フィルタ（ＡＨＥ）の周波数分布は、理想的な離散高域強調フィルタ（ＤＨＥ）のそれとほぼ一致する。経験的には、３階では７タップ（±３）、４階では９タップ（±４）あれば、十分な精度が保証される。
 
-![](./--------/_README/Approximate%20Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
+![](https://github.com/LUXOPHIA/TrueBSplineInterpolation/raw/master/--------/_README/Approximate%20Discrete%20High-Enhancement%20Filter%20function%20(FD).svg)
 
 ----
 * [True B-Spline Interpolation.nb](./--------/True%20B-Spline%20Interpolation.nb) @ [Mathematica](https://www.wolfram.com/mathematica/)
