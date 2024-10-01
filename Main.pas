@@ -72,17 +72,14 @@ procedure TForm1.MakePoins( const Td_:Single );
 var
    I :Integer;
 begin
-     with CurveChart1 do
+     with CurveChart1.Poins do
      begin
-          with Poins do
-          begin
-               for I := MinI to MaxI do
-               begin
-                    _Curve.Poins[ I ] := _Poins.Poins( I, Td_ );
+           for I := MinI to MaxI do
+           begin
+                _Curve.Poins[ I ] := _Poins.Poins( I, Td_ );
 
-                    PosYs[ I ] := _Curve.Poins[ I ];
-               end;
-          end;
+                PosYs[ I ] := _Curve.Poins[ I ];
+           end;
      end;
 end;
 
