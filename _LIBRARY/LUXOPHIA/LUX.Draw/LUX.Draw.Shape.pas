@@ -221,7 +221,7 @@ end;
 
 destructor TDrawCurv.Destroy;
 begin
-     _Path.DisposeOf;
+     _Path.Free;
 
      inherited;
 end;
