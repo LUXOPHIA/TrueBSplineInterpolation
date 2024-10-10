@@ -31,38 +31,38 @@ The B-Spline basis can freely change the degree of the polynomial. In zero-degre
 {\rm CBS}_1(x) &= \begin{dcases}
  1 & | x| \leq \frac{1}{2} \\
  0 & \text{otherwise} \\
-\end{dcases} &\qquad \text{(1)} \\
+\end{dcases} &\qquad \text{(1.1)} \\
 
 {\rm CBS}_2(x) &= \begin{dcases}
  1-| x|  & | x| \leq 1 \\
  0 & \text{otherwise} \\
-\end{dcases} &\qquad \text{(2)} \\
+\end{dcases} &\qquad \text{(1.2)} \\
 
 {\rm CBS}_3(x) &= \begin{dcases}
  \frac{1}{4} \left(3-4 | x| ^2\right) & | x| <\frac{1}{2} \\
  \frac{1}{8} (2 | x| -3)^2 & \frac{1}{2}\leq | x| \leq \frac{3}{2} \\
  0 & \text{otherwise} \\
-\end{dcases} &\qquad \text{(3)} \\
+\end{dcases} &\qquad \text{(1.3)} \\
 
 {\rm CBS}_4(x) &= \begin{dcases}
  \frac{1}{6} \left(3 | x| ^3-6 | x| ^2+4\right) & | x| <1 \\
  -\frac{1}{6} (| x| -2)^3 & 1\leq | x| \leq 2 \\
  0 & \text{otherwise} \\
-\end{dcases} &\qquad \text{(4)} \\
+\end{dcases} &\qquad \text{(1.4)} \\
 
 {\rm CBS}_5(x) &= \begin{dcases} 
  \frac{1}{192} \left(48 | x| ^4-120 | x| ^2+115\right) & | x| <\frac{1}{2} \\
  \frac{1}{96} \left(-16 | x| ^4+80 | x| ^3-120 | x| ^2+20 | x| +55\right) & \frac{1}{2}\leq | x| <\frac{3}{2} \\
  \frac{1}{384} (2 | x| -5)^4 & \frac{3}{2}\leq | x| \leq \frac{5}{2} \\
  0 & \text{otherwise} \\
-\end{dcases} &\qquad \text{(5)} \\
+\end{dcases} &\qquad \text{(1.5)} \\
 
 {\rm CBS}_6(x) &= \begin{dcases}
  \frac{1}{60} \left(-5 | x| ^5+15 | x| ^4-30 | x| ^2+33\right) & | x| <1 \\
  \frac{1}{120} \left(5 | x| ^5-45 | x| ^4+150 | x| ^3-210 | x| ^2+75 | x| +51\right) & 1\leq | x| <2 \\
  -\frac{1}{120} (| x| -3)^5 & 2\leq | x| \leq 3 \\
  0 & \text{otherwise} \\
-\end{dcases} &\qquad \text{(6)} \\
+\end{dcases} &\qquad \text{(1.6)} \\
 \end{align}
 ```
 </br>
@@ -71,7 +71,7 @@ The frequency distribution of the B-Spline basis is defined as the power of the 
 ＢＳ基底の周波数特性は、Sinc 関数の累乗として定義される。強い低域通過特性を持っているため、ＢＳ基底によるフィルタリングは、制御点列が本来持つ高周波成分を大幅に減衰させる。つまり平滑化の作用が強いため、生成される曲線は非常に滑らかであるが、制御点を通らない **近似曲線** となる。
 
 ```math
-\widehat{{\rm CBS}}_N(\omega) = {\left[\frac{2 \sin \left(\frac{\omega }{2}\right)}{\omega }\right]}^N \qquad \text{(7)}
+\widehat{{\rm CBS}}_N(\omega) = {\left[\frac{2 \sin \left(\frac{\omega }{2}\right)}{\omega }\right]}^N \qquad \text{(1.7)}
 ```
 </br>
 
@@ -88,12 +88,12 @@ The frequency distribution of the discrete B-Spline basis is periodic. Still, ab
 
 ```math
 \begin{align} \\
-\widehat{{\rm DBS}}_1(\omega)&=1 &\qquad \text{(8)} \\
-\widehat{{\rm DBS}}_2(\omega)&=1 &\qquad \text{(9)} \\
-\widehat{{\rm DBS}}_3(\omega)&=\frac{1}{4} (\cos (\omega )+3) &\qquad \text{(10)} \\
-\widehat{{\rm DBS}}_4(\omega)&=\frac{1}{3} (\cos (\omega )+2) &\qquad \text{(11)} \\
-\widehat{{\rm DBS}}_5(\omega)&=\frac{1}{192} (76 \cos (\omega )+\cos (2 \omega )+115) &\qquad \text{(12)} \\
-\widehat{{\rm DBS}}_6(\omega)&=\frac{1}{60} (26 \cos (\omega )+\cos (2 \omega )+33) &\qquad \text{(13)} \\
+\widehat{{\rm DBS}}_1(\omega)&=1 &\qquad \text{(2.1)} \\
+\widehat{{\rm DBS}}_2(\omega)&=1 &\qquad \text{(2.2)} \\
+\widehat{{\rm DBS}}_3(\omega)&=\frac{1}{4} (\cos (\omega )+3) &\qquad \text{(2.3)} \\
+\widehat{{\rm DBS}}_4(\omega)&=\frac{1}{3} (\cos (\omega )+2) &\qquad \text{(2.4)} \\
+\widehat{{\rm DBS}}_5(\omega)&=\frac{1}{192} (76 \cos (\omega )+\cos (2 \omega )+115) &\qquad \text{(2.5)} \\
+\widehat{{\rm DBS}}_6(\omega)&=\frac{1}{60} (26 \cos (\omega )+\cos (2 \omega )+33) &\qquad \text{(2.6)} \\
 \end{align}
 ```
 </br>
@@ -106,12 +106,12 @@ In order to pass a curve through the control points, it is necessary to restore 
 
 ```math
 \begin{align} \\
-\widehat{{\rm DHE}}_1(\omega)&=1 &\qquad \text{(14)} \\
-\widehat{{\rm DHE}}_2(\omega)&=1 &\qquad \text{(15)} \\
-\widehat{{\rm DHE}}_3(\omega)&=\frac{4}{\cos (\omega )+3} &\qquad \text{(16)} \\
-\widehat{{\rm DHE}}_4(\omega)&=\frac{3}{\cos (\omega )+2} &\qquad \text{(17)} \\
-\widehat{{\rm DHE}}_5(\omega)&=\frac{192}{76 \cos (\omega )+\cos (2 \omega )+115} &\qquad \text{(18)} \\
-\widehat{{\rm DHE}}_6(\omega)&=\frac{60}{26 \cos (\omega )+\cos (2 \omega )+33} &\qquad \text{(19)} \\
+\widehat{{\rm DHE}}_1(\omega)&=1 &\qquad \text{(3.1)} \\
+\widehat{{\rm DHE}}_2(\omega)&=1 &\qquad \text{(3.2)} \\
+\widehat{{\rm DHE}}_3(\omega)&=\frac{4}{\cos (\omega )+3} &\qquad \text{(3.3)} \\
+\widehat{{\rm DHE}}_4(\omega)&=\frac{3}{\cos (\omega )+2} &\qquad \text{(3.4)} \\
+\widehat{{\rm DHE}}_5(\omega)&=\frac{192}{76 \cos (\omega )+\cos (2 \omega )+115} &\qquad \text{(3.5)} \\
+\widehat{{\rm DHE}}_6(\omega)&=\frac{60}{26 \cos (\omega )+\cos (2 \omega )+33} &\qquad \text{(3.6)} \\
 \end{align}
 ```
 </br>
@@ -121,21 +121,21 @@ In order to pass a curve through the control points, it is necessary to restore 
 周波数特性を示す $\widehat{\rm{DHE}}_N(\omega)$ を逆フーリエ変換することによって、時間領域でのインパルス応答、つまりフィルタ関数 $\rm{DHE}_N(i)$ を導くことができる。
 
 ```math
-{\rm DHE}_N(i) = \frac{1}{2\pi} \int_{-\pi}^\pi \widehat{{\rm DHE}}_N(\omega) e^{j i \omega} \, d\omega \qquad \text{(20)}
+{\rm DHE}_N(i) = \frac{1}{2\pi} \int_{-\pi}^\pi \widehat{{\rm DHE}}_N(\omega) e^{j i \omega} \, d\omega \qquad \text{(3.7)}
 ```
 <br>
 
 $\widehat{\rm{DHE}}_N(\omega)$ は偶関数であるため、[逆フーリエコサイン変換](https://ja.wikipedia.org/wiki/%E6%AD%A3%E5%BC%A6%E3%83%BB%E4%BD%99%E5%BC%A6%E5%A4%89%E6%8F%9B)と等価である。さらに周期関数でもあるため、そのインパルス応答は必ず離散信号となる。
 
 ```math
-{\rm DHE}_N(i) = \frac{1}{\pi} \int_{0}^\pi \widehat{{\rm DHE}}_N(\omega) \cos(i\omega) \, d\omega \qquad \text{(21)}
+{\rm DHE}_N(i) = \frac{1}{\pi} \int_{0}^\pi \widehat{{\rm DHE}}_N(\omega) \cos(i\omega) \, d\omega \qquad \text{(3.8)}
 ```
 <br>
 
-なお、以下の積分公式を導入することで、
+なお、以下の積分公式(3.9)を導入することで、
 
 ```math
-\int_0^\pi \frac{\cos(n\theta)}{a + b \cos \theta} \, d\theta = \frac{\pi}{\sqrt{a^2 - b^2}} \left( \frac{\sqrt{a^2 - b^2}-a}{b} \right)^n \qquad \text{(22)}
+\int_0^\pi \frac{\cos(n\theta)}{a + b \cos \theta} \, d\theta = \frac{\pi}{\sqrt{a^2 - b^2}} \left( \frac{\sqrt{a^2 - b^2}-a}{b} \right)^n \qquad \text{(3.9)}
 ```
 <br>
 
@@ -145,11 +145,11 @@ $N=3,4$ の $\widehat{\rm{DHE}}_N(\omega)$ に限っては、 $\rm{DHE}_N(i)$ �
 \begin{align} \\
 {\rm DHE}_3(i) &= \frac{1}{\pi} \int_{0}^\pi \widehat{{\rm DHE}}_3(\omega) \cos(i\omega) \, d\omega = \frac{4}{\pi} \int_{0}^\pi \frac{\cos(i\omega)}{3 + \cos \omega} \, d\omega \\
 &= \frac{4}{\pi} \frac{\pi}{\sqrt{3^2 - 1}} \left( \frac{\sqrt{3^2 - 1}-3}{1} \right)^n
-= \sqrt{2} \left( 2\sqrt{2}-3 \right)^n &\qquad \text{(23)} \\
+= \sqrt{2} \left( 2\sqrt{2}-3 \right)^n &\qquad \text{(3.10)} \\
 \newline \newline \newline \\
 {\rm DHE}_4(i) &= \frac{1}{\pi} \int_{0}^\pi \widehat{{\rm DHE}}_4(\omega) \cos(i\omega) \, d\omega = \frac{3}{\pi} \int_{0}^\pi \frac{\cos(i\omega)}{2 + \cos \omega} \, d\omega \\
 &= \frac{3}{\pi} \frac{\pi}{\sqrt{2^2 - 1}} \left( \frac{\sqrt{2^2 - 1}-2}{1} \right)^n
-= \sqrt{3} \left( \sqrt{3}-2 \right)^n &\qquad \text{(24)}
+= \sqrt{3} \left( \sqrt{3}-2 \right)^n &\qquad \text{(3.11)}
 \end{align}
 ```
 <br>
