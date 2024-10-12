@@ -135,7 +135,7 @@ $\widehat{\rm{DHE}}_N(\omega)$ は偶関数であるため、[逆フーリエコ
 なお、以下の積分公式(3.9)を導入することで、
 
 ```math
-\int_0^\pi \frac{\cos(n\theta)}{a + b \cos \theta} \, d\theta = \frac{\pi}{\sqrt{a^2 - b^2}} \left( \frac{\sqrt{a^2 - b^2}-a}{b} \right)^n \qquad \text{(3.9)}
+\int_0^\pi \frac{\cos(n\theta)}{a + b \cos \theta} \, d\theta = \frac{\pi}{\sqrt{a^2 - b^2}} \left( \frac{\sqrt{a^2 - b^2}-a}{b} \right)^n \quad |b| < |a|, \, 0 \leq n \qquad \text{(3.9)}
 ```
 <br>
 
@@ -177,6 +177,53 @@ The frequency distribution of a finite impulse response (FIR) filter, i.e., an a
 ----
 ## ■ 4. Reference
 * [True B-Spline Interpolation.nb](./--------/True%20B-Spline%20Interpolation.nb) @ [Mathematica](https://www.wolfram.com/mathematica/)
+* [*Table of Integrals, Series, and Products* (Seventh Edition)](http://fisica.ciens.ucv.ve/~svincenz/TISPISGIMR.pdf), 2007.
+* Bierens de Haan, D., [*Nouvelles tables d’intégrales définies*](https://babel.hathitrust.org/cgi/pt?id=uc2.ark:/13960/t7rn31k84&seq=119), Amsterdam, 1867. (Reprint: G. E. Stechert & Co., New York, 1939).
+* Verhandelingen der Koninklijke Akademie van Wetenschappen, Deel IV, 1858. [*Tables d’intégrales définies*](https://babel.hathitrust.org/cgi/pt?id=uc2.ark:/13960/t7cr63h5c&seq=181), par D. Bierens de Haan.
+
+----
+## ■ 5. Appendix
+
+### ◆ 5.1 積分公式(3.9) の導出
+
+```math
+\int_0^\pi \frac{\cos(n\theta)}{a + b \cos \theta} \, d\theta = \frac{\pi}{\sqrt{a^2 - b^2}} \left( \frac{\sqrt{a^2 - b^2}-a}{b} \right)^n \quad |b| < |a|, \, 0 \leq n \qquad \text{(3.9)}
+```
+<br>
+
+公式集「[Table of Integrals, Series, and Products (Seventh Edition)](http://fisica.ciens.ucv.ve/~svincenz/TISPISGIMR.pdf)」に掲載(3.613-1@391p)されている積分公式(5.1)から、
+
+```math
+\int_0^\pi \frac{\cos(n\theta)}{1 + \alpha \cos(\theta)}d\theta = \frac{\pi}{\sqrt{1 - \alpha^2}} \left( \frac{\sqrt{1 - \alpha^2} - 1}{\alpha} \right)^n, \quad \alpha^2 < 1, \, 0 \leq n \qquad \text{(5.1)}
+```
+<br>
+
+以下のような変数変換を行って導出できる。
+
+```math
+\begin{align} \\
+\int_0^\pi \frac{\cos(n \theta)}{a + b \cos \theta} \, d\theta
+&= \frac{1}{a} \int_0^\pi \frac{\cos(n \theta)}{1 + \dfrac{b}{a} \cos \theta} \, d\theta
+= \frac{1}{a} \int_0^\pi \frac{\cos(n\theta)}{1 + \alpha \cos(\theta)}d\theta &\qquad \text{(5.2)} \\
+\newline \\
+&= \frac{1}{a} \cdot \frac{\pi}{\sqrt{1 - \left( \dfrac{b}{a} \right)^2}} \left( \frac{ \sqrt{1 - \left( \dfrac{b}{a} \right)^2 } - 1 }{ \dfrac{b}{a} } \right)^n &\qquad \text{(5.3)} \\
+\newline \\
+&= \frac{\pi}{a} \cdot \dfrac{a}{\sqrt{a^2 - b^2}} \left[ \dfrac{a}{b} \left( \dfrac{\sqrt{a^2 - b^2}}{a} - 1 \right) \right]^n &\qquad \text{(5.4)} \\
+\newline \\
+&= \frac{\pi}{\sqrt{a^2 - b^2}} \left( \frac{ \sqrt{a^2 - b^2} - a }{ b } \right)^n &\qquad \text{(5.5)} \\
+\end{align}
+```
+<br>
+
+なお、公式の成立条件は以下となる。
+
+```math
+\alpha^2 < 1
+\  \Leftrightarrow \  \left( \dfrac{b}{a} \right)^2 < 1
+\  \Leftrightarrow \  b^2 < a^2
+\  \Leftrightarrow \  |b| < |a| \qquad \text{(5.6)}
+```
+<br>
 
 ----
 [![Delphi Starter](http://img.en25.com/EloquaImages/clients/Embarcadero/%7B063f1eec-64a6-4c19-840f-9b59d407c914%7D_dx-starter-bn159.png)](https://www.embarcadero.com/jp/products/delphi/starter)
